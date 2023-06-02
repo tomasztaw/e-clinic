@@ -1,0 +1,23 @@
+{
+  "id": "{{parameters.petId}}",
+  "category": {
+    "id": 4,
+    "name": "Dogs"
+  },
+  "name": "lion",
+  "photoUrls": [
+    "url1",
+    "url2"
+  ],
+  "tags": [
+    {
+      "id": 1,
+      "name": "tag3"
+    },
+    {
+      "id": 2,
+      "name": "tag4"
+    }
+  ],
+  "status": "available"
+}

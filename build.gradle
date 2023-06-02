@@ -1,22 +1,115 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.0.7'
-	id 'io.spring.dependency-management' version '1.1.0'
+	id 'org.springframework.boot' version "${springBootVersion}"
+	id 'org.hibernate.orm' version "${hibernateVersion}"
+	id 'io.spring.dependency-management' version "${springBootDMVersion}"
+	id 'org.graalvm.buildtools.native' version "${graalVmVersion}"
+	id 'org.openapi.generator' version "${openapiGeneratorVersion}"
 }
 
 group = 'pl.taw'
-version = '0.0.1-SNAPSHOT'
+version = '1.0'
 sourceCompatibility = '17'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
 
 repositories {
 	mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter'
+	// spring
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation 'org.springframework.boot:spring-boot-starter-web-services'
+	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
+
+	// db
+	implementation 'org.flywaydb:flyway-core'
+	runtimeOnly 'org.postgresql:postgresql'
+
+	// api
+	implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springDocVersion}"
+	implementation "org.openapitools:jackson-databind-nullable:${jacksonDatabindNullableVersion}"
+	implementation "javax.annotation:javax.annotation-api:${javaxAnnotationApiVersion}"
+	implementation "io.swagger:swagger-annotations:${swaggerAnnotationsVersion}"
+	implementation "com.google.code.findbugs:jsr305:${jsr305Version}"
+
+	// annotations
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	annotationProcessor "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
+
+	implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+
+	// tests
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.boot:spring-boot-testcontainers'
+//	testImplementation 'org.springframework.security:spring-security-test'
+	testImplementation 'org.testcontainers:junit-jupiter'
+	testImplementation 'org.testcontainers:postgresql'
+	testImplementation "io.rest-assured:rest-assured:${restAssuredVersion}"
+	testImplementation "com.github.tomakehurst:wiremock:${wiremockVersion}"
+	testImplementation "com.github.tomakehurst:wiremock-standalone:${wiremockVersion}"
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+dependencyManagement {
+	imports {
+		mavenBom "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
+	}
+}
+
+openApiGenerate {
+	generatorName = "java"
+	library = "webclient"
+	configOptions.putAll([
+			serializableModel: "true",
+			dateLibrary: "java8",
+			serializationLibrary: "jackson"
+	])
+
+	outputDir = "$buildDir/generated-sources/openapi".toString()
+	inputSpec = "$rootDir/src/main/resources/petstore-v3.0.2.json".toString()
+	apiPackage = "pl.taw.infrastructure.petstore.api"
+	modelPackage = "pl.taw.infrastructure.petstore.model"
+}
+
+sourceSets {
+	main {
+		java.srcDirs += "$buildDir/generated-sources/openapi/src/main/java"
+	}
+}
+
+compileJava.dependsOn tasks.openApiGenerate
+
+test {
+	useJUnitPlatform()
+	testLogging {
+		events "passed", "skipped", "failed"
+	}
+}
+
+hibernate {
+	enhancement {
+		lazyInitialization true
+		dirtyTracking true
+		associationManagement true
+	}
+
+}
+compileJava.options.encoding = 'UTF-8'
+
