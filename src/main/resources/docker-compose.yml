@@ -1,0 +1,39 @@
+version: '3.1'
+services:
+  backend:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=local
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://PostgreSQL:5432/car_dealership
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    networks:
+      - spring-boot-postgres
+    depends_on:
+      PostgreSQL:
+        condition: service_healthy
+  PostgreSQL:
+    image: postgres:15.3
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=car_dealership
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - spring-boot-postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+volumes: 
+  db-data:
+networks:
+  spring-boot-postgres:
+

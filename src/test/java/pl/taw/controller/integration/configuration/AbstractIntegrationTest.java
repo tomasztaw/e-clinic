@@ -6,7 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import pl.taw.EClinicApplication;
-import pl.taw.infrastructure.database.repository.PatientRepository;
+import pl.taw.infrastructure.database.repository.jpa.PatientJpaRepository;
 
 @ActiveProfiles("test")
 @Import(PersistenceContainerTestConfiguration.class)
@@ -15,11 +15,11 @@ import pl.taw.infrastructure.database.repository.PatientRepository;
 public abstract class AbstractIntegrationTest {
 
     @Autowired
-    private PatientRepository patientRepository;
+    private PatientJpaRepository patientJpaRepository;
 
     // czyszczenie bazy po każdym teście
     @AfterEach
     public void after() {
-        patientRepository.deleteAll();
+        patientJpaRepository.deleteAll();
     }
 }

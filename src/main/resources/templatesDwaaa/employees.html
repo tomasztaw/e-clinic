@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Employees example</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+
+<div class="container">
+    <div class="page-header" id="banner">
+        <h2>Add an employee</h2>
+        <form action="#" th:action="@{/employees/add}" method="POST" th:object="${employeeDTO}">
+            <div class="form-group">
+                Name: <input type="text" th:field="*{name}"/><br>
+                Surname: <input type="text" th:field="*{surname}"/><br>
+                Salary: <input type="text" th:field="*{salary}"/><br>
+                Phone: <input type="text" th:field="*{phone}"/><br>
+                Email: <input type="text" th:field="*{email}"/>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create employee" name="button"/>
+            </div>
+        </form>
+        <hr/>
+        <h2>Update an employee</h2>
+        <form action="#" th:action="@{/employees/update}" th:method="PUT" th:object="${employeeDTO}">
+            <div class="form-group">
+                Id: <input type="text" th:field="*{employeeId}"/><br>
+                Name: <input type="text" th:field="*{name}"/><br>
+                Surname: <input type="text" th:field="*{surname}"/><br>
+                Salary: <input type="text" th:field="*{salary}"/><br>
+                Phone: <input type="text" th:field="*{phone}"/><br>
+                Email: <input type="text" th:field="*{email}"/>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Update employee" name="button"/>
+            </div>
+        </form>
+        <h2>Current employees</h2>
+        <table class="table table-striped table-hover">
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Salary</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr th:each="employee : ${employees}">
+                <td th:text="${employee.employeeId}"></td>
+                <td th:text="${employee.name}"></td>
+                <td th:text="${employee.surname}"></td>
+                <td th:text="${employee.salary}"></td>
+                <td th:text="${employee.phone}"></td>
+                <td th:text="${employee.email}"></td>
+                <td>
+                    <form action="#"
+                          th:action="@{employees/show/{employeeId}(employeeId=${employee.employeeId})}"
+                          method="GET">
+                        <button type="submit" class="btn btn-info">Show</button>
+                    </form>
+                </td>
+                <td>
+                    <form action="#"
+                          th:action="@{employees/delete/{employeeId}(employeeId=${employee.employeeId})}"
+                          th:method="DELETE">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>

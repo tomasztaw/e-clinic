@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import pl.taw.controller.integration.configuration.TestPostgreSQLContainer;
-import pl.taw.infrastructure.database.repository.PatientRepository;
+import pl.taw.infrastructure.database.repository.jpa.PatientJpaRepository;
 
 @Testcontainers
 @SpringBootTest
@@ -22,7 +22,7 @@ public class E2ETest {
     private static final TestPostgreSQLContainer postgresContainer = TestPostgreSQLContainer.getInstance();
 
     @Autowired
-    private PatientRepository patientRepository;
+    private PatientJpaRepository patientJpaRepository;
 
     @Test
     void someE2ETest() {

@@ -12,7 +12,7 @@ import pl.taw.controller.dto.PatientDTO;
 import pl.taw.controller.dto.PatientsDTO;
 import pl.taw.controller.dto.mapper.PatientMapper;
 import pl.taw.infrastructure.database.entity.PatientEntity;
-import pl.taw.infrastructure.database.repository.PatientRepository;
+import pl.taw.infrastructure.database.repository.jpa.PatientJpaRepository;
 
 import java.net.URI;
 
@@ -27,12 +27,12 @@ public class PatientController {
     public static final String PATIENT_ID_RESULT = "/%s";
 
 
-    private PatientRepository patientRepository;
+    private PatientJpaRepository patientJpaRepository;
     private PatientMapper patientMapper;
 
     @GetMapping
     public PatientsDTO patientsList() {
-        return PatientsDTO.of(patientRepository.findAll().stream()
+        return PatientsDTO.of(patientJpaRepository.findAll().stream()
                 .map(patientMapper::map)
                 .toList());
     }
@@ -42,7 +42,7 @@ public class PatientController {
                     MediaType.APPLICATION_JSON_VALUE,
                     MediaType.APPLICATION_XML_VALUE})
     public PatientDTO patientDetails(@PathVariable Integer id) {
-        return patientRepository.findById(id)
+        return patientJpaRepository.findById(id)
                 .map(patientMapper::map)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "PatientEntity not found, id: [%s]".formatted(id)
@@ -61,7 +61,7 @@ public class PatientController {
                 .phone(patientDTO.getPhone())
                 .email(patientDTO.getEmail())
                 .build();
-        PatientEntity created = patientRepository.save(patientEntity);
+        PatientEntity created = patientJpaRepository.save(patientEntity);
         return ResponseEntity
                 .created(URI.create(PATIENTS + PATIENT_ID_RESULT.formatted(created.getId())))
                 .build();
@@ -73,7 +73,7 @@ public class PatientController {
             @PathVariable Integer id,
             @Valid @RequestBody PatientDTO patientDTO
     ) {
-        PatientEntity existingPatient = patientRepository.findById(id)
+        PatientEntity existingPatient = patientJpaRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "PatientEntity not found, id: [%s]".formatted(id)));
         existingPatient.setName(patientDTO.getName());
@@ -81,7 +81,7 @@ public class PatientController {
         existingPatient.setPesel(patientDTO.getPesel());
         existingPatient.setPhone(patientDTO.getPhone());
         existingPatient.setEmail(patientDTO.getEmail());
-        patientRepository.save(existingPatient);
+        patientJpaRepository.save(existingPatient);
         return ResponseEntity.ok().build();
     }
 
@@ -89,9 +89,9 @@ public class PatientController {
     public ResponseEntity<?> deletePatient(
             @PathVariable Integer id
     ) {
-        var patientOpt = patientRepository.findById(id);
+        var patientOpt = patientJpaRepository.findById(id);
         if (patientOpt.isPresent()) {
-            patientRepository.deleteById(id);
+            patientJpaRepository.deleteById(id);
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.notFound().build();
@@ -103,11 +103,11 @@ public class PatientController {
             @PathVariable Integer id,
             @RequestParam(required = true) String newPhone
     ) {
-        PatientEntity existingPatient = patientRepository.findById(id)
+        PatientEntity existingPatient = patientJpaRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "PatientEntity not found, id: [%s]".formatted(id)));
         existingPatient.setPhone(newPhone);
-        patientRepository.save(existingPatient);
+        patientJpaRepository.save(existingPatient);
         return ResponseEntity.ok().build();
     }
 

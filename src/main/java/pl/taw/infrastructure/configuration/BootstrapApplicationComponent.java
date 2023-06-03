@@ -8,23 +8,23 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 import pl.taw.infrastructure.database.entity.DoctorEntity;
 import pl.taw.infrastructure.database.entity.PatientEntity;
-import pl.taw.infrastructure.database.repository.DoctorRepository;
-import pl.taw.infrastructure.database.repository.PatientRepository;
+import pl.taw.infrastructure.database.repository.jpa.DoctorJpaRepository;
+import pl.taw.infrastructure.database.repository.jpa.PatientJpaRepository;
 
 @Slf4j
 @Component
 @AllArgsConstructor
 public class BootstrapApplicationComponent implements ApplicationListener<ContextRefreshedEvent> {
 
-    private PatientRepository patientRepository;
-    private DoctorRepository doctorRepository;
+    private PatientJpaRepository patientJpaRepository;
+    private DoctorJpaRepository doctorJpaRepository;
 
     @Override
     public void onApplicationEvent(final @NotNull ContextRefreshedEvent event) {
-        doctorRepository.deleteAll();
-        patientRepository.deleteAll();
+        doctorJpaRepository.deleteAll();
+        patientJpaRepository.deleteAll();
 
-        patientRepository.save(PatientEntity.builder()
+        patientJpaRepository.save(PatientEntity.builder()
                 .name("Stefan")
                 .surname("Zajavka")
                 .pesel("8506171835")
@@ -32,7 +32,7 @@ public class BootstrapApplicationComponent implements ApplicationListener<Contex
                 .email("zajavka@zajavka.com")
                 .build());
 
-        patientRepository.save(PatientEntity.builder()
+        patientJpaRepository.save(PatientEntity.builder()
                 .name("Agnieszka")
                 .surname("Spring")
                 .pesel("8506171834")
@@ -40,7 +40,7 @@ public class BootstrapApplicationComponent implements ApplicationListener<Contex
                 .email("age@zajavka.com")
                 .build());
 
-        patientRepository.save(PatientEntity.builder()
+        patientJpaRepository.save(PatientEntity.builder()
                 .name("Tomasz")
                 .surname("Hibernate")
                 .pesel("8506171837")
@@ -48,7 +48,7 @@ public class BootstrapApplicationComponent implements ApplicationListener<Contex
                 .email("hibertomasz@zajavka.com")
                 .build());
 
-        doctorRepository.save(DoctorEntity.builder()
+        doctorJpaRepository.save(DoctorEntity.builder()
                 .name("Doktor1")
                 .surname("Nazwisko1")
                 .title("Lekarzyna")

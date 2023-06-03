@@ -1,0 +1,119 @@
+{
+  "meta": {
+    "count": 1,
+    "json-ld-id": "/slowniki/wojewodztwa",
+    "schema": "https://api.cepik.gov.pl/www/schema/dictionary.json",
+    "dc:title": "Słownik",
+    "schema:provider": "Ministerstwo Cyfryzacji",
+    "schema:dateModified": "2023-05-27",
+    "dc:description": "Słownik zawierający wartości, które można wykorzystać przy przeszukiwaniu danych API, np przy filtrowaniu",
+    "dc:language": "pl",
+    "sy:updatePeriod": "weekly",
+    "sy:updateFrequency": "1",
+    "sy:updateBase": "2023-06-03",
+    "schema:contentType": "application/json",
+    "schema:isPartOf": "https://api.cepik.gov.pl/slowniki",
+    "dc:rights": "brak",
+    "schema:keywords": "słowniki"
+  },
+  "links": {
+    "self": "https://api.cepik.gov.pl/slowniki/wojewodztwa"
+  },
+  "data": {
+    "id": "wojewodztwa",
+    "type": "slowniki",
+    "links": {
+      "self": "https://api.cepik.gov.pl/slowniki/wojewodztwa"
+    },
+    "attributes": {
+      "dostepne-rekordy-slownika": [
+        {
+          "klucz-slownika": "02",
+          "wartosc-slownika": "DOLNOŚLĄSKIE",
+          "liczba-wystapien": 3369256
+        },
+        {
+          "klucz-slownika": "04",
+          "wartosc-slownika": "KUJAWSKO-POMORSKIE",
+          "liczba-wystapien": 2500881
+        },
+        {
+          "klucz-slownika": "06",
+          "wartosc-slownika": "LUBELSKIE",
+          "liczba-wystapien": 2890242
+        },
+        {
+          "klucz-slownika": "08",
+          "wartosc-slownika": "LUBUSKIE",
+          "liczba-wystapien": 1339715
+        },
+        {
+          "klucz-slownika": "10",
+          "wartosc-slownika": "ŁÓDZKIE",
+          "liczba-wystapien": 3242140
+        },
+        {
+          "klucz-slownika": "12",
+          "wartosc-slownika": "MAŁOPOLSKIE",
+          "liczba-wystapien": 4024984
+        },
+        {
+          "klucz-slownika": "14",
+          "wartosc-slownika": "MAZOWIECKIE",
+          "liczba-wystapien": 7743586
+        },
+        {
+          "klucz-slownika": "16",
+          "wartosc-slownika": "OPOLSKIE",
+          "liczba-wystapien": 1272929
+        },
+        {
+          "klucz-slownika": "18",
+          "wartosc-slownika": "PODKARPACKIE",
+          "liczba-wystapien": 2810475
+        },
+        {
+          "klucz-slownika": "20",
+          "wartosc-slownika": "PODLASKIE",
+          "liczba-wystapien": 1511358
+        },
+        {
+          "klucz-slownika": "22",
+          "wartosc-slownika": "POMORSKIE",
+          "liczba-wystapien": 2700365
+        },
+        {
+          "klucz-slownika": "24",
+          "wartosc-slownika": "ŚLĄSKIE",
+          "liczba-wystapien": 5047435
+        },
+        {
+          "klucz-slownika": "26",
+          "wartosc-slownika": "ŚWIĘTOKRZYSKIE",
+          "liczba-wystapien": 1679775
+        },
+        {
+          "klucz-slownika": "28",
+          "wartosc-slownika": "WARMIŃSKO-MAZURSKIE",
+          "liczba-wystapien": 1678554
+        },
+        {
+          "klucz-slownika": "30",
+          "wartosc-slownika": "WIELKOPOLSKIE",
+          "liczba-wystapien": 5238870
+        },
+        {
+          "klucz-slownika": "32",
+          "wartosc-slownika": "ZACHODNIOPOMORSKIE",
+          "liczba-wystapien": 1890612
+        },
+        {
+          "klucz-slownika": "XX",
+          "wartosc-slownika": "NIEOKREŚLONE",
+          "liczba-wystapien": 1117896
+        }
+      ],
+      "ilosc-rekordow-slownika": 17
+    }
+  }
+}

@@ -17,7 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import pl.taw.controller.dto.PatientDTO;
 import pl.taw.controller.dto.mapper.PatientMapper;
 import pl.taw.infrastructure.database.entity.PatientEntity;
-import pl.taw.infrastructure.database.repository.PatientRepository;
+import pl.taw.infrastructure.database.repository.jpa.PatientJpaRepository;
 import pl.taw.util.DtoFixtures;
 import pl.taw.util.EntityFixtures;
 
@@ -38,7 +38,7 @@ public class PatientControllerWebMvcTest {
     private final MockMvc mockMvc;  // symuluje wywoływanie endpoint-ów po stronie przeglądarki
 
     @MockBean
-    private PatientRepository patientRepository;
+    private PatientJpaRepository patientJpaRepository;
     @MockBean
     private PatientMapper patientMapper;
 
@@ -50,7 +50,7 @@ public class PatientControllerWebMvcTest {
         PatientEntity patientEntity = EntityFixtures.somePatient1().withId(patientId);
         PatientDTO patientDTO = DtoFixtures.somePatient1().withId(patientId);
 
-        when(patientRepository.findById(patientId)).thenReturn(Optional.of(patientEntity));
+        when(patientJpaRepository.findById(patientId)).thenReturn(Optional.of(patientEntity));
         when(patientMapper.map(any(PatientEntity.class))).thenReturn(patientDTO);
 
         // when, then
@@ -92,7 +92,7 @@ public class PatientControllerWebMvcTest {
                     "phone": "%s"
                 }
                 """.formatted(phone);
-        when(patientRepository.save(any(PatientEntity.class)))
+        when(patientJpaRepository.save(any(PatientEntity.class)))
                 .thenReturn(EntityFixtures.somePatient1().withId(123));
 
         // when, then
@@ -146,7 +146,7 @@ public class PatientControllerWebMvcTest {
         // Tworzenie obiektu PatientDTO, który zostanie zwrócony przez metodę
         PatientDTO expectedPatientDTO = DtoFixtures.somePatient1().withId(patientId);
         // Definiowanie zachowania mocka dla metody employeeRepository.findById()
-        when(patientRepository.findById(patientId)).thenReturn(Optional.of(patientEntity));
+        when(patientJpaRepository.findById(patientId)).thenReturn(Optional.of(patientEntity));
         when(patientMapper.map(any(PatientEntity.class))).thenReturn(expectedPatientDTO);
 
         // Wywołanie metody i weryfikacja odpowiedzi
@@ -163,7 +163,7 @@ public class PatientControllerWebMvcTest {
         // Przygotowanie danych testowych
         Integer patientId = 1;
         // Definiowanie zachowania mocka dla metody employeeRepository.findById()
-        when(patientRepository.findById(patientId)).thenReturn(Optional.empty());
+        when(patientJpaRepository.findById(patientId)).thenReturn(Optional.empty());
 
         // Wywołanie metody i weryfikacja odpowiedzi
         String endpoint = PatientController.PATIENTS + PatientController.PATIENT_ID;
@@ -179,7 +179,7 @@ public class PatientControllerWebMvcTest {
         PatientEntity existingPatient = EntityFixtures.somePatient3().withId(patientId);
         PatientDTO patientDTO = DtoFixtures.somePatient1().withId(patientId);
         // Definiowanie zachowania mocka dla metody employeeRepository.findById()
-        when(patientRepository.findById(patientId)).thenReturn(Optional.of(existingPatient));
+        when(patientJpaRepository.findById(patientId)).thenReturn(Optional.of(existingPatient));
         when(patientMapper.map(any(PatientEntity.class))).thenReturn(patientDTO);
 
         // Wywołanie metody i weryfikacja odpowiedzi
@@ -189,7 +189,7 @@ public class PatientControllerWebMvcTest {
                 .andExpect(status().isOk());
 
         // Weryfikacja czy metoda employeeRepository.save() została wywołana z oczekiwanymi argumentami
-        verify(patientRepository).save(existingPatient);
+        verify(patientJpaRepository).save(existingPatient);
 //        MatcherAssert.assertThat(existingPatient.getPhone(), Matchers.containsString(newPhone));
         Assertions.assertThat(existingPatient.getPhone()).isEqualTo(newPhone);
     }
@@ -200,7 +200,7 @@ public class PatientControllerWebMvcTest {
         Integer patientId = 1;
         String newPhone = "+48 147 147 147";
         // Definiowanie zachowania mocka dla metody employeeRepository.findById()
-        when(patientRepository.findById(patientId)).thenReturn(Optional.empty());
+        when(patientJpaRepository.findById(patientId)).thenReturn(Optional.empty());
 
         // Wywołanie metody i weryfikacja odpowiedzi
         String endpoint = PatientController.PATIENTS + PatientController.PATIENT_UPDATE_PHONE;
@@ -209,7 +209,7 @@ public class PatientControllerWebMvcTest {
                 .andExpect(status().isNotFound());
 
         // Weryfikacja czy metoda employeeRepository.save() nie została wywołana
-        verify(patientRepository, Mockito.never()).save(Mockito.any());
+        verify(patientJpaRepository, Mockito.never()).save(Mockito.any());
     }
 
 }

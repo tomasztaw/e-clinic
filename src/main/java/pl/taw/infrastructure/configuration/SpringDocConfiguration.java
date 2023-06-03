@@ -19,19 +19,19 @@ public class SpringDocConfiguration {
     @Bean
     public GroupedOpenApi groupedOpenApi() {
         return GroupedOpenApi.builder()
-                .group("default")
-                .pathsToMatch("/**")
-                .packagesToScan(EClinicApplication.class.getPackageName())
+                .group("default") // nazwa grupy dla dokumentacji
+                .pathsToMatch("/**") // wzorzec ścieżki pasujących endpoint-ów, w tym przypadku wszystko
+                .packagesToScan(EClinicApplication.class.getPackageName()) // pakiety, które mają być przeskanowane
                 .build();
     }
 
     @Bean
     public OpenAPI springDocOpenApi() {
         return new OpenAPI()
-                .components(new Components())
-                .info(new Info()
+                .components(new Components()) // tworzenie nowego obiektu Components zawierającego różne komponenty, takie jak schematy, definicje parametrów
+                .info(new Info()  // metadane aplikacji
                         .title("e-clinic application")
-                        .contact(contact())
+                        .contact(contact()) // zwracany jest kontakt
                         .version("1.0"));
     }
 

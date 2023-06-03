@@ -11,7 +11,7 @@ import pl.taw.controller.dto.DoctorDTO;
 import pl.taw.controller.dto.DoctorsDTO;
 import pl.taw.controller.dto.mapper.DoctorMapper;
 import pl.taw.infrastructure.database.entity.DoctorEntity;
-import pl.taw.infrastructure.database.repository.DoctorRepository;
+import pl.taw.infrastructure.database.repository.jpa.DoctorJpaRepository;
 
 import java.net.URI;
 import java.util.Optional;
@@ -25,12 +25,12 @@ public class DoctorController {
     public static final String DOCTOR_ID = "/{id}";
     public static final String DOCTOR_UPDATE_TITLE = "/{id}/title";
 
-    private DoctorRepository doctorRepository;
+    private DoctorJpaRepository doctorJpaRepository;
     private DoctorMapper doctorMapper;
 
     @GetMapping
     public DoctorsDTO doctors() {
-        return DoctorsDTO.of(doctorRepository.findAll().stream()
+        return DoctorsDTO.of(doctorJpaRepository.findAll().stream()
                 .map(doctorMapper::map)
                 .toList());
     }
@@ -40,7 +40,7 @@ public class DoctorController {
                     MediaType.APPLICATION_JSON_VALUE,
                     MediaType.APPLICATION_XML_VALUE})
     public DoctorDTO doctorDetails(@PathVariable Integer id) {
-        return doctorRepository.findById(id)
+        return doctorJpaRepository.findById(id)
                 .map(doctorMapper::map)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "DoctorEntity not found, id: [%s]".formatted(id)));
@@ -58,7 +58,7 @@ public class DoctorController {
                 .phone(doctorDTO.getPhone())
                 .email(doctorDTO.getEmail())
                 .build();
-        DoctorEntity created = doctorRepository.save(doctorEntity);
+        DoctorEntity created = doctorJpaRepository.save(doctorEntity);
         return ResponseEntity
                 .created(URI.create(DOCTORS.concat("/%s").formatted(created.getId())))
                 .build();
@@ -70,7 +70,7 @@ public class DoctorController {
             @PathVariable Integer id,
             @Valid @RequestBody DoctorDTO doctorDTO
     ) {
-        DoctorEntity existingDoctor = doctorRepository.findById(id)
+        DoctorEntity existingDoctor = doctorJpaRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "DoctorEntity not found, id: [%s]".formatted(id)));
         existingDoctor.setName(doctorDTO.getName());
@@ -78,7 +78,7 @@ public class DoctorController {
         existingDoctor.setTitle(doctorDTO.getTitle());
         existingDoctor.setPhone(doctorDTO.getPhone());
         existingDoctor.setEmail(doctorDTO.getEmail());
-        doctorRepository.save(existingDoctor);
+        doctorJpaRepository.save(existingDoctor);
         return ResponseEntity.ok().build();
     }
 
@@ -87,19 +87,19 @@ public class DoctorController {
             @PathVariable Integer id,
             @RequestParam(defaultValue = "doctor") String newTitle
     ) {
-        DoctorEntity existingDoctor = doctorRepository.findById(id)
+        DoctorEntity existingDoctor = doctorJpaRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "DoctorEntity not found, id: [%s]".formatted(id)));
         existingDoctor.setTitle(newTitle);
-        doctorRepository.save(existingDoctor);
+        doctorJpaRepository.save(existingDoctor);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping(DOCTOR_ID)
     public ResponseEntity<?> deleteDoctor(@PathVariable Integer id) {
-        Optional<DoctorEntity> doctorOpt = doctorRepository.findById(id);
+        Optional<DoctorEntity> doctorOpt = doctorJpaRepository.findById(id);
         if (doctorOpt.isPresent()) {
-            doctorRepository.deleteById(id);
+            doctorJpaRepository.deleteById(id);
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.notFound().build();

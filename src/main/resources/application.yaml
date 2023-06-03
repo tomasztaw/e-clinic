@@ -4,8 +4,12 @@ server:
     context-path: /clinic # localhost:8190/zajavka...
 
 api:
-  petStore:
-    url: https://petstore3.swagger.io/api/v3
+#  petStore:
+#    url: https://petstore3.swagger.io/api/v3
+
+logging:
+  level:
+    org.springframework: DEBUG
 
 spring:
   datasource:
@@ -29,4 +33,6 @@ spring:
     hiddenmethod:
       filter:
         enabled: true
+  thymeleaf:
+    enabled: true
 #  security: enable

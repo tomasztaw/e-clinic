@@ -1,0 +1,140 @@
+{
+  "data": [
+    {
+      "id": "6939981662955097",
+      "type": "pojazdy",
+      "attributes": {
+        "marka": "FORD",
+        "kategoria-pojazdu": "11111111",
+        "typ": "---",
+        "model": "ESCAPE",
+        "wariant": "---",
+        "rodzaj-pojazdu": "SAMOCHÓD OSOBOWY",
+        "pochodzenie-pojazdu": "UŻYW. ZAKUPIONY W KRAJU",
+        "rok-produkcji": "FABRYCZNY",
+        "data-pierwszej-rejestracji-w-kraju": "2021-10-11",
+        "pojemnosc-skokowa-silnika": 1998,
+        "masa-wlasna": 1653,
+        "rodzaj-paliwa": "BENZYNA",
+        "wojewodztwo-kod": "14"
+      },
+      "links": {
+        "self": "https://api.cepik.gov.pl/pojazdy/6939981662955097"
+      }
+    },
+    {
+      "id": "7815465096577626",
+      "type": "pojazdy",
+      "attributes": {
+        "marka": "NISSAN",
+        "kategoria-pojazdu": "11111111",
+        "typ": "---",
+        "model": "QASHQAI",
+        "wariant": "---",
+        "rodzaj-pojazdu": "SAMOCHÓD OSOBOWY",
+        "pochodzenie-pojazdu": "UŻYW. IMPORT INDYW",
+        "rok-produkcji": "FABRYCZNY",
+        "data-pierwszej-rejestracji-w-kraju": "2021-10-11",
+        "pojemnosc-skokowa-silnika": 1598,
+        "masa-wlasna": 1495,
+        "rodzaj-paliwa": "BENZYNA",
+        "wojewodztwo-kod": "14"
+      },
+      "links": {
+        "self": "https://api.cepik.gov.pl/pojazdy/7815465096577626"
+      }
+    },
+    {
+      "id": "8824220053690321",
+      "type": "pojazdy",
+      "attributes": {
+        "marka": "DAF",
+        "kategoria-pojazdu": "11111111",
+        "typ": "---",
+        "model": "LF55.250",
+        "wariant": "---",
+        "rodzaj-pojazdu": "SAMOCHÓD CIĘŻAROWY",
+        "pochodzenie-pojazdu": "UŻYW. IMPORT INDYW",
+        "rok-produkcji": "FABRYCZNY",
+        "data-pierwszej-rejestracji-w-kraju": "2021-10-11",
+        "pojemnosc-skokowa-silnika": 6693,
+        "masa-wlasna": 7100,
+        "rodzaj-paliwa": "OLEJ NAPĘDOWY",
+        "wojewodztwo-kod": "14"
+      },
+      "links": {
+        "self": "https://api.cepik.gov.pl/pojazdy/8824220053690321"
+      }
+    },
+    {
+      "id": "7570697656528175",
+      "type": "pojazdy",
+      "attributes": {
+        "marka": "HONDA",
+        "kategoria-pojazdu": "11111111",
+        "typ": "---",
+        "model": "ACCORD",
+        "wariant": "---",
+        "rodzaj-pojazdu": "SAMOCHÓD OSOBOWY",
+        "pochodzenie-pojazdu": "UŻYW. ZAKUPIONY W KRAJU",
+        "rok-produkcji": "FABRYCZNY",
+        "data-pierwszej-rejestracji-w-kraju": "2021-10-11",
+        "pojemnosc-skokowa-silnika": 1997,
+        "masa-wlasna": 1617,
+        "rodzaj-paliwa": "BENZYNA",
+        "wojewodztwo-kod": "14"
+      },
+      "links": {
+        "self": "https://api.cepik.gov.pl/pojazdy/7570697656528175"
+      }
+    },
+    {
+      "id": "5520568249376487",
+      "type": "pojazdy",
+      "attributes": {
+        "marka": "SEAT",
+        "kategoria-pojazdu": "13",
+        "typ": "KJ",
+        "model": "IBIZA",
+        "wariant": "BDLAA",
+        "rodzaj-pojazdu": "SAMOCHÓD OSOBOWY",
+        "pochodzenie-pojazdu": "NOWY ZAKUPIONY W KRAJU",
+        "rok-produkcji": "FABRYCZNY",
+        "data-pierwszej-rejestracji-w-kraju": "2021-10-11",
+        "pojemnosc-skokowa-silnika": 999,
+        "masa-wlasna": 1115,
+        "rodzaj-paliwa": "BENZYNA",
+        "wojewodztwo-kod": "14"
+      },
+      "links": {
+        "self": "https://api.cepik.gov.pl/pojazdy/5520568249376487"
+      }
+    }
+  ],
+  "meta": {
+    "json-ld-id": "/pojazdy?wojewodztwo=14&data-od=20211010&data-do=20221010&limit=5&page=1&typ-daty=1&tylko-zarejestrowane=true&pokaz-wszystkie-pola=false",
+    "schema": "https://api.cepik.gov.pl/www/schema/vehicle.json",
+    "dc:title": "Lista pojazdów",
+    "schema:provider": "Ministerstwo Cyfryzacji",
+    "schema:datePublished": "2019-05-13",
+    "schema:dateModified": "2023-05-27",
+    "dc:description": "Lista pojazdów udostępnionych z bazy CEPiK",
+    "dc:language": "pl",
+    "sy:updatePeriod": "weekly",
+    "sy:updateFrequency": "1",
+    "sy:updateBase": "2023-06-03",
+    "schema:contentType": "application/json",
+    "schema:isPartOf": "https://api.cepik.gov.pl/pojazdy",
+    "count": 314290,
+    "page": 1,
+    "limit": 5,
+    "dc:rights": "brak",
+    "schema:keywords": "pojazdy, cepik, cep, dane techniczne, spalanie, samochody, autobusy, motocykle, daty rejestracji"
+  },
+  "links": {
+    "first": "https://api.cepik.gov.pl/pojazdy?wojewodztwo=14&data-od=20211010&data-do=20221010&limit=5&page=1&typ-daty=1&tylko-zarejestrowane=true&pokaz-wszystkie-pola=false",
+    "self": "https://api.cepik.gov.pl/pojazdy?wojewodztwo=14&data-od=20211010&data-do=20221010&limit=5&page=1&typ-daty=1&tylko-zarejestrowane=true&pokaz-wszystkie-pola=false",
+    "next": "https://api.cepik.gov.pl/pojazdy?wojewodztwo=14&data-od=20211010&data-do=20221010&limit=5&page=2&typ-daty=1&tylko-zarejestrowane=true&pokaz-wszystkie-pola=false",
+    "last": "https://api.cepik.gov.pl/pojazdy?wojewodztwo=14&data-od=20211010&data-do=20221010&limit=5&page=62858&typ-daty=1&tylko-zarejestrowane=true&pokaz-wszystkie-pola=false"
+  }
+}

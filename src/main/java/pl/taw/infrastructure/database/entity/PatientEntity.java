@@ -13,9 +13,9 @@ import lombok.*;
 @Table(name = "patients")
 public class PatientEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Id // info dla ORM, że to pole będzie używane jako unikalny identyfikator encji
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // generowanie unikalnej wartości podczas wstawiania nowego rekordu do bazy
+    @Column(name = "id") // nazwa tabeli w bazie danych dla mappowanie, może się różnić np: userId -> user_id
     private Integer id;
 
     @Column(name = "name")
