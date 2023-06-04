@@ -10,7 +10,7 @@ import lombok.*;
 @ToString(of = {"name", "surname", "pesel", "email"})
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "patients")
+@Table(name = "patient")
 public class PatientEntity {
 
     @Id // info dla ORM, że to pole będzie używane jako unikalny identyfikator encji

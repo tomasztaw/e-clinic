@@ -5,7 +5,9 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.taw.controller.dto.DoctorDTO;
 import pl.taw.controller.dto.DoctorsDTO;
@@ -16,23 +18,81 @@ import pl.taw.infrastructure.database.repository.jpa.DoctorJpaRepository;
 import java.net.URI;
 import java.util.Optional;
 
-@RestController
+//@RestController
+@Controller
 @RequestMapping(DoctorController.DOCTORS)
 @AllArgsConstructor
 public class DoctorController {
 
     public static final String DOCTORS = "/doctors";
     public static final String DOCTOR_ID = "/{id}";
+    public static final String DOCTOR_ID_JS = "/js/{id}";
+    public static final String DOCTOR_ID_XX = "/xx/{id}";
     public static final String DOCTOR_UPDATE_TITLE = "/{id}/title";
 
     private DoctorJpaRepository doctorJpaRepository;
     private DoctorMapper doctorMapper;
 
+    @GetMapping("/show/{id}")
+    public String showEmployeeDetails(
+            @PathVariable Integer id,
+            Model model
+    ) {
+        DoctorEntity doctorEntity = doctorJpaRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "DoctorEntity not found, id: [%s]".formatted(id)));
+        model.addAttribute("doctor", doctorEntity);
+        return "doctor-view";
+    }
+
+    @GetMapping("/example")
+    public String example(Model model) {
+        // Przykładowe dane JSON
+        String jsonData = "{\"id\": 1, \"name\": \"John Doe\", \"age\": 30}";
+
+        model.addAttribute("jsonString", jsonData);
+        return "json-view";
+    }
+
+
+    @GetMapping(value = DOCTOR_ID_XX,
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public String doctorDetails(@PathVariable Integer id, Model model) {
+        DoctorDTO doctor = doctorJpaRepository.findById(id)
+                .map(doctorMapper::map)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "DoctorEntity not found, id: [%s]".formatted(id)));
+        model.addAttribute("doctor", doctor);
+        return "doctor-details";
+//        return "doctor";
+    }
+
+
+    @GetMapping(value = DOCTOR_ID_JS,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public DoctorDTO doctorDetailsJS(@PathVariable Integer id) {
+        return doctorJpaRepository.findById(id)
+                .map(doctorMapper::map)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "DoctorEntity not found, id: [%s]".formatted(id)));
+    }
+
+
+//    @GetMapping
+//    public DoctorsDTO doctors() {
+//        return DoctorsDTO.of(doctorJpaRepository.findAll().stream()
+//                .map(doctorMapper::map)
+//                .toList());
+//    }
+
     @GetMapping
-    public DoctorsDTO doctors() {
-        return DoctorsDTO.of(doctorJpaRepository.findAll().stream()
+    public String doctors(Model model) {
+        model.addAttribute("doctors", doctorJpaRepository.findAll().stream()
                 .map(doctorMapper::map)
                 .toList());
+        return "doctors"; // Zwróć nazwę pliku HTML bez rozszerzenia
     }
 
     @GetMapping(value = DOCTOR_ID,

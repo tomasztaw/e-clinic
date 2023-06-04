@@ -49,11 +49,27 @@ public class BootstrapApplicationComponent implements ApplicationListener<Contex
                 .build());
 
         doctorJpaRepository.save(DoctorEntity.builder()
-                .name("Doktor1")
-                .surname("Nazwisko1")
-                .title("Lekarzyna")
+                .name("Kornel")
+                .surname("Makuszyński")
+                .title("Lekarz rodzinny")
                 .phone("+48 123 456 789")
                 .email("znanay@gmail.com")
+                .build());
+
+        doctorJpaRepository.save(DoctorEntity.builder()
+                .name("Jadwiga")
+                .surname("Kuszyńska")
+                .title("Pediatra")
+                .phone("+48 123 333 789")
+                .email("jkuszynska@gmail.com")
+                .build());
+
+        doctorJpaRepository.save(DoctorEntity.builder()
+                .name("Wacław")
+                .surname("Piątkowski")
+                .title("Gastrolog")
+                .phone("+48 666 456 789")
+                .email("wacek@gmail.com")
                 .build());
     }
 }

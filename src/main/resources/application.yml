@@ -9,13 +9,13 @@ api:
 
 logging:
   level:
-    org.springframework: DEBUG
+    org.springframework: ERROR
 
 spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/clinic
+    url: jdbc:postgresql://localhost:5433/clinic
     username: postgres
     password: postgres
     hikari:
@@ -35,4 +35,6 @@ spring:
         enabled: true
   thymeleaf:
     enabled: true
-#  security: enable
+
+  security:
+    enabled: false

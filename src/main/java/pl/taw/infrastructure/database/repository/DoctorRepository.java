@@ -65,11 +65,4 @@ public class DoctorRepository implements DoctorDAO {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public Optional<DoctorDTO> findByFullName(String fullName) {
-        String[] splitName = fullName.split(" ");
-        return doctorJpaRepository.findByFullName(splitName[1], splitName[2], splitName[0])
-                .map(doctorEntityMapper::mapFromEntity);
-    }
-
 }

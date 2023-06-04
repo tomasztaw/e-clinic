@@ -39,13 +39,4 @@ public class DoctorService {
         return availableDoctors;
     }
 
-    @Transactional
-    public DoctorDTO findDoctorByFullName(String name, String surname, String title) {
-        String fullName = title + " " + name + " " + surname;
-        Optional<DoctorDTO> optionalDoctorDTO = doctorDAO.findByFullName(fullName);
-        if (optionalDoctorDTO.isEmpty()) {
-            throw new NotFoundException("Could not find Doctor by fullName: [%s]".formatted(fullName));
-        }
-        return optionalDoctorDTO.get();
-    }
 }

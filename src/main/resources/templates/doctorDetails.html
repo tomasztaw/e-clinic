@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+        rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
+        crossorigin="anonymous">
+
+  <title>Dane lekarza</title>
+
+<!--  <script th:inline="javascript">-->
+<!--      // Wywołanie żądania GET, aby pobrać dane JSON-->
+<!--      fetch('/doctors/js/{id}')-->
+<!--          .then(response => response.json())-->
+<!--          .then(data => {-->
+<!--              // Manipulacja danymi i wyświetlanie ich w elemencie <div>-->
+<!--              const doctorDetailsDiv = document.getElementById('doctor-details');-->
+<!--              doctorDetailsDiv.innerHTML = `-->
+<!--                  <h2>Doctor Details</h2>-->
+<!--                  <p>ID: ${data.id}</p>-->
+<!--                  <p>Name: ${data.name}</p>-->
+<!--                  <p>Title: ${data.title}</p>-->
+<!--              `;-->
+<!--          })-->
+<!--          .catch(error => console.error(error));-->
+<!--  </script>-->
+
+</head>
+<body>
+  <div id="doctor-details"></div>
+
+  <script th:inline="javascript">
+    // Wywołanie żądania GET, aby pobrać dane JSON
+    fetch('/doctors/js/{id}')
+        .then(response => response.json())
+        .then(data => {
+            // Konwersja danych JSON na tekst
+            const jsonData = JSON.stringify(data, null, 2);
+
+            // Wyświetlanie danych jako treść HTML w elemencie <div>
+            const doctorDetailsDiv = document.getElementById('doctor-details');
+            doctorDetailsDiv.innerHTML = `
+                <h2>Doctor Details</h2>
+                <pre>${jsonData}</pre>
+            `;
+        })
+        .catch(error => console.error(error));
+  </script>
+
+
+
+</body>
+</html>

@@ -15,6 +15,4 @@ public interface DoctorJpaRepository extends JpaRepository<DoctorEntity, Integer
     @Override
     Optional<DoctorEntity> findById(Integer integer);
 
-    Optional<DoctorEntity> findByFullName(String name, String surname, String title);
-
 }

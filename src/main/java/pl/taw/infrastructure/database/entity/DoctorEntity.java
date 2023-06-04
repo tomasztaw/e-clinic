@@ -10,7 +10,7 @@ import lombok.*;
 @ToString(of = {"name", "surname", "title", "email"})
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "doctors")
+@Table(name = "doctor")
 public class DoctorEntity {
 
     @Id

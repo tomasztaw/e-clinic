@@ -20,6 +20,4 @@ public interface DoctorDAO {
 
     List<DoctorDTO> findAvailable();
 
-    Optional<DoctorDTO> findByFullName(String fullName);
-
 }
