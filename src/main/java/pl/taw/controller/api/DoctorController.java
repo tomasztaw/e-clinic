@@ -9,16 +9,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import pl.taw.controller.domain.Doctor;
 import pl.taw.controller.dto.DoctorDTO;
-import pl.taw.controller.dto.DoctorsDTO;
 import pl.taw.controller.dto.mapper.DoctorMapper;
 import pl.taw.infrastructure.database.entity.DoctorEntity;
 import pl.taw.infrastructure.database.repository.jpa.DoctorJpaRepository;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-//@RestController
 @Controller
 @RequestMapping(DoctorController.DOCTORS)
 @AllArgsConstructor
@@ -30,11 +31,38 @@ public class DoctorController {
     public static final String DOCTOR_ID_XX = "/xx/{id}";
     public static final String DOCTOR_UPDATE_TITLE = "/{id}/title";
 
+    public static final String SPECIALIZATION = "/specialization/{specialization}";
+    //    public static final String SPECIALIZATION = "/{specialization}";
+    public static final String SPECIALIZATIONS = "/specializations";
+
+
     private DoctorJpaRepository doctorJpaRepository;
     private DoctorMapper doctorMapper;
 
+
+    @GetMapping(SPECIALIZATION)
+    public String doctorsBySpecializationsView(@PathVariable String specialization, Model model) {
+        model.addAttribute("doctors", doctorJpaRepository.findAll().stream()
+                .filter(doctor -> specialization.equals(doctor.getTitle().toLowerCase()))
+                .map(doctorMapper::map)
+                .toList());
+        model.addAttribute("specialization", specialization);
+        return "doctors-s";
+    }
+
+    @GetMapping(value = SPECIALIZATIONS)
+    public String specializations(Model model) {
+        List<String> specializations = doctorJpaRepository.findAll().stream()
+                .map(DoctorEntity::getTitle)
+                .distinct()
+                .toList();
+
+        model.addAttribute("specializations", specializations);
+        return "specializations";
+    }
+
     @GetMapping("/show/{id}")
-    public String showEmployeeDetails(
+    public String showDoctorDetails(
             @PathVariable Integer id,
             Model model
     ) {
@@ -45,54 +73,12 @@ public class DoctorController {
         return "doctor-view";
     }
 
-    @GetMapping("/example")
-    public String example(Model model) {
-        // Przykładowe dane JSON
-        String jsonData = "{\"id\": 1, \"name\": \"John Doe\", \"age\": 30}";
-
-        model.addAttribute("jsonString", jsonData);
-        return "json-view";
-    }
-
-
-    @GetMapping(value = DOCTOR_ID_XX,
-            produces = {MediaType.APPLICATION_JSON_VALUE})
-    @ResponseBody
-    public String doctorDetails(@PathVariable Integer id, Model model) {
-        DoctorDTO doctor = doctorJpaRepository.findById(id)
-                .map(doctorMapper::map)
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "DoctorEntity not found, id: [%s]".formatted(id)));
-        model.addAttribute("doctor", doctor);
-        return "doctor-details";
-//        return "doctor";
-    }
-
-
-    @GetMapping(value = DOCTOR_ID_JS,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public DoctorDTO doctorDetailsJS(@PathVariable Integer id) {
-        return doctorJpaRepository.findById(id)
-                .map(doctorMapper::map)
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "DoctorEntity not found, id: [%s]".formatted(id)));
-    }
-
-
-//    @GetMapping
-//    public DoctorsDTO doctors() {
-//        return DoctorsDTO.of(doctorJpaRepository.findAll().stream()
-//                .map(doctorMapper::map)
-//                .toList());
-//    }
-
     @GetMapping
     public String doctors(Model model) {
         model.addAttribute("doctors", doctorJpaRepository.findAll().stream()
                 .map(doctorMapper::map)
                 .toList());
-        return "doctors"; // Zwróć nazwę pliku HTML bez rozszerzenia
+        return "doctors_logo";
     }
 
     @GetMapping(value = DOCTOR_ID,
@@ -164,6 +150,41 @@ public class DoctorController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    // jakieś głupoty
+
+    @GetMapping(value = DOCTOR_ID_XX,
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public String doctorDetails(@PathVariable Integer id, Model model) {
+        DoctorDTO doctor = doctorJpaRepository.findById(id)
+                .map(doctorMapper::map)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "DoctorEntity not found, id: [%s]".formatted(id)));
+        model.addAttribute("doctor", doctor);
+        return "doctor-details";
+    }
+
+    @GetMapping(value = DOCTOR_ID_JS,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public DoctorDTO doctorDetailsJS(@PathVariable Integer id) {
+        return doctorJpaRepository.findById(id)
+                .map(doctorMapper::map)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "DoctorEntity not found, id: [%s]".formatted(id)));
+    }
+
+    @GetMapping("/doctors/specialization/{specialization}")
+    public String doctorsBySpecializationsView_2(@PathVariable("specialization") String specialization, Model model) {
+        List<DoctorDTO> doctors = doctorJpaRepository.findAll().stream()
+                .filter(doctor -> specialization.equalsIgnoreCase(doctor.getTitle()))
+                .map(doctorMapper::map)
+                .collect(Collectors.toList());
+        model.addAttribute("doctors", doctors);
+        model.addAttribute("specialization", specialization);
+        return "doctors-s";
     }
 
 }

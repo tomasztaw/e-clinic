@@ -4,7 +4,6 @@ import pl.taw.controller.dto.DoctorDTO;
 import pl.taw.infrastructure.database.entity.DoctorEntity;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface DoctorDAO {
 
@@ -12,12 +11,14 @@ public interface DoctorDAO {
 
     void saveDoctor(DoctorEntity doctor);
 
-    void updateDoctro(DoctorEntity doctor);
+    void updateDoctor(DoctorEntity doctor);
 
     void delete(DoctorEntity doctor);
 
     List<DoctorEntity> findAll();
 
     List<DoctorDTO> findAvailable();
+
+    List<DoctorDTO> findBySpecialization(String specialization);
 
 }

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <title>Specializations</title>
+</head>
+<body>
+
+  <div class="container">
+    <h1>List of Specializations</h1>
+    <ul class="list-group">
+      <!-- Loop through the specializations and display them as list items with links -->
+      <li class="list-group-item" th:each="specialization : ${specializations}">
+        <a th:href="@{/doctors/specialization/__${specialization.toLowerCase()}__}" th:text="${specialization}"></a>
+      </li>
+    </ul>
+  </div>
+
+</body>
+</html>

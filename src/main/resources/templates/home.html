@@ -41,22 +41,63 @@
         .content .btn-container .btn-primary {
             margin: 0 1rem;
         }
+
+        .header {
+            padding: 20px;
+            text-align: center;
+            background-color: #f5f5f5;
+            height: 150px;
+        }
+
+        .footer {
+            padding: 10px;
+            text-align: center;
+            background-color: #f5f5f5;
+        }
+
+        .logo {
+            float: left;
+        }
+
+        .welcome {
+            display: inline-block;
+        }
+
+        .login-button {
+            float: right;
+        }
+
     </style>
 
     <title>Medical Clinic</title>
 </head>
 <body>
+    <header class="header">
+        <div class="logo">
+            <img th:src="@{/images/2135.jpg}" alt="Logo" width="100" height="100">
+        </div>
+        <div class="welcome">
+            <h1>Witaj na stronie powitalnej</h1>
+        </div>
+        <div class="login-button">
+            <a href="#" class="btn btn-primary">Zaloguj</a>
+        </div>
+    </header>
 
-<div class="content">
-    <img th:src="@{/images/z1.jpg}" alt="Background Image">
-    <h1>Welcome to the Medical Clinic!</h1>
-    <p>We provide quality healthcare services.</p>
+    <div class="content">
+        <img th:src="@{/images/z1.jpg}" alt="Background Image">
+        <h1>Welcome to the Medical Clinic!</h1>
+        <p>We provide quality healthcare services.</p>
 
-    <div class="btn-container">
-        <a th:href="@{/doctors}" class="btn btn-primary btn-lg">Go to the doctors page</a>
-        <a th:href="@{/patients}" class="btn btn-primary btn-lg">Go to the patients page</a>
+        <div class="btn-container">
+            <a th:href="@{/doctors}" class="btn btn-primary btn-lg">Go to the doctors page</a>
+            <a th:href="@{/patients/login}" class="btn btn-primary btn-lg">Go to the patients page</a>
+        </div>
     </div>
-</div>
+
+    <div class="footer">
+        <p>© 2023 Twoja Stopka</p>
+    </div>
 
 </body>
 </html>

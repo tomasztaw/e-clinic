@@ -6,9 +6,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.taw.controller.dto.PatientDTO;
 import pl.taw.controller.dto.PatientsDTO;
@@ -18,14 +16,11 @@ import pl.taw.infrastructure.database.repository.jpa.PatientJpaRepository;
 
 import java.net.URI;
 
-@Controller
-@RequestMapping(PatientController.PATIENTS)
+@RestController
+@RequestMapping(PatientRestController.PATIENTS)
 @AllArgsConstructor
-public class PatientController {
-
-    public static final String PATIENTS = "/patients";
-    public static final String LOGIN = "/login";
-    public static final String DASHBOARD = "/dashboard";
+public class PatientRestController {
+    public static final String PATIENTS = "/api/patients";
     public static final String PATIENT_ID = "/{patientId}";
     public static final String PATIENT_UPDATE_PHONE = "/{patientId}/phone";
     public static final String PATIENT_ID_RESULT = "/%s";
@@ -33,40 +28,6 @@ public class PatientController {
 
     private PatientJpaRepository patientJpaRepository;
     private PatientMapper patientMapper;
-
-    @GetMapping(LOGIN)
-    public String showLoginForm() {
-        return "login";
-    }
-
-//    @PostMapping(LOGIN)
-//    public String login(@RequestParam String username, @RequestParam String password) {
-//        if (username.equals("user") && password.equals("test")) {
-//            return "redirect:/patients/dashboard";
-//        } else {
-//            return "login";
-//        }
-//    }
-
-    @PostMapping(LOGIN)
-    public String login(@RequestParam String username, @RequestParam String password, Model model) {
-        if (username.equals("user") && password.equals("test")) {
-            return "redirect:/patients/dashboard";
-        } else {
-            model.addAttribute("error", "Invalid username or password");
-            return "redirect:/patients/login";
-        }
-    }
-
-
-    @GetMapping(DASHBOARD)
-    public String showDashboard(Model model) {
-        // Logika panelu pacjenta
-        // Pobranie danych pacjenta
-        // Przekazanie danych do widoku
-
-        return "patient-dashboard";
-    }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -164,3 +125,4 @@ public class PatientController {
     }
 
 }
+

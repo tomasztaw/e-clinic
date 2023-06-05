@@ -19,7 +19,6 @@ public class DoctorService {
 
     private final DoctorDAO doctorDAO;
 
-    // Metody usług związane z lekarzami
 
     public DoctorEntity getDoctorById(int id) {
         return doctorDAO.findById(id);
@@ -30,7 +29,6 @@ public class DoctorService {
         doctorDAO.saveDoctor(doctor);
     }
 
-    // Inne metody usług...
 
     @Transactional
     public List<DoctorDTO> findAvailable() {
@@ -39,4 +37,14 @@ public class DoctorService {
         return availableDoctors;
     }
 
+    public List<DoctorDTO> getDoctorsBySpecialization(String specialization) {
+        return doctorDAO.findBySpecialization(specialization);
+    }
+
+    public List<String> getDoctorSpecializations() {
+        return doctorDAO.findAll().stream()
+                .map(DoctorEntity::getTitle)
+                .distinct()
+                .toList();
+    }
 }

@@ -35,7 +35,7 @@ public class DoctorRepository implements DoctorDAO {
     }
 
     @Override
-    public void updateDoctro(DoctorEntity doctor) {
+    public void updateDoctor(DoctorEntity doctor) {
         if (doctorJpaRepository.existsById(doctor.getId())) {
             doctorJpaRepository.save(doctor);
         } else {
@@ -63,6 +63,14 @@ public class DoctorRepository implements DoctorDAO {
         return doctorJpaRepository.findAll().stream()
                 .map(doctorEntityMapper::mapFromEntity)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<DoctorDTO> findBySpecialization(String specialization) {
+        return doctorJpaRepository.findAll().stream()
+                .filter(doctor -> specialization.equals(doctor.getTitle().toLowerCase()))
+                .map(doctorEntityMapper::mapFromEntity)
+                .toList();
     }
 
 }

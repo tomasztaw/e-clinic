@@ -71,5 +71,22 @@ public class BootstrapApplicationComponent implements ApplicationListener<Contex
                 .phone("+48 666 456 789")
                 .email("wacek@gmail.com")
                 .build());
+
+        doctorJpaRepository.save(DoctorEntity.builder()
+                .name("Aleksander")
+                .surname("Newski")
+                .title("Gastrolog")
+                .phone("+48 666 456 111")
+                .email("oleknew@gmail.com")
+                .build());
+
+        doctorJpaRepository.save(DoctorEntity.builder()
+                .name("Urszula")
+                .surname("Nowakowska")
+                .title("Lekarz rodzinny")
+                .phone("+48 999 456 789")
+                .email("ulala@gmail.com")
+                .build());
+
     }
 }
