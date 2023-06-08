@@ -41,4 +41,10 @@ public class DoctorEntity {
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OpinionEntity> opinions;
 
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<DoctorScheduleEntity> schedules;
+
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<ReservationEntity> reservations;
+
 }

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel pacjenta</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            margin-top: 100px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Panel pacjenta</h1>
+
+        <div class="row">
+            <div class="col-md-6">
+                <h3>Dane pacjenta</h3>
+                <div class="form-group">
+                    <label for="name">Imię:</label>
+                    <input type="text" class="form-control" id="name" name="name" th:value="${patient.name}" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="surname">Nazwisko:</label>
+                    <input type="text" class="form-control" id="surname" name="surname" th:value="${patient.surname}" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="pesel">PESEL:</label>
+                    <input type="text" class="form-control" id="pesel" name="pesel" th:value="${patient.pesel}" readonly>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h3>Kontakt</h3>
+                <div class="form-group">
+                    <label for="phone">Telefon:</label>
+                    <input type="text" class="form-control" id="phone" name="phone" th:value="${patient.phone}" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" class="form-control" id="email" name="email" th:value="${patient.email}" readonly>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <div class="row">
+                <div class="col">
+                    <a href="/clinic/patients/phone-view" class="btn btn-primary">Zaktualizuj telefon</a>
+                </div>
+                <div class="col">
+                    <a href="/clinic/patients/history" class="btn btn-primary">Sprawdź historię</a>
+                </div>
+                <div class="col">
+<!--                    <a href="/clinic/patients/visits" class="btn btn-primary">Umów wizytę</a>-->
+                    <a href="/clinic/visits" class="btn btn-primary">Umów wizytę</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

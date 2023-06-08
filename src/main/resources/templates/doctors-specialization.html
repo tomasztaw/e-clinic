@@ -10,9 +10,39 @@
 <!--  <title>Lista lekarzy o specjalizacji ...</title>-->
   <title>Lista lekarzy o specjalizacji <span th:text="${specialization}"></span></title>
 
+  <style>
+    .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .header-logo {
+            flex-grow: 1;
+        }
+        .header-logo img {
+            max-width: 30%;
+            height: auto;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+        }
+  </style>
+
 </head>
 <body>
 <div class="container">
+  <div class="header">
+    <div class="header-logo">
+      <!-- Tutaj wstaw kod dla logo -->
+      <img th:src="@{/images/2135.jpg}" alt="Logo">
+    </div>
+    <!-- Możesz dodać dodatkowe elementy w nagłówku -->
+    <a th:href="@{/}" class="btn btn-info" role="button">Powrót do strony głównej</a>
+
+  </div>
+
   <h1 class="mt-5 mb-4">Lista lekarzy o specjalizacji <span th:text="${specialization}"></span></h1>
 
   <table class="table">
@@ -43,6 +73,11 @@
   <a class="btn btn-light" th:href="@{/doctors}">Show all doctors</a>
 
   <a th:href="@{/doctors/specializations}" class="btn btn-primary me-2">Wyszukaj po specjalizacji</a>
+
+  <div class="footer">
+    <!-- Tutaj wstaw kod dla stopki -->
+    <p>© 2023 Twoja Stopka</p>
+  </div>
 
 </div>
 

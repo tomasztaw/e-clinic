@@ -5,9 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.taw.controller.dao.DoctorDAO;
+import pl.taw.controller.dao.DoctorScheduleDAO;
 import pl.taw.controller.dto.DoctorDTO;
+import pl.taw.controller.dto.DoctorScheduleDTO;
 import pl.taw.infrastructure.database.entity.DoctorEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -16,6 +19,9 @@ import java.util.List;
 public class DoctorService {
 
     private final DoctorDAO doctorDAO;
+
+    // pobieranie godzi pracy lekarza
+    private final DoctorScheduleDAO doctorScheduleDAO;
 
 
     public DoctorEntity getDoctorById(int id) {
@@ -44,5 +50,23 @@ public class DoctorService {
                 .map(DoctorEntity::getTitle)
                 .distinct()
                 .toList();
+    }
+
+    // pobieranie godzin pracy lekarza
+    public List<WorkingHours> getWorkingHours(int doctorId) {
+        List<DoctorScheduleDTO> doctorSchedules = doctorScheduleDAO.findScheduleByDoctorId(doctorId);
+        return convertToWorkingHoursList(doctorSchedules);
+    }
+
+    private List<WorkingHours> convertToWorkingHoursList(List<DoctorScheduleDTO> doctorSchedules) {
+        List<WorkingHours> workingHoursList = new ArrayList<>();
+        for (DoctorScheduleDTO doctorSchedule : doctorSchedules) {
+            WorkingHours workingHours = new WorkingHours();
+            workingHours.setDayOfWeek(WorkingHours.DayOfWeek.fromInt(doctorSchedule.getDayOfWeek()));
+            workingHours.setStartTime(doctorSchedule.getStartTimeDs());
+            workingHours.setEndTime(doctorSchedule.getEndTimeDs());
+            workingHoursList.add(workingHours);
+        }
+        return workingHoursList;
     }
 }

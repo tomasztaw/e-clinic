@@ -24,56 +24,86 @@
         .form-group {
             margin-bottom: 20px;
         }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .header-logo {
+            flex-grow: 1;
+        }
+        .header-logo img {
+            max-width: 50%;
+            height: auto;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Panel pacjenta</h1>
-
-        <div class="row">
-            <div class="col-md-6">
-                <h3>Dane pacjenta</h3>
-                <div class="form-group">
-                    <label for="name">Imię:</label>
-                    <input type="text" class="form-control" id="name" name="name" th:value="${patient.name}" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="surname">Nazwisko:</label>
-                    <input type="text" class="form-control" id="surname" name="surname" th:value="${patient.surname}" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="pesel">PESEL:</label>
-                    <input type="text" class="form-control" id="pesel" name="pesel" th:value="${patient.pesel}" readonly>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <h3>Kontakt</h3>
-                <div class="form-group">
-                    <label for="phone">Telefon:</label>
-                    <input type="text" class="form-control" id="phone" name="phone" th:value="${patient.phone}" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" class="form-control" id="email" name="email" th:value="${patient.email}" readonly>
-                </div>
-            </div>
+<div class="container">
+    <div class="header">
+        <div class="header-logo">
+            <!-- Tutaj wstaw kod dla logo -->
+            <img th:src="@{/images/2135.jpg}" alt="Logo">
         </div>
-
-        <div class="text-center">
-            <div class="row">
-                <div class="col">
-                    <a href="/clinic/patients/phone-view" class="btn btn-primary">Zaktualizuj telefon</a>
-                </div>
-                <div class="col">
-                    <a href="/clinic/patients/history" class="btn btn-primary">Sprawdź historię</a>
-                </div>
-                <div class="col">
-<!--                    <a href="/clinic/patients/visits" class="btn btn-primary">Umów wizytę</a>-->
-                    <a href="/clinic/visits" class="btn btn-primary">Umów wizytę</a>
-                </div>
-            </div>
-        </div>
+        <!-- Możesz dodać dodatkowe elementy w nagłówku -->
+        <a th:href="@{/}" class="btn btn-info" role="button">Powrót do strony głównej</a>
 
     </div>
+
+    <h1>Panel pacjenta</h1>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Dane pacjenta</h3>
+            <div class="form-group">
+                <label for="name">Imię:</label>
+                <input type="text" class="form-control" id="name" name="name" th:value="${patient.name}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="surname">Nazwisko:</label>
+                <input type="text" class="form-control" id="surname" name="surname" th:value="${patient.surname}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="pesel">PESEL:</label>
+                <input type="text" class="form-control" id="pesel" name="pesel" th:value="${patient.pesel}" readonly>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h3>Kontakt</h3>
+            <div class="form-group">
+                <label for="phone">Telefon:</label>
+                <input type="text" class="form-control" id="phone" name="phone" th:value="${patient.phone}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" id="email" name="email" th:value="${patient.email}" readonly>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center">
+        <div class="row">
+            <div class="col">
+                <a href="/clinic/patients/phone-view" class="btn btn-primary">Zaktualizuj telefon</a>
+            </div>
+            <div class="col">
+                <a href="/clinic/patients/history" class="btn btn-primary">Sprawdź historię</a>
+            </div>
+            <div class="col">
+                <a href="/clinic/visits" class="btn btn-primary">Umów wizytę</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <!-- Tutaj wstaw kod dla stopki -->
+        <p>© 2023 Twoja Stopka</p>
+    </div>
+</div>
 </body>
 </html>

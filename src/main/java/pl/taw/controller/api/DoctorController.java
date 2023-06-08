@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import pl.taw.controller.business.DoctorService;
+import pl.taw.controller.business.WorkingHours;
 import pl.taw.controller.dto.DoctorDTO;
 import pl.taw.controller.dto.mapper.DoctorMapper;
 import pl.taw.infrastructure.database.entity.DoctorEntity;
@@ -37,6 +39,9 @@ public class DoctorController {
     private DoctorJpaRepository doctorJpaRepository;
     private DoctorMapper doctorMapper;
 
+    // serwis do pobrania godzin pracy lekarza
+    private DoctorService doctorService;
+
 
     @GetMapping(SPECIALIZATION)
     public String doctorsBySpecializationsView(@PathVariable String specialization, Model model) {
@@ -45,7 +50,7 @@ public class DoctorController {
                 .map(doctorMapper::map)
                 .toList());
         model.addAttribute("specialization", specialization);
-        return "doctors-s";
+        return "doctors-specialization";
     }
 
     @GetMapping(value = SPECIALIZATIONS)
@@ -68,6 +73,12 @@ public class DoctorController {
                 .orElseThrow(() -> new EntityNotFoundException(
                         "DoctorEntity not found, doctorId: [%s]".formatted(doctorId)));
         model.addAttribute("doctor", doctorEntity);
+
+        List<WorkingHours> workingHours = doctorService.getWorkingHours(doctorId);
+
+        // Przekaz godziny pracy lekarza do modelu
+        model.addAttribute("workingHours", workingHours);
+
         return "doctor-view";
     }
 
