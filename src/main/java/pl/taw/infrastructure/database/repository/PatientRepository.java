@@ -36,19 +36,19 @@ public class PatientRepository implements PatientDAO {
 
     @Override
     public void updatePatient(PatientEntity patient) {
-        if (patientJpaRepository.existsById(patient.getId())) {
+        if (patientJpaRepository.existsById(patient.getPatientId())) {
             patientJpaRepository.save(patient);
         } else {
-            throw new NotFoundException("Could not found patient with id: [%s]".formatted(patient.getId()));
+            throw new NotFoundException("Could not found patient with id: [%s]".formatted(patient.getPatientId()));
         }
     }
 
     @Override
     public void delete(PatientEntity patient) {
-        if (patientJpaRepository.existsById(patient.getId())) {
+        if (patientJpaRepository.existsById(patient.getPatientId())) {
             patientJpaRepository.delete(patient);
         } else {
-            throw new NotFoundException("Could not found patient with id: [%s]".formatted(patient.getId()));
+            throw new NotFoundException("Could not found patient with id: [%s]".formatted(patient.getPatientId()));
         }
     }
 

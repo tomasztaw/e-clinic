@@ -10,7 +10,6 @@ import pl.taw.infrastructure.database.repository.jpa.DoctorJpaRepository;
 import pl.taw.infrastructure.database.repository.mapper.DoctorEntityMapper;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -36,20 +35,20 @@ public class DoctorRepository implements DoctorDAO {
 
     @Override
     public void updateDoctor(DoctorEntity doctor) {
-        if (doctorJpaRepository.existsById(doctor.getId())) {
+        if (doctorJpaRepository.existsById(doctor.getDoctorId())) {
             doctorJpaRepository.save(doctor);
         } else {
-            throw new NotFoundException("Could not found doctor with id: [%s]".formatted(doctor.getId()));
+            throw new NotFoundException("Could not found doctor with id: [%s]".formatted(doctor.getDoctorId()));
         }
     }
 
     @Override
     public void delete(DoctorEntity doctor) {
-        if (doctorJpaRepository.existsById(doctor.getId())) {
+        if (doctorJpaRepository.existsById(doctor.getDoctorId())) {
             doctorJpaRepository.delete(doctor);
         } else {
             throw new NotFoundException(
-                    "Could not find doctor with id: [%s]".formatted(doctor.getId()));
+                    "Could not find doctor with id: [%s]".formatted(doctor.getDoctorId()));
         }
     }
 

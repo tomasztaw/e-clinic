@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface PatientJpaRepository extends JpaRepository<PatientEntity, Integer> {
 
     @Override
-    Optional<PatientEntity> findById(Integer integer);
+    Optional<PatientEntity> findById(Integer patientId);
 
     Optional<PatientEntity> findByPesel(String pesel);
 

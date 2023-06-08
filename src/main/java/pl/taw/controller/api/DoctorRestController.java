@@ -20,7 +20,7 @@ import java.util.List;
 public class DoctorRestController {
 
     public static final String API_DOCTORS = "/api/doctors";
-    public static final String DOCTOR_ID = "/{id}";
+    public static final String DOCTOR_ID = "/{doctorId}";
     public static final String SPECIALIZATION = "/specialization/{specialization}";
     public static final String SPECIALIZATIONS = "/specializations";
 

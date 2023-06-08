@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import pl.taw.controller.domain.Doctor;
 import pl.taw.controller.dto.DoctorDTO;
 import pl.taw.controller.dto.mapper.DoctorMapper;
 import pl.taw.infrastructure.database.entity.DoctorEntity;
@@ -26,13 +25,12 @@ import java.util.stream.Collectors;
 public class DoctorController {
 
     public static final String DOCTORS = "/doctors";
-    public static final String DOCTOR_ID = "/{id}";
-    public static final String DOCTOR_ID_JS = "/js/{id}";
-    public static final String DOCTOR_ID_XX = "/xx/{id}";
-    public static final String DOCTOR_UPDATE_TITLE = "/{id}/title";
+    public static final String DOCTOR_ID = "/{doctorId}";
+    public static final String DOCTOR_ID_JS = "/js/{doctorId}";
+    public static final String DOCTOR_ID_XX = "/xx/{doctorId}";
+    public static final String DOCTOR_UPDATE_TITLE = "/{doctorId}/title";
 
     public static final String SPECIALIZATION = "/specialization/{specialization}";
-    //    public static final String SPECIALIZATION = "/{specialization}";
     public static final String SPECIALIZATIONS = "/specializations";
 
 
@@ -61,14 +59,14 @@ public class DoctorController {
         return "specializations";
     }
 
-    @GetMapping("/show/{id}")
+    @GetMapping("/show/{doctorId}")
     public String showDoctorDetails(
-            @PathVariable Integer id,
+            @PathVariable Integer doctorId,
             Model model
     ) {
-        DoctorEntity doctorEntity = doctorJpaRepository.findById(id)
+        DoctorEntity doctorEntity = doctorJpaRepository.findById(doctorId)
                 .orElseThrow(() -> new EntityNotFoundException(
-                        "DoctorEntity not found, id: [%s]".formatted(id)));
+                        "DoctorEntity not found, doctorId: [%s]".formatted(doctorId)));
         model.addAttribute("doctor", doctorEntity);
         return "doctor-view";
     }
@@ -85,11 +83,11 @@ public class DoctorController {
             produces = {
                     MediaType.APPLICATION_JSON_VALUE,
                     MediaType.APPLICATION_XML_VALUE})
-    public DoctorDTO doctorDetails(@PathVariable Integer id) {
-        return doctorJpaRepository.findById(id)
+    public DoctorDTO doctorDetails(@PathVariable Integer doctorId) {
+        return doctorJpaRepository.findById(doctorId)
                 .map(doctorMapper::map)
                 .orElseThrow(() -> new EntityNotFoundException(
-                        "DoctorEntity not found, id: [%s]".formatted(id)));
+                        "DoctorEntity not found, doctorId: [%s]".formatted(doctorId)));
     }
 
     @PostMapping
@@ -106,19 +104,19 @@ public class DoctorController {
                 .build();
         DoctorEntity created = doctorJpaRepository.save(doctorEntity);
         return ResponseEntity
-                .created(URI.create(DOCTORS.concat("/%s").formatted(created.getId())))
+                .created(URI.create(DOCTORS.concat("/%s").formatted(created.getDoctorId())))
                 .build();
     }
 
     @PutMapping(DOCTOR_ID)
     @Transactional
     public ResponseEntity<?> updateDoctor(
-            @PathVariable Integer id,
+            @PathVariable Integer doctorId,
             @Valid @RequestBody DoctorDTO doctorDTO
     ) {
-        DoctorEntity existingDoctor = doctorJpaRepository.findById(id)
+        DoctorEntity existingDoctor = doctorJpaRepository.findById(doctorId)
                 .orElseThrow(() -> new EntityNotFoundException(
-                        "DoctorEntity not found, id: [%s]".formatted(id)));
+                        "DoctorEntity not found, doctorId: [%s]".formatted(doctorId)));
         existingDoctor.setName(doctorDTO.getName());
         existingDoctor.setSurname(doctorDTO.getSurname());
         existingDoctor.setTitle(doctorDTO.getTitle());
@@ -130,22 +128,22 @@ public class DoctorController {
 
     @PatchMapping(DOCTOR_UPDATE_TITLE)
     public ResponseEntity<?> updateTitle(
-            @PathVariable Integer id,
+            @PathVariable Integer doctorId,
             @RequestParam(defaultValue = "doctor") String newTitle
     ) {
-        DoctorEntity existingDoctor = doctorJpaRepository.findById(id)
+        DoctorEntity existingDoctor = doctorJpaRepository.findById(doctorId)
                 .orElseThrow(() -> new EntityNotFoundException(
-                        "DoctorEntity not found, id: [%s]".formatted(id)));
+                        "DoctorEntity not found, doctorId: [%s]".formatted(doctorId)));
         existingDoctor.setTitle(newTitle);
         doctorJpaRepository.save(existingDoctor);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping(DOCTOR_ID)
-    public ResponseEntity<?> deleteDoctor(@PathVariable Integer id) {
-        Optional<DoctorEntity> doctorOpt = doctorJpaRepository.findById(id);
+    public ResponseEntity<?> deleteDoctor(@PathVariable Integer doctorId) {
+        Optional<DoctorEntity> doctorOpt = doctorJpaRepository.findById(doctorId);
         if (doctorOpt.isPresent()) {
-            doctorJpaRepository.deleteById(id);
+            doctorJpaRepository.deleteById(doctorId);
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.notFound().build();
@@ -157,11 +155,11 @@ public class DoctorController {
     @GetMapping(value = DOCTOR_ID_XX,
             produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public String doctorDetails(@PathVariable Integer id, Model model) {
-        DoctorDTO doctor = doctorJpaRepository.findById(id)
+    public String doctorDetails(@PathVariable Integer doctorId, Model model) {
+        DoctorDTO doctor = doctorJpaRepository.findById(doctorId)
                 .map(doctorMapper::map)
                 .orElseThrow(() -> new EntityNotFoundException(
-                        "DoctorEntity not found, id: [%s]".formatted(id)));
+                        "DoctorEntity not found, doctorId: [%s]".formatted(doctorId)));
         model.addAttribute("doctor", doctor);
         return "doctor-details";
     }
@@ -169,11 +167,11 @@ public class DoctorController {
     @GetMapping(value = DOCTOR_ID_JS,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public DoctorDTO doctorDetailsJS(@PathVariable Integer id) {
-        return doctorJpaRepository.findById(id)
+    public DoctorDTO doctorDetailsJS(@PathVariable Integer doctorId) {
+        return doctorJpaRepository.findById(doctorId)
                 .map(doctorMapper::map)
                 .orElseThrow(() -> new EntityNotFoundException(
-                        "DoctorEntity not found, id: [%s]".formatted(id)));
+                        "DoctorEntity not found, doctorId: [%s]".formatted(doctorId)));
     }
 
     @GetMapping("/doctors/specialization/{specialization}")

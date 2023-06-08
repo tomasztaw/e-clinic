@@ -21,7 +21,7 @@ public class BootstrapApplicationComponent implements ApplicationListener<Contex
 
     @Override
     public void onApplicationEvent(final @NotNull ContextRefreshedEvent event) {
-        doctorJpaRepository.deleteAll();
+        /*doctorJpaRepository.deleteAll();
         patientJpaRepository.deleteAll();
 
         patientJpaRepository.save(PatientEntity.builder()
@@ -87,6 +87,6 @@ public class BootstrapApplicationComponent implements ApplicationListener<Contex
                 .phone("+48 999 456 789")
                 .email("ulala@gmail.com")
                 .build());
-
+*/
     }
 }

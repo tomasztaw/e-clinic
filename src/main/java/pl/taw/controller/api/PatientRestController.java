@@ -63,7 +63,7 @@ public class PatientRestController {
                 .build();
         PatientEntity created = patientJpaRepository.save(patientEntity);
         return ResponseEntity
-                .created(URI.create(PATIENTS + PATIENT_ID_RESULT.formatted(created.getId())))
+                .created(URI.create(PATIENTS + PATIENT_ID_RESULT.formatted(created.getPatientId())))
                 .build();
     }
 

@@ -6,11 +6,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.taw.controller.dao.DoctorDAO;
 import pl.taw.controller.dto.DoctorDTO;
-import pl.taw.controller.exception.NotFoundException;
 import pl.taw.infrastructure.database.entity.DoctorEntity;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service

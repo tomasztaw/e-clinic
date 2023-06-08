@@ -1,7 +1,7 @@
 server:
   port: 8080
   servlet:
-    context-path: /clinic # localhost:8190/zajavka...
+    context-path: /clinic
 
 api:
 #  petStore:

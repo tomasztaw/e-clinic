@@ -18,7 +18,7 @@
       <th>e-mail</th>
     </tr>
     <tr>
-      <td th:text="${doctor.id}"></td>
+      <td th:text="${doctor.doctorId}"></td>
       <td th:text="${doctor.name}"></td>
       <td th:text="${doctor.surname}"></td>
       <td th:text="${doctor.title}"></td>
@@ -38,24 +38,6 @@
       <p>9:00 AM - 5:00 PM</p>
     </div>
   </div>
-
-<!--  <div class="card">-->
-<!--    <img src="ścieżka/do/zdjęcia.jpg" class="card-img-top" alt="Opis zdjęcia">-->
-<!--    <div class="card-body">-->
-<!--      <p class="card-text">Opis lekarza</p>-->
-<!--    </div>-->
-<!--  </div>-->
-
-<!--  <figure class="figure">-->
-<!--    <img src="ścieżka/do/zdjęcia.jpg" class="figure-img img-fluid rounded" alt="Opis zdjęcia">-->
-<!--    <figcaption class="figure-caption">Opis lekarza</figcaption>-->
-<!--  </figure>-->
-
-
-<!--  <div class="hours">-->
-<!--    <h2>Working Hours</h2>-->
-<!--    <p>9:00 AM - 5:00 PM</p>-->
-<!--  </div>-->
 
   <a class="btn btn-light" th:href="@{/doctors}">Show all doctors</a>
 </div>

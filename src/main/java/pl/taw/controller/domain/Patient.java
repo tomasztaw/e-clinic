@@ -6,10 +6,10 @@ import lombok.*;
 @Value
 @Builder
 @EqualsAndHashCode(of = "pesel")
-@ToString(of = {"id", "name", "surname", "pesel"})
+@ToString(of = {"patientId", "name", "surname", "pesel"})
 public class Patient {
 
-    Integer id;
+    Integer patientId;
     String name;
     String surname;
     String pesel;

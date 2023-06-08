@@ -13,6 +13,6 @@ public interface DoctorJpaRepository extends JpaRepository<DoctorEntity, Integer
     // Dziedziczy wiele gotowych metod takich jak: findById, findAll, save, delete
 
     @Override
-    Optional<DoctorEntity> findById(Integer integer);
+    Optional<DoctorEntity> findById(Integer doctorId);
 
 }

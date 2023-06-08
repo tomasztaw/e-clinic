@@ -12,7 +12,7 @@ import lombok.*;
 @AllArgsConstructor
 public class DoctorDTO {
 
-    private Integer id;
+    private Integer doctorId;
     private String name;
     private String surname;
     private String title;

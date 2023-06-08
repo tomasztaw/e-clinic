@@ -12,9 +12,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.taw.controller.dto.PatientDTO;
 import pl.taw.controller.dto.PatientsDTO;
+import pl.taw.controller.dto.VisitsDTO;
 import pl.taw.controller.dto.mapper.PatientMapper;
+import pl.taw.controller.dto.mapper.VisitMapper;
 import pl.taw.infrastructure.database.entity.PatientEntity;
+import pl.taw.infrastructure.database.repository.VisitRepository;
 import pl.taw.infrastructure.database.repository.jpa.PatientJpaRepository;
+import pl.taw.infrastructure.database.repository.jpa.VisitJpaRepository;
 
 import java.net.URI;
 
@@ -28,44 +32,63 @@ public class PatientController {
     public static final String DASHBOARD = "/dashboard";
     public static final String PATIENT_ID = "/{patientId}";
     public static final String PATIENT_UPDATE_PHONE = "/{patientId}/phone";
+    public static final String PATIENT_UPDATE_PHONE_VIEW = "/phone-view";
     public static final String PATIENT_ID_RESULT = "/%s";
+    public static final String HISTORY = "/history";
 
 
-    private PatientJpaRepository patientJpaRepository;
-    private PatientMapper patientMapper;
+    private final PatientJpaRepository patientJpaRepository;
+    private final PatientMapper patientMapper;
+    // dodanie wizyt
+    private final VisitRepository visitRepository;
+    private final VisitJpaRepository visitJpaRepository;
+    private final VisitMapper visitMapper;
 
     @GetMapping(LOGIN)
     public String showLoginForm() {
         return "login";
     }
 
-//    @PostMapping(LOGIN)
-//    public String login(@RequestParam String username, @RequestParam String password) {
-//        if (username.equals("user") && password.equals("test")) {
-//            return "redirect:/patients/dashboard";
-//        } else {
-//            return "login";
-//        }
-//    }
 
     @PostMapping(LOGIN)
     public String login(@RequestParam String username, @RequestParam String password, Model model) {
         if (username.equals("user") && password.equals("test")) {
-            return "redirect:/patients/dashboard";
+//            return "redirect:/clinic/patients/dashboard";
+            return "redirect:/dashboard";
         } else {
             model.addAttribute("error", "Invalid username or password");
-            return "redirect:/patients/login";
+//            return "redirect:/clinic/patients/login";
+            return "redirect:/login";
         }
     }
 
-
     @GetMapping(DASHBOARD)
     public String showDashboard(Model model) {
-        // Logika panelu pacjenta
-        // Pobranie danych pacjenta
-        // Przekazanie danych do widoku
+        String pesel = "8506171837";
+        PatientDTO patientDTO = patientJpaRepository.findByPesel(pesel)
+                .map(patientMapper::map)
+                .orElseThrow();
+
+        model.addAttribute("patient", patientDTO);
 
         return "patient-dashboard";
+    }
+
+    @GetMapping(HISTORY)
+    public String showHistory(Model model) {
+        String pesel = "8506171837";
+        PatientDTO patientDTO = patientJpaRepository.findByPesel(pesel)
+                .map(patientMapper::map)
+                .orElseThrow();
+
+        VisitsDTO history = VisitsDTO.of(visitJpaRepository.findAll().stream()
+                .filter(visit -> visit.getPatient().getPatientId().equals(patientDTO.getPatientId()))
+                .map(visitMapper::map)
+                .toList());
+
+        model.addAttribute("patient", patientDTO);
+        model.addAttribute("history", history);
+        return "history";
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -102,7 +125,7 @@ public class PatientController {
                 .build();
         PatientEntity created = patientJpaRepository.save(patientEntity);
         return ResponseEntity
-                .created(URI.create(PATIENTS + PATIENT_ID_RESULT.formatted(created.getId())))
+                .created(URI.create(PATIENTS + PATIENT_ID_RESULT.formatted(created.getPatientId())))
                 .build();
     }
 
@@ -137,6 +160,18 @@ public class PatientController {
         }
     }
 
+    // dodanie dla widoku aktualizacji telefonu
+    @GetMapping(PATIENT_UPDATE_PHONE_VIEW)
+    public String showUpdatePhoneView(Model model) {
+        String pesel = "8506171837";
+        PatientDTO patientDTO = patientJpaRepository.findByPesel(pesel)
+                .map(patientMapper::map)
+                .orElseThrow();
+
+        model.addAttribute("patient", patientDTO);
+        return "update-phone-view";
+    }
+
     @PatchMapping(PATIENT_UPDATE_PHONE)
     public ResponseEntity<?> updatePatientPhone(
             @PathVariable Integer id,
@@ -149,7 +184,6 @@ public class PatientController {
         patientJpaRepository.save(existingPatient);
         return ResponseEntity.ok().build();
     }
-
 
 
     @GetMapping(value = "test-header")
