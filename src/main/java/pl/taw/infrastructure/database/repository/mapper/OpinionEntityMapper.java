@@ -8,6 +8,6 @@ import pl.taw.infrastructure.database.entity.OpinionEntity;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface OpinionEntityMapper {
 
-    OpinionDTO mapToEntity(OpinionEntity opinionEntity);
+    OpinionDTO mapFromEntity(OpinionEntity opinionEntity);
 
 }

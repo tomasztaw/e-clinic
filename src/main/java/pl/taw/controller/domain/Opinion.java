@@ -11,9 +11,10 @@ import java.time.LocalDateTime;
 @ToString(of = {"opinionId", "doctorId", "patientId", "comment"})
 public class Opinion {
 
+    // Możliwe, że w przyszłości będzie potrzebne zmienić pola doctorId i patientId na obiekty Encji lub DTO
     Integer opinionId;
-    Integer doctorId;
-    Integer patientId;
+    Integer doctorId; // !!!
+    Integer patientId; // !!!
     String comment;
     LocalDateTime createdAt;
 

@@ -16,7 +16,7 @@ public class Prescription {
     Integer patientId;
     String medicationName;
     String dosage;
-    String instruction;
+    String instructions;
     LocalDateTime createdAt;
 
 }

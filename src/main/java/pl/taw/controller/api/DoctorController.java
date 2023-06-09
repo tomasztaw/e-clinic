@@ -34,6 +34,7 @@ public class DoctorController {
 
     public static final String SPECIALIZATION = "/specialization/{specialization}";
     public static final String SPECIALIZATIONS = "/specializations";
+    public static final String OPINIONS = "/opinions";
 
 
     private DoctorJpaRepository doctorJpaRepository;

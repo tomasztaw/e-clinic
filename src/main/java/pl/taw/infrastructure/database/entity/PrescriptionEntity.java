@@ -34,8 +34,8 @@ public class PrescriptionEntity {
     @Column(name = "dosage")
     private String dosage;
 
-    @Column(name = "instruction")
-    private String instruction;
+    @Column(name = "instructions")
+    private String instructions;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

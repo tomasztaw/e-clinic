@@ -29,7 +29,7 @@ public class OpinionRepository implements OpinionDAO {
     public List<OpinionDTO> findByPatientId(Integer patientId) {
         return opinionJpaRepository.findAll().stream()
                 .filter(opinion -> opinion.getPatient().getPatientId().equals(patientId))
-                .map(opinionEntityMapper::mapToEntity)
+                .map(opinionEntityMapper::mapFromEntity)
                 .toList();
     }
 
@@ -37,7 +37,15 @@ public class OpinionRepository implements OpinionDAO {
     public List<OpinionDTO> findByDoctorId(Integer doctorId) {
         return opinionJpaRepository.findAll().stream()
                 .filter(opinion -> opinion.getDoctor().getDoctorId().equals(doctorId))
-                .map(opinionEntityMapper::mapToEntity)
+                .map(opinionEntityMapper::mapFromEntity)
+                .toList();
+    }
+
+    // próba zwrócenia encji z opiniami
+    @Override
+    public List<OpinionEntity> findAllOpinionByDoctorId(Integer doctorId) {
+        return opinionJpaRepository.findAll().stream()
+                .filter(opinion -> opinion.getDoctor().getDoctorId().equals(doctorId))
                 .toList();
     }
 }

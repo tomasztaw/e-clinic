@@ -105,7 +105,8 @@
 
   <div class="actions">
     <button class="btn btn-primary">Umów wizytę</button>
-    <button class="btn btn-primary">Opinie</button>
+    <a th:href="@{/opinions/doctor/{doctorId}(doctorId=${doctorId})}" class="btn btn-primary btn-lg">Opinie</a>
+
   </div>
 
   <a class="btn btn-light" th:href="@{/doctors}">Show all doctors</a>

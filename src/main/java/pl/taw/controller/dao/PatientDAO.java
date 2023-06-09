@@ -10,6 +10,9 @@ public interface PatientDAO {
 
     PatientEntity findById(int id);
 
+    // dopisany dla DTO, nie wiem czy nie nadmiarowo
+    PatientDTO findById(Integer patientId);
+
     void savePatient(PatientEntity patient);
 
     void updatePatient(PatientEntity patient);

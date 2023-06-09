@@ -28,6 +28,16 @@ public class DoctorRepository implements DoctorDAO {
                                 .formatted(id)));
     }
 
+    // dodanie find zwracające DTO
+    @Override
+    public DoctorDTO findById(Integer doctorId) {
+        return doctorJpaRepository.findById(doctorId)
+                .map(doctorEntityMapper::mapFromEntity)
+                .orElseThrow(() -> new NotFoundException(
+                        "Could not found DoctorEntity with id: [%s]".formatted(doctorId)
+                ));
+    }
+
     @Override
     public void saveDoctor(DoctorEntity doctor) {
         doctorJpaRepository.save(doctor);

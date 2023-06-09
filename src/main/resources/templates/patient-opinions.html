@@ -1,0 +1,109 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title>Opinie pacjenta</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <style>
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header-logo {
+            flex-grow: 1;
+        }
+
+        .header-logo img {
+            max-width: 30%;
+            height: auto;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .photo-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            overflow: hidden;
+            /* Dodana linia */
+        }
+
+        .photo-container img {
+            width: 200px;
+            height: 280px;
+            object-fit: cover;
+            object-position: top;
+            /* Dodana linia */
+            margin-right: 20px;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .actions button {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <div class="header">
+      <div class="header-logo">
+        <!-- Tutaj wstaw kod dla logo -->
+        <img th:src="@{/images/2135.jpg}" alt="Logo">
+      </div>
+      <!-- Możesz dodać dodatkowe elementy w nagłówku -->
+      <a th:href="@{/}" class="btn btn-info" role="button">Powrót do strony głównej</a>
+    </div>
+
+    <h2>Twoje Opinie</h2>
+
+    <div class="media-body">
+
+      <h1>Opinie o lekarzu</h1>
+      <ul th:if="${opinions.isEmpty()}">
+        <li>Brak opinii - napisz pierwszą</li>
+      </ul>
+      <ul th:if="${not opinions.isEmpty()}">
+        <li th:each="opinion : ${opinions}">
+          <ul>
+            <li>Id: <span th:text="${opinion.opinionId}"></span></li>
+            <li>Lekarz: <span th:text="${opinion.doctor.name + ' ' + opinion.doctor.surname + ' - ' + opinion.doctor.title}"></span></li>
+            <li>Data: <span th:text="${#temporals.format(opinion.createdAt, 'dd MM yyyy HH:mm')}"></span></li>
+            <li>Opinia: <span th:text="${opinion.comment}"></span></li>
+            <li>Napisana przez: <span th:text="${opinion.patient.name}"></span></li>
+          </ul>
+          <br>
+        </li>
+      </ul>
+
+      <div class="actions">
+        <button class="btn btn-primary">Umów wizytę</button>
+        <button class="btn btn-primary" onclick="history.go(-1);">Powrót</button>
+      </div>
+
+      <div class="footer">
+        <!-- Tutaj wstaw kod dla stopki -->
+        <p>© 2023 Twoja Stopka</p>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+
+</html>

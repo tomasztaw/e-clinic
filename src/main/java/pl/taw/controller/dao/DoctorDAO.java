@@ -9,6 +9,9 @@ public interface DoctorDAO {
 
     DoctorEntity findById(int id);
 
+    // dodanie find zwracające DTO
+    DoctorDTO findById(Integer doctorId);
+
     void saveDoctor(DoctorEntity doctor);
 
     void updateDoctor(DoctorEntity doctor);

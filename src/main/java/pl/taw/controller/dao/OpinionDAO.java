@@ -13,4 +13,7 @@ public interface OpinionDAO {
 
     List<OpinionDTO> findByDoctorId(Integer doctorId);
 
+    // dla encji opinion
+    List<OpinionEntity> findAllOpinionByDoctorId(Integer doctorId);
+
 }

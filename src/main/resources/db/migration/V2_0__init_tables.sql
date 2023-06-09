@@ -37,16 +37,16 @@ VALUES (1, 1, 1, 'Bardzo dobry lekarz, polecam', '2023-06-01 12:45:00'),
 (7, 4, 3, 'Olewatorskie podejście', '2023-06-05 12:45:00');
 
 INSERT INTO prescriptions (prescription_id, doctor_id, patient_id, medication_name, dosage, instructions, created_at)
-VALUES (1, 1, 1, 'dawka 3 x 5', 'medicKA', 'rano i wieczorem', '2023-06-01 08:45:00'),
-(2, 2, 2, 'dawka 3 x 5', 'rano i wieczorem', 'medicKA2W', '2023-06-01 08:50:00'),
-(3, 3, 3, 'dawka 3 x 5', 'rano i wieczorem', 'medicAAA', '2023-06-01 10:15:00'),
-(4, 4, 4, 'dawka 3 x 5', 'rano i wieczorem', 'medicKAPP', '2023-06-01 12:50:00'),
-(5, 5, 5, 'dawka 3 x 5', 'rano i wieczorem', 'medicKAMM', '2023-06-02 08:40:00'),
-(6, 6, 6, 'dawka 3 x 5', 'rano i wieczorem', 'medicKAD', '2023-06-01 09:45:00'),
-(7, 7, 5, 'dawka 3 x 5', 'rano i wieczorem', 'medicKA55', '2023-06-05 08:50:00'),
-(8, 1, 2, 'dawka 3 x 5', 'rano i wieczorem', 'medicKA77', '2023-06-05 11:50:00'),
-(9, 2, 4, 'dawka 3 x 5', 'rano i wieczorem', 'medicKWE', '2023-06-05 13:20:00'),
-(10, 4, 5, 'dawka 3 x 5', 'rano i wieczorem', 'medicOOP', '2023-06-06 12:45:00');
+VALUES (1, 1, 1, 'medicKA', 'dawka 3 x 3', 'rano i wieczorem', '2023-06-01 08:45:00'),
+(2, 2, 2, 'medicKA2W', 'dawka 2 x 5', 'rano i wieczorem', '2023-06-01 08:50:00'),
+(3, 3, 3, 'medicAAA', 'dawka 3 x 1', 'rano i wieczorem', '2023-06-01 10:15:00'),
+(4, 4, 4, 'medicKAPP', 'dawka 3 x 2', 'wieczorem', '2023-06-01 12:50:00'),
+(5, 5, 5, 'medicKAMM', 'dawka 2 x 2', 'rano', '2023-06-02 08:40:00'),
+(6, 6, 6, 'medicKAD', 'dawka 1 x 2', 'rano i wieczorem', '2023-06-01 09:45:00'),
+(7, 7, 5, 'medicKA55', 'dawka 3 x 4', 'przed posiłkiem', '2023-06-05 08:50:00'),
+(8, 1, 2, 'medicKA77', 'dawka 3 x 2', 'rano i po obiedzie', '2023-06-05 11:50:00'),
+(9, 2, 4, 'medicKWE', 'dawka 4 x 5', 'rano i wieczorem', '2023-06-05 13:20:00'),
+(10, 4, 5, 'medicOOP', 'dawka 3 x 1', 'rano, popołudniu i wieczorem', '2023-06-06 12:45:00');
 
 INSERT INTO doctors_schedule (id, doctor_id, day_of_week, start_time_ds, end_time_ds)
 VALUES (1, 1, 1, '08:00', '14:00'),

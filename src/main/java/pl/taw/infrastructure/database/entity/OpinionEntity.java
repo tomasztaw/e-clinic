@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @With
 @Entity
 @Builder
-@ToString(of = {"opinioId", "doctor", "patient", "comment", "createdAt"})
+@ToString(of = {"opinionId", "doctor", "patient", "comment", "createdAt"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "opinions")
@@ -17,8 +17,8 @@ public class OpinionEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "opinio_id")
-    private Integer opinioId;
+    @Column(name = "opinion_id")
+    private Integer opinionId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "doctor_id")

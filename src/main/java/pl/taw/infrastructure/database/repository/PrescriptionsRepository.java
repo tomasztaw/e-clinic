@@ -3,10 +3,14 @@ package pl.taw.infrastructure.database.repository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import pl.taw.controller.dao.PrescriptionDAO;
+import pl.taw.controller.dto.OpinionDTO;
+import pl.taw.controller.dto.PrescriptionDTO;
 import pl.taw.controller.exception.NotFoundException;
 import pl.taw.infrastructure.database.entity.PrescriptionEntity;
 import pl.taw.infrastructure.database.repository.jpa.PrescriptionJapRepository;
 import pl.taw.infrastructure.database.repository.mapper.PrescriptionsEntityMapper;
+
+import java.util.List;
 
 @Repository
 @AllArgsConstructor
@@ -21,5 +25,21 @@ public class PrescriptionsRepository implements PrescriptionDAO {
                 .orElseThrow(() -> new NotFoundException(
                         "Could not find PrescriptionEntity with id: [%s]".formatted(prescriptionId)
                 ));
+    }
+
+    @Override
+    public List<PrescriptionDTO> findByDoctorId(Integer doctorId) {
+        return prescriptionJapRepository.findAll().stream()
+                .filter(prescription -> prescription.getDoctor().getDoctorId().equals(doctorId))
+                .map(prescriptionsEntityMapper::mapFromEntity)
+                .toList();
+    }
+
+    @Override
+    public List<PrescriptionDTO> findByPatientId(Integer patientId) {
+        return prescriptionJapRepository.findAll().stream()
+                .filter(prescription -> prescription.getPatient().getPatientId().equals(patientId))
+                .map(prescriptionsEntityMapper::mapFromEntity)
+                .toList();
     }
 }

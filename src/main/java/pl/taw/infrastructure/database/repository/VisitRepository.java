@@ -28,6 +28,22 @@ public class VisitRepository implements VisitDAO {
     }
 
     @Override
+    public List<VisitDTO> findByDoctorId(Integer doctorId) {
+        return visitJpaRepository.findAll().stream()
+                .filter(visit -> visit.getDoctor().getDoctorId().equals(doctorId))
+                .map(visitEntityMapper::mapFromEntity)
+                .toList();
+    }
+
+    @Override
+    public List<VisitDTO> findByPatientId(Integer patientId) {
+        return visitJpaRepository.findAll().stream()
+                .filter(visit -> visit.getPatient().getPatientId().equals(patientId))
+                .map(visitEntityMapper::mapFromEntity)
+                .toList();
+    }
+
+    @Override
     public VisitEntity findById(Integer visitId) {
         return visitJpaRepository.findById(visitId)
                 .orElseThrow(() -> new NotFoundException(
