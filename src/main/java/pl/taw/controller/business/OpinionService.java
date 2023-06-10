@@ -10,6 +10,7 @@ import pl.taw.controller.dto.mapper.OpinionMapper;
 import pl.taw.infrastructure.database.entity.OpinionEntity;
 import pl.taw.infrastructure.database.repository.mapper.OpinionEntityMapper;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -25,8 +26,6 @@ public class OpinionService {
     // Repozytorium na bazie JPA i następnie przekazywany do kontrolera
     public List<OpinionDTO> getDoctorOpinions(Integer doctorId) {
         return opinionDAO.findByDoctorId(doctorId);
-//        return opinionDAO.findByDoctorId(doctorId).stream()
-//                .toList();
     }
 
     public List<OpinionEntity> getDoctorOpinionsEntity(Integer doctorId) {
@@ -37,10 +36,34 @@ public class OpinionService {
         return opinionDAO.findByPatientId(patientId);
     }
 
-//    public List<Opinion> getDoctorOpinionsDomain(Integer doctorId) {
-//        return opinionDAO.findByDoctorId(doctorId).stream()
-//                .map(opinionMapper::map)
-//                .toList();
+
+//    public void updateOpinion(OpinionDTO opinionDTO) {
+//
 //    }
+
+    public void updateOpinion(OpinionDTO opinionDTO) {
+        OpinionEntity existingOpinion = opinionDAO.findById(opinionDTO.getOpinionId());
+
+        if (existingOpinion != null) {
+            existingOpinion.setComment(opinionDTO.getComment());
+            opinionDAO.save(existingOpinion);
+        } else {
+            throw new IllegalArgumentException("Opinion with ID " + opinionDTO.getOpinionId() + " does not exist.");
+        }
+    }
+
+//    public void addOpinion(OpinionDTO opinionDTO) {
+//
+//    }
+
+    public void addOpinion(OpinionDTO opinionDTO) {
+        OpinionEntity newOpinion = new OpinionEntity();
+        newOpinion.setDoctor(opinionDTO.getDoctor());
+        newOpinion.setPatient(opinionDTO.getPatient());
+        newOpinion.setComment(opinionDTO.getComment());
+        newOpinion.setCreatedAt(LocalDateTime.now());
+
+        opinionDAO.save(newOpinion);
+    }
 
 }

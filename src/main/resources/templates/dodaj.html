@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Dodaj opinię</title>
+</head>
+<body>
+<h2>Dodaj opinię</h2>
+<form action="/zapisz" method="post">
+
+  <div>
+    <label>Id pacjenta:</label>
+    <label>
+      <input type="text" name="patientId" th:field="*{patient}">
+    </label>
+  </div>
+
+  <div>
+    <label>Id lekarza:</label>
+    <label>
+      <input type="text" name="doctorId" th:field="*{doctor}">
+    </label>
+  </div>
+
+  <div>
+    <label>Komentarz:</label>
+    <label>
+      <input type="text" name="comment" th:field="*{comment}">
+    </label>
+  </div>
+
+  <!-- dodaj inne pola opinii -->
+  <button type="submit">Dodaj</button>
+</form>
+</body>
+</html>

@@ -18,4 +18,6 @@ public class Opinion {
     String comment;
     LocalDateTime createdAt;
 
+    Visit visit;
+
 }

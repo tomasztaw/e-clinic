@@ -16,4 +16,6 @@ public interface OpinionDAO {
     // dla encji opinion
     List<OpinionEntity> findAllOpinionByDoctorId(Integer doctorId);
 
+    void save(OpinionEntity opinionEntity);
+
 }

@@ -31,7 +31,8 @@ CREATE TABLE opinions (
     doctor_id  INT       REFERENCES doctors (doctor_id)   NOT NULL,
     patient_id INT       REFERENCES patients (patient_id) NOT NULL,
     comment    TEXT                                       NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    visit_id   INT
 );
 
 CREATE TABLE prescriptions (

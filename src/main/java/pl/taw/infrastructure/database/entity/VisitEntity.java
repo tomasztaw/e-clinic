@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Data
 @With
@@ -40,5 +41,8 @@ public class VisitEntity {
     @Column(name = "status")
     private String status;
 
+    // Powiązanie wizyt z opiniami (wizyta może mieć jedną opinię dodaną po czasie, dlatego na początku zawsze jest pusta)
+    @OneToOne(mappedBy = "visit", cascade = CascadeType.ALL, orphanRemoval = true)
+    private OpinionEntity opinion;
 
 }

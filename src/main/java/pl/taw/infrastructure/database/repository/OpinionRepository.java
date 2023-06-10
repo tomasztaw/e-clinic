@@ -48,4 +48,9 @@ public class OpinionRepository implements OpinionDAO {
                 .filter(opinion -> opinion.getDoctor().getDoctorId().equals(doctorId))
                 .toList();
     }
+
+    @Override
+    public void save(OpinionEntity existingOpinion) {
+        opinionJpaRepository.save(existingOpinion);
+    }
 }

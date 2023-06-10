@@ -47,10 +47,10 @@ public class VisitController {
     @GetMapping(PATIENT_ID)
     public String showVisitsByPatient(@PathVariable("patientId") Integer patientId, Model model) {
         List<VisitDTO> visits = visitService.getPatientVisits(patientId);
-        PatientDTO patient = patientDAO.findById(patientId);
+//        PatientDTO patient = patientDAO.findById(patientId);
 
         model.addAttribute("visits", visits);
-        model.addAttribute("patient", patient);
+//        model.addAttribute("patient", patient);
 
         return "patient-visits";
     }

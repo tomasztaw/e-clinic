@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <title>Opinie pacjenta</title>
+  <title>Historia pacjenta</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -70,28 +70,38 @@
       <a th:href="@{/}" class="btn btn-info" role="button">Powrót do strony głównej</a>
     </div>
 
-    <h2>Twoje Opinie</h2>
+    <h2>Twoja Historia</h2>
 
     <div class="media-body">
 
-      <h1>Opinie o lekarzu</h1>
-      <ul th:if="${opinions.isEmpty()}">
-        <li>Brak opinii - napisz pierwszą</li>
+      <h1>Odbyte wizyty</h1>
+      <ul th:if="${visits.isEmpty()}">
+        <li>Brak wizyt, umów się na pierwszą</li>
       </ul>
-      <ul th:if="${not opinions.isEmpty()}">
-        <li th:each="opinion : ${opinions}">
-          <ul>
-            <li>Id: <span th:text="${opinion.opinionId}"></span></li>
-            <li>Lekarz: <span th:text="${opinion.doctor.name + ' ' + opinion.doctor.surname + ' - ' + opinion.doctor.title}"></span></li>
-            <li>Data: <span th:text="${#temporals.format(opinion.createdAt, 'dd MM yyyy HH:mm')}"></span></li>
-            <li>Opinia: <span th:text="${opinion.comment}"></span></li>
-            <li>Napisana przez: <span th:text="${opinion.patient.name}"></span></li>
-            <!-- Dodaj przyciski obok każdej opinii -->
-            <li>
-              <button class="btn btn-primary">Edytuj</button>
-              <button class="btn btn-danger">Usuń</button>
-            </li>
-          </ul>
+      <ul th:if="${not visits.isEmpty()}">
+        <li th:each="visit : ${visits}">
+          <div class="visit-container">
+            <ul>
+              <li>Id: <span th:text="${visit.visitId}"></span></li>
+              <li>Lekarz: <span th:text="${visit.doctor.name + ' ' + visit.doctor.surname + ' - ' + visit.doctor.title}"></span></li>
+              <li>Data: <span th:text="${#temporals.format(visit.startTime, 'dd MM yyyy HH:mm')}"></span></li>
+              <li>Notatka: <span th:text="${visit.note}"></span></li>
+              <li>Status: <span th:text="${visit.status}"></span></li>
+<!--              <li>WIZYTA????-OPINIA: <span th:text="${visit.opinion}"></span></li>-->
+            </ul>
+            <div class="visit-buttons">
+              <a th:if="${visit.opinion != null}" th:href="@{/opinions/edit/{opinionId}(opinionId=${visit.opinion.opinionId})}">
+                <button class="btn btn-primary">Zmodyfikuj opinię</button>
+              </a>
+
+<!--              <a th:unless="${visit.opinion != null}" th:href="@{/opinions/add/{visitId}(visitId=${visit.visitId})}">-->
+              <a th:unless="${visit.opinion != null}" th:href="@{/opinions/add/}">
+                <button class="btn btn-primary">Dodaj opinię</button>
+              </a>
+
+              <button class="btn btn-danger">Sprawdź receptę</button>
+            </div>
+          </div>
           <br>
         </li>
       </ul>

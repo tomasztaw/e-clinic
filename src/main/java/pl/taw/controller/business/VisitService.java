@@ -22,4 +22,10 @@ public class VisitService {
     public List<VisitDTO> getPatientVisits(Integer patientId) {
         return visitDAO.findByPatientId(patientId);
     }
+
+    public List<VisitDTO> getVisitsWithoutOpinionsForPatient(Integer patientId) {
+        return visitDAO.findByPatientId(patientId).stream()
+                .filter(visit -> visit.getOpinion() == null)
+                .toList();
+    }
 }

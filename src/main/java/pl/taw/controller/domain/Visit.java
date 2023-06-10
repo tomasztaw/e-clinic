@@ -3,6 +3,7 @@ package pl.taw.controller.domain;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @With
 @Value
@@ -18,5 +19,7 @@ public class Visit {
     LocalDateTime endTime;
     String note;
     String status;
+
+    Opinion opinion;
 
 }
