@@ -10,5 +10,7 @@ import lombok.Value;
 public class ExceptionMessage {
 
     String errorId;
+    // dodanie wiadomości z błędem
+    String errorMessage;
 
 }

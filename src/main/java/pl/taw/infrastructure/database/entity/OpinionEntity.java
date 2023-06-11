@@ -20,13 +20,11 @@ public class OpinionEntity {
     @Column(name = "opinion_id")
     private Integer opinionId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "doctor_id")
-    private DoctorEntity doctor;
+    @Column(name = "doctor_id")
+    private Integer doctorId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "patient_id")
-    private PatientEntity patient;
+    @Column(name = "patient_id")
+    private Integer patientId;
 
     @Column(name = "comment")
     private String comment;
@@ -34,9 +32,22 @@ public class OpinionEntity {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    // Powiązanie opinii z wizytą (opinia może mieć tylko jedną lub zero wizyt(ę))
-    @OneToOne
-    @JoinColumn(name = "visit_id")
+    @Column(name = "visit_id")
+    private Integer visitId;
+
+    // relacje
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "doctor_id", referencedColumnName = "doctor_id", insertable = false, updatable = false)
+    private DoctorEntity doctor;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "patient_id", referencedColumnName = "patient_id", insertable = false, updatable = false)
+    private PatientEntity patient;
+
+    // id wizyty na początku zawsze będzie null, dlatego nie ustawiłem jako klucz obcy
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "visit_id", referencedColumnName = "visit_id", insertable = false, updatable = false)
     private VisitEntity visit;
+
 
 }

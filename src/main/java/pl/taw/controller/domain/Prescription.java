@@ -1,6 +1,8 @@
 package pl.taw.controller.domain;
 
 import lombok.*;
+import pl.taw.infrastructure.database.entity.DoctorEntity;
+import pl.taw.infrastructure.database.entity.PatientEntity;
 
 import java.time.LocalDateTime;
 
@@ -19,4 +21,7 @@ public class Prescription {
     String instructions;
     LocalDateTime createdAt;
 
+    // relacje
+    DoctorEntity doctor;
+    PatientEntity patient;
 }

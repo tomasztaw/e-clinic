@@ -15,12 +15,17 @@ import java.time.LocalDateTime;
 public class OpinionDTO {
 
     private Integer opinionId;
-    private DoctorEntity doctor;
-    private PatientEntity patient;
+    private Integer doctorId;
+    private Integer patientId;
     private String comment;
     private LocalDateTime createdAt;
 
-    // dodanie wizyty
+    // dodanie wizyty (na początku jest null-em)
+    private Integer visitId;
+
+    // relacje
+    private DoctorEntity doctor;
+    private PatientEntity patient;
     private VisitEntity visit;
 
 }

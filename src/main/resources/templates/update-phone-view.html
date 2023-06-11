@@ -8,11 +8,14 @@
 <body>
 <div class="container">
     <h1 class="mt-5">Update Phone</h1>
-    <form th:action="@{'/patients/' + ${patient.patientId} + '/phone'}" method="post" th:method="patch" class="mt-4">
+<!--    <form th:action="@{'/patients/' + ${patient.patientId} + '/phone'}" method="post" th:method="patch" class="mt-4">-->
+    <form th:action="@{'/patients/5/phone'}" method="post" th:method="patch" class="mt-4">
+
         <input type="hidden" th:name="_method" th:value="PATCH">
         <div class="form-group">
             <label for="newPhone">New Phone:</label>
             <input type="text" id="newPhone" name="newPhone" required class="form-control">
+
         </div>
         <button type="submit" class="btn btn-primary">Update</button>
     </form>

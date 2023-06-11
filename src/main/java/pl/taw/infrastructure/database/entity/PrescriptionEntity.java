@@ -20,13 +20,11 @@ public class PrescriptionEntity {
     @Column(name = "prescription_id")
     private Integer prescriptionId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "doctor_id")
-    private DoctorEntity doctor;
+    @Column(name = "doctor_id")
+    private Integer doctorId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "patient_id")
-    private PatientEntity patient;
+    @Column(name = "patient_id")
+    private Integer patientId;
 
     @Column(name = "medication_name")
     private String medicationName;
@@ -39,5 +37,13 @@ public class PrescriptionEntity {
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "doctor_id", referencedColumnName = "doctor_id", insertable = false, updatable = false)
+    private DoctorEntity doctor;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "patient_id", referencedColumnName = "patient_id", insertable = false, updatable = false)
+    private PatientEntity patient;
 
 }

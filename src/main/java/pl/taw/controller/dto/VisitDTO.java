@@ -16,16 +16,16 @@ import java.util.Optional;
 public class VisitDTO {
 
     private Integer visitId;
-//    private Integer doctor_id;
-    private DoctorEntity doctor;
-//    private Integer patient_id;
-    private PatientEntity patient;
+    private Integer doctor_id;
+    private Integer patient_id;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private String note;
     private String status;
 
-    // dodanie opinii
+    // relacje
+    private DoctorEntity doctor;
+    private PatientEntity patient;
     private OpinionEntity opinion;
 
 }

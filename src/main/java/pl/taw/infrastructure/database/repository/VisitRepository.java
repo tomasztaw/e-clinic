@@ -30,7 +30,7 @@ public class VisitRepository implements VisitDAO {
     @Override
     public List<VisitDTO> findByDoctorId(Integer doctorId) {
         return visitJpaRepository.findAll().stream()
-                .filter(visit -> visit.getDoctor().getDoctorId().equals(doctorId))
+                .filter(visit -> visit.getDoctorId().equals(doctorId))
                 .map(visitEntityMapper::mapFromEntity)
                 .toList();
     }
@@ -38,7 +38,7 @@ public class VisitRepository implements VisitDAO {
     @Override
     public List<VisitDTO> findByPatientId(Integer patientId) {
         return visitJpaRepository.findAll().stream()
-                .filter(visit -> visit.getPatient().getPatientId().equals(patientId))
+                .filter(visit -> visit.getPatientId().equals(patientId))
                 .map(visitEntityMapper::mapFromEntity)
                 .toList();
     }

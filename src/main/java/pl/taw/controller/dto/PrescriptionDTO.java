@@ -14,12 +14,15 @@ import java.time.LocalDateTime;
 public class PrescriptionDTO {
 
     private Integer prescriptionId;
-//    private Integer doctorId;
-    private DoctorEntity doctor;
-//    private Integer patientId;
-    private PatientEntity patient;
+    private Integer doctorId;
+    private Integer patientId;
     private String medicationName;
     private String dosage;
     private String instructions;
     private LocalDateTime createdAt;
+
+    // relacje
+    private DoctorEntity doctor;
+    private PatientEntity patient;
+
 }

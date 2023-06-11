@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import pl.taw.controller.business.OpinionService;
 import pl.taw.controller.business.VisitService;
 import pl.taw.controller.dao.DoctorDAO;
@@ -15,10 +16,7 @@ import pl.taw.controller.dto.DoctorDTO;
 import pl.taw.controller.dto.OpinionDTO;
 import pl.taw.controller.dto.PatientDTO;
 import pl.taw.controller.dto.VisitDTO;
-import pl.taw.infrastructure.database.entity.DoctorEntity;
-import pl.taw.infrastructure.database.entity.OpinionEntity;
-import pl.taw.infrastructure.database.entity.PatientEntity;
-import pl.taw.infrastructure.database.entity.VisitEntity;
+import pl.taw.infrastructure.database.entity.*;
 import pl.taw.infrastructure.database.repository.OpinionRepository;
 
 import java.time.LocalDateTime;
@@ -108,12 +106,12 @@ public class OpinionController {
         opinionService.updateOpinion(opinionDTO);
 
         // Przekierowanie na stronę z listą opinii dla lekarza lub pacjenta
-        if (opinionDTO.getVisit().getVisitId() != null) {
+        if (opinionDTO.getVisitId() != null) {
             // Jeśli opinia została dodana w kontekście konkretnej wizyty, przekieruj na stronę z listą opinii dla lekarza
-            return "redirect:/doctors/" + opinionDTO.getDoctor().getDoctorId() + "/opinions";
+            return "redirect:/doctors/" + opinionDTO.getDoctorId() + "/opinions";
         } else {
             // Jeśli opinia została dodana niezależnie od wizyty, przekieruj na stronę z listą opinii dla pacjenta
-            return "redirect:/patients/" + opinionDTO.getPatient().getPatientId() + "/opinions";
+            return "redirect:/patients/" + opinionDTO.getPatientId() + "/opinions";
         }
     }
 
@@ -166,7 +164,7 @@ public class OpinionController {
         // Przekształcenie visitId na obiekt VisitEntity
         VisitEntity visit = new VisitEntity();
         visit.setVisitId(visitId);
-        opinionDTO.setVisit(visit);
+        opinionDTO.setVisitId(visitId);
 
         // Dodanie opinii do bazy danych
 
@@ -195,32 +193,32 @@ public class OpinionController {
         return "redirect:/sukces";
     }
 
-    @GetMapping("/dodaj-opinie/{patientId}")
-    public String showOpinionForm(@PathVariable("patientId") Integer patientId, Model model) {
-        PatientDTO patient = patientDAO.findById(patientId);
-        List<VisitDTO> visits = visitService.getPatientVisits(patientId).stream()
-                .filter(visit -> visit.getOpinion() == null)
-                .toList();
-
-        // Pobierz pierwszą wizytę z listy, jeśli istnieje
-        VisitDTO visit = visits.isEmpty() ? null : visits.get(0);
-
-        model.addAttribute("patient", patient);
-        model.addAttribute("visit", visit);
-        model.addAttribute("opinionDTO", new OpinionDTO());
-
-        return "opinion-dodaj";
-    }
+//    @GetMapping("/dodaj-opinie/{patientId}")
+//    public String showOpinionForm(@PathVariable("patientId") Integer patientId, Model model) {
+//        PatientDTO patient = patientDAO.findById(patientId);
+//        List<VisitDTO> visits = visitService.getPatientVisits(patientId).stream()
+//                .filter(visit -> visit.getOpinion() == null)
+//                .toList();
+//
+//        // Pobierz pierwszą wizytę z listy, jeśli istnieje
+//        VisitDTO visit = visits.isEmpty() ? null : visits.get(0);
+//
+//        model.addAttribute("patient", patient);
+//        model.addAttribute("visit", visit);
+//        model.addAttribute("opinionDTO", new OpinionDTO());
+//
+//        return "opinion-dodaj";
+//    }
 
     @PostMapping("/zapisz-opinie")
     public String zapiszOpinie(@ModelAttribute OpinionDTO opinionDTO) {
         log.debug("Przetwarzanie żądania zapisu opinii");
         OpinionEntity opinionEntity = new OpinionEntity();
-        opinionEntity.setDoctor(opinionDTO.getDoctor());
-        opinionEntity.setPatient(opinionDTO.getPatient());
+        opinionEntity.setDoctorId(opinionDTO.getDoctorId());
+        opinionEntity.setPatientId(opinionDTO.getPatientId());
         opinionEntity.setComment(opinionDTO.getComment());
         opinionEntity.setCreatedAt(LocalDateTime.now());
-        opinionEntity.setVisit(opinionDTO.getVisit());
+        opinionEntity.setVisitId(opinionDTO.getVisitId());
 
         // Zapisanie opinii do bazy danych
         opinionRepository.save(opinionEntity);
@@ -228,11 +226,33 @@ public class OpinionController {
         return "success";
     }
 
+    // z home.html przekierowuje tutaj
+//    @GetMapping("/dodaj")
+//    public String dodaj(Model model) {
+//        // dodanie pacjenta i doktora na sztywno
+//        PatientEntity patient = patientDAO.findById(5);
+//        DoctorEntity doctor = doctorDAO.findById(2);
+//
+//        model.addAttribute("patient", patient);
+//        model.addAttribute("doctor", doctor);
+//        model.addAttribute("opinion", new OpinionEntity());
+//        return "dodaj";
+//    }
+
     @GetMapping("/dodaj")
-    public String dodaj(Model model) {
-        model.addAttribute("opinion", new OpinionEntity());
-        return "dodaj";
+    public ModelAndView dodaj() {
+        // dodanie pacjenta i doktora na sztywno
+        PatientEntity patient = patientDAO.findById(5);
+        DoctorEntity doctor = doctorDAO.findById(2);
+
+        ModelAndView modelAndView = new ModelAndView("dodaj");
+        modelAndView.addObject("patient", patient);
+        modelAndView.addObject("doctor", doctor);
+        modelAndView.addObject("opinion", new OpinionEntity());
+
+        return modelAndView;
     }
+
 
     @PostMapping("/zapiszXXX")
     public String zapisz(@ModelAttribute OpinionEntity opinion) {
@@ -243,16 +263,13 @@ public class OpinionController {
     @PostMapping("/zapisz")
     public String zapiszOpinie(@RequestParam Integer patientId, @RequestParam Integer doctorId, @RequestParam String comment) {
         // Tworzenie nowej opinii
-        OpinionEntity opinionEntity = new OpinionEntity();
+        OpinionEntity opinionEntity = OpinionEntity.builder()
+                .doctorId(doctorId)
+                .patientId(patientId)
+                .comment(comment)
+                .createdAt(LocalDateTime.now())
+                .build();
 
-
-        // Ustawianie wartości opinii
-        opinionEntity.setPatient(patient);
-        opinionEntity.setDoctor(doctor);
-        opinionEntity.setComment(comment);
-        opinionEntity.setCreatedAt(LocalDateTime.now());
-
-        // Zapisywanie opinii do bazy danych
         opinionRepository.save(opinionEntity);
 
         // Przekierowanie na stronę sukcesu lub inną stronę

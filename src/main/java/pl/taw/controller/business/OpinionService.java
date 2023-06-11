@@ -4,11 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pl.taw.controller.dao.OpinionDAO;
-import pl.taw.controller.domain.Opinion;
 import pl.taw.controller.dto.OpinionDTO;
-import pl.taw.controller.dto.mapper.OpinionMapper;
 import pl.taw.infrastructure.database.entity.OpinionEntity;
-import pl.taw.infrastructure.database.repository.mapper.OpinionEntityMapper;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -58,8 +55,8 @@ public class OpinionService {
 
     public void addOpinion(OpinionDTO opinionDTO) {
         OpinionEntity newOpinion = new OpinionEntity();
-        newOpinion.setDoctor(opinionDTO.getDoctor());
-        newOpinion.setPatient(opinionDTO.getPatient());
+        newOpinion.setDoctorId(opinionDTO.getDoctorId());
+        newOpinion.setPatientId(opinionDTO.getPatientId());
         newOpinion.setComment(opinionDTO.getComment());
         newOpinion.setCreatedAt(LocalDateTime.now());
 

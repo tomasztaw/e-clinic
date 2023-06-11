@@ -28,7 +28,8 @@ public class OpinionRepository implements OpinionDAO {
     @Override
     public List<OpinionDTO> findByPatientId(Integer patientId) {
         return opinionJpaRepository.findAll().stream()
-                .filter(opinion -> opinion.getPatient().getPatientId().equals(patientId))
+//                .filter(opinion -> opinion.getPatient().getPatientId().equals(patientId))
+                .filter(opinion -> opinion.getPatientId().equals(patientId))
                 .map(opinionEntityMapper::mapFromEntity)
                 .toList();
     }
@@ -36,7 +37,8 @@ public class OpinionRepository implements OpinionDAO {
     @Override
     public List<OpinionDTO> findByDoctorId(Integer doctorId) {
         return opinionJpaRepository.findAll().stream()
-                .filter(opinion -> opinion.getDoctor().getDoctorId().equals(doctorId))
+//                .filter(opinion -> opinion.getDoctor().getDoctorId().equals(doctorId))
+                .filter(opinion -> opinion.getDoctorId().equals(doctorId))
                 .map(opinionEntityMapper::mapFromEntity)
                 .toList();
     }
@@ -45,9 +47,11 @@ public class OpinionRepository implements OpinionDAO {
     @Override
     public List<OpinionEntity> findAllOpinionByDoctorId(Integer doctorId) {
         return opinionJpaRepository.findAll().stream()
-                .filter(opinion -> opinion.getDoctor().getDoctorId().equals(doctorId))
+//                .filter(opinion -> opinion.getDoctor().getDoctorId().equals(doctorId))
+                .filter(opinion -> opinion.getDoctorId().equals(doctorId))
                 .toList();
     }
+
 
     @Override
     public void save(OpinionEntity existingOpinion) {

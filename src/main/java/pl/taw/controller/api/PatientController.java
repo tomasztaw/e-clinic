@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.taw.controller.dto.PatientDTO;
 import pl.taw.controller.dto.PatientsDTO;
@@ -20,7 +21,9 @@ import pl.taw.infrastructure.database.repository.VisitRepository;
 import pl.taw.infrastructure.database.repository.jpa.PatientJpaRepository;
 import pl.taw.infrastructure.database.repository.jpa.VisitJpaRepository;
 
+import java.math.BigDecimal;
 import java.net.URI;
+import java.util.List;
 
 @Controller
 @RequestMapping(PatientController.PATIENTS)
@@ -82,7 +85,7 @@ public class PatientController {
                 .orElseThrow();
 
         VisitsDTO history = VisitsDTO.of(visitJpaRepository.findAll().stream()
-                .filter(visit -> visit.getPatient().getPatientId().equals(patientDTO.getPatientId()))
+                .filter(visit -> visit.getPatientId().equals(patientDTO.getPatientId()))
                 .map(visitMapper::map)
                 .toList());
 
@@ -169,17 +172,19 @@ public class PatientController {
                 .orElseThrow();
 
         model.addAttribute("patient", patientDTO);
+        model.addAttribute("patientId", patientDTO.getPatientId());
+
         return "update-phone-view";
     }
 
     @PatchMapping(PATIENT_UPDATE_PHONE)
     public ResponseEntity<?> updatePatientPhone(
-            @PathVariable Integer id,
+            @RequestParam Integer patientId,
             @RequestParam(required = true) String newPhone
     ) {
-        PatientEntity existingPatient = patientJpaRepository.findById(id)
+        PatientEntity existingPatient = patientJpaRepository.findById(patientId)
                 .orElseThrow(() -> new EntityNotFoundException(
-                        "PatientEntity not found, id: [%s]".formatted(id)));
+                        "PatientEntity not found, id: [%s]".formatted(patientId)));
         existingPatient.setPhone(newPhone);
         patientJpaRepository.save(existingPatient);
         return ResponseEntity.ok().build();
@@ -195,6 +200,105 @@ public class PatientController {
                 .status(httpStatus)
                 .header("x-my-header", accept.toString())
                 .body("Accepted: " + accept);
+    }
+
+    // proste dodawanie pacjenta
+    @GetMapping("/proste-dodaj")
+    public String showAddPatientForm(Model model) {
+        model.addAttribute("patientDTO", new PatientDTO());
+        return "xxx-dodaj-pacjenta";
+    }
+
+
+    @PostMapping("/proste-zapisz")
+    public String prosteZapisz(
+            @ModelAttribute("patientDTO") PatientDTO patientDTO,
+            BindingResult result
+    ) {
+        if (result.hasErrors()) {
+            return "error";
+        }
+        PatientEntity patient = PatientEntity.builder()
+                .name(patientDTO.getName())
+                .surname(patientDTO.getSurname())
+                .pesel(patientDTO.getPesel())
+                .phone(patientDTO.getPhone())
+                .email(patientDTO.getEmail())
+                .build();
+        patientJpaRepository.save(patient);
+
+        return "success";
+    }
+
+    // NOWA PRÓBA DODANIE PANELU Z PACJENTAMI   !!!!!!!!!!!!!  Działa:)
+
+    // wyświetlamy panel z pacjentami
+    @GetMapping("/panel")
+    public String panel(Model model) {
+        List<PatientEntity> patients = patientJpaRepository.findAll();
+        model.addAttribute("patients", patients);  // dodajemy model zawierający wszystkich pacjentów
+        model.addAttribute("updatePatientDTO", new UpdatePatientDTO()); // dodajemy model z pacjentem do aktualizacji
+        return "patient-add-update";
+    }
+
+    // DZIAŁA !!!!!
+    // dodajemy pacjenta
+    @PostMapping("/nowy")
+    public String dodajPacjenta(
+            // dodajemy parametry z zapytania jako argumenty metody
+            @RequestParam(value = "name") String name,
+            @RequestParam(value = "surname") String surname,
+            @RequestParam(value = "pesel") String pesel,
+            @RequestParam(value = "phone") String phone,
+            @RequestParam(value = "email") String email
+    ) {
+        // tworzymy encje pacjenta
+        PatientEntity nowyPacjent = PatientEntity.builder()
+                .name(name)
+                .surname(surname)
+                .pesel(pesel)
+                .phone(phone)
+                .email(email)
+                .build();
+        // zapisujemy chłopa
+        patientJpaRepository.save(nowyPacjent);
+        // wracamy ponownie na panel
+        return "redirect:/patients/panel";
+    }
+
+    // DZIAŁA !!!!!
+    @PutMapping("/aktualizuj")
+    public String aktualizujPacjenta(
+            // parametrem jest wypełniony model z widoku patient-add-update
+            @ModelAttribute("updatePatientDTO") UpdatePatientDTO updatePatientDTO
+    ) {
+        // pobieramy pacjenta z bazy na podstawie jego id
+        PatientEntity patientEntity = patientJpaRepository.findById(updatePatientDTO.getPatientId())
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Could not found patient with id: [%s]".formatted(updatePatientDTO.getPatientId())));
+        // przypisujemy pacjentowi nowe dane z wyłączeniem id
+        patientEntity.setName(updatePatientDTO.getName());
+        patientEntity.setSurname(updatePatientDTO.getSurname());
+        patientEntity.setPesel(updatePatientDTO.getPesel());
+        patientEntity.setPhone(updatePatientDTO.getPhone());
+        patientEntity.setEmail(updatePatientDTO.getEmail());
+        // zapisujemy pacjenta do bazy
+        patientJpaRepository.save(patientEntity);
+        // odświeżenie strony
+        return "redirect:/patients/panel";
+    }
+
+    // wyświetlanie pacjent
+    @GetMapping("/show/{patientId}")
+    public String wyswietlPacjenta(
+            // w ścieżce podajemy id pacjenta i model, w jakim będzie przekazany pacjent
+            @PathVariable Integer patientId,
+            Model model
+    ) {
+        PatientEntity patientEntity = patientJpaRepository.findById(patientId)
+                .orElseThrow(() -> new EntityNotFoundException("Could not found patient with id: [%s]".formatted(patientId)));
+        model.addAttribute("patient", patientEntity);
+        return "wyswietl-pacjenta";
     }
 
 }

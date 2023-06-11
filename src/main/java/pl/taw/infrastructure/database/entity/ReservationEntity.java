@@ -10,7 +10,7 @@ import java.time.LocalTime;
 @With
 @Entity
 @Builder
-@ToString(of = {})
+@ToString(of = {"id", "doctorId", "day", "startTimeR", "occupied"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "reservations")
@@ -21,9 +21,8 @@ public class ReservationEntity {
     @Column(name = "id")
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "doctor_id")
-    private DoctorEntity doctor;
+    @Column(name = "doctor_id")
+    private Integer doctorId;
 
     @Column(name = "day")
     private LocalDate day;
@@ -36,5 +35,10 @@ public class ReservationEntity {
 
     @Column(name = "occupied")
     private Boolean occupied;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "doctor_id", referencedColumnName = "doctor_id", insertable = false, updatable = false)
+    private DoctorEntity doctor;
+
 
 }

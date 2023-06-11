@@ -9,17 +9,20 @@ import java.util.Optional;
 @Value
 @Builder
 @EqualsAndHashCode(of = {"visitId", "note", "status"})
-@ToString(of = {"visitId", "doctor", "patient", "startTime", "note", "status"})
+@ToString(of = {"visitId", "doctorId", "patientId", "startTime", "note", "status"})
 public class Visit {
 
     Integer visitId;
-    Doctor doctor;
-    Patient patient;
+    Integer doctorId;
+    Integer patientId;
     LocalDateTime startTime;
     LocalDateTime endTime;
     String note;
     String status;
 
+    // relacje
+    Doctor doctor;
+    Patient patient;
     Opinion opinion;
 
 }

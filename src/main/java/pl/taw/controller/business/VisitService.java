@@ -23,9 +23,9 @@ public class VisitService {
         return visitDAO.findByPatientId(patientId);
     }
 
-    public List<VisitDTO> getVisitsWithoutOpinionsForPatient(Integer patientId) {
-        return visitDAO.findByPatientId(patientId).stream()
-                .filter(visit -> visit.getOpinion() == null)
-                .toList();
-    }
+//    public List<VisitDTO> getVisitsWithoutOpinionsForPatient(Integer patientId) {
+//        return visitDAO.findByPatientId(patientId).stream()
+//                .filter(visit -> visit.getOpinion() == null)
+//                .toList();
+//    }
 }

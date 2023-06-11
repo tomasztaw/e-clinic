@@ -1,6 +1,7 @@
 package pl.taw.controller.domain;
 
 import lombok.*;
+import pl.taw.infrastructure.database.entity.DoctorEntity;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -18,5 +19,8 @@ public class Reservation {
     LocalTime startTimeR;
     LocalTime endTimeR;
     Boolean occupation;
+
+    // relacje
+    DoctorEntity doctor;
 
 }

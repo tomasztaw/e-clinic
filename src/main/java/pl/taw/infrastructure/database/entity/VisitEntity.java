@@ -10,7 +10,7 @@ import java.util.Optional;
 @With
 @Entity
 @Builder
-@ToString(of = {"visitId", "doctor", "patient", "startTime", "note", "status"})
+@ToString(of = {"visitId", "doctorId", "patientId", "startTime", "note", "status"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "visits")
@@ -21,13 +21,11 @@ public class VisitEntity {
     @Column(name = "visit_id")
     private Integer visitId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "doctor_id")
-    private DoctorEntity doctor;
+    @Column(name = "doctor_id")
+    private Integer doctorId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "patient_id")
-    private PatientEntity patient;
+    @Column(name = "patient_id")
+    private Integer patientId;
 
     @Column(name = "start_time")
     private LocalDateTime startTime;
@@ -40,6 +38,15 @@ public class VisitEntity {
 
     @Column(name = "status")
     private String status;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "doctor_id", referencedColumnName = "doctor_id", insertable = false, updatable = false)
+    private DoctorEntity doctor;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "patient_id", referencedColumnName = "patient_id", insertable = false, updatable = false)
+    private PatientEntity patient;
+
 
     // Powiązanie wizyt z opiniami (wizyta może mieć jedną opinię dodaną po czasie, dlatego na początku zawsze jest pusta)
     @OneToOne(mappedBy = "visit", cascade = CascadeType.ALL, orphanRemoval = true)

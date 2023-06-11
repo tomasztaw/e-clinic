@@ -1,20 +1,18 @@
-package pl.taw.controller.dto;
+package pl.taw.controller.api;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.*;
-import pl.taw.infrastructure.database.entity.OpinionEntity;
-import pl.taw.infrastructure.database.entity.VisitEntity;
-
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-@With
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PatientDTO {
+public class UpdatePatientDTO {
 
     private Integer patientId;
     private String name;
@@ -25,9 +23,5 @@ public class PatientDTO {
     private String phone;
     @Email
     private String email;
-
-    // relacje
-    private List<VisitEntity> visits;
-    private List<OpinionEntity> createdOpinions;
 
 }

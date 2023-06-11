@@ -5,7 +5,7 @@
 </head>
 <body>
 <h2>Dodaj opinię</h2>
-<form action="/zapisz" method="post">
+<form action="/clinic/opinions/zapisz" method="post">
 
   <div>
     <label>Id pacjenta:</label>
@@ -23,8 +23,8 @@
 
   <div>
     <label>Komentarz:</label>
-    <label>
-      <input type="text" name="comment" th:field="*{comment}">
+    <label>Komentarz:
+      <textarea name="comment" rows="4" cols="50"></textarea>
     </label>
   </div>
 

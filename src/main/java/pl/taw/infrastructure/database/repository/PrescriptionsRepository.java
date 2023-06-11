@@ -30,7 +30,7 @@ public class PrescriptionsRepository implements PrescriptionDAO {
     @Override
     public List<PrescriptionDTO> findByDoctorId(Integer doctorId) {
         return prescriptionJapRepository.findAll().stream()
-                .filter(prescription -> prescription.getDoctor().getDoctorId().equals(doctorId))
+                .filter(prescription -> prescription.getDoctorId().equals(doctorId))
                 .map(prescriptionsEntityMapper::mapFromEntity)
                 .toList();
     }
@@ -38,7 +38,7 @@ public class PrescriptionsRepository implements PrescriptionDAO {
     @Override
     public List<PrescriptionDTO> findByPatientId(Integer patientId) {
         return prescriptionJapRepository.findAll().stream()
-                .filter(prescription -> prescription.getPatient().getPatientId().equals(patientId))
+                .filter(prescription -> prescription.getPatientId().equals(patientId))
                 .map(prescriptionsEntityMapper::mapFromEntity)
                 .toList();
     }

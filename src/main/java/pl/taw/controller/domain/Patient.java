@@ -1,6 +1,10 @@
 package pl.taw.controller.domain;
 
 import lombok.*;
+import pl.taw.infrastructure.database.entity.OpinionEntity;
+import pl.taw.infrastructure.database.entity.VisitEntity;
+
+import java.util.List;
 
 @With
 @Value
@@ -16,4 +20,7 @@ public class Patient {
     String email;
     String phone;
 
+    // relacje
+    List<VisitEntity> visits;
+    List<OpinionEntity> createdOpinions;
 }

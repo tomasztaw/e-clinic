@@ -1,6 +1,12 @@
 package pl.taw.controller.domain;
 
 import lombok.*;
+import pl.taw.infrastructure.database.entity.DoctorScheduleEntity;
+import pl.taw.infrastructure.database.entity.OpinionEntity;
+import pl.taw.infrastructure.database.entity.ReservationEntity;
+import pl.taw.infrastructure.database.entity.VisitEntity;
+
+import java.util.List;
 
 @With
 @Value
@@ -15,5 +21,11 @@ public class Doctor {
     String title;
     String email;
     String phone;
+
+    // relacje
+    List<VisitEntity> visits;
+    List<OpinionEntity> opinions;
+    List<DoctorScheduleEntity> schedules;
+    List<ReservationEntity> reservations;
 
 }

@@ -13,7 +13,10 @@
 <body>
     <div class="container">
         <h1>Sorry mate, seems that You can't use this webapp properly!</h1>
+<!--        <b><span th:if="${errorMessage}" th:text="${errorMessage}">Error</span></b>-->
         <b><span th:if="${errorMessage}" th:text="${errorMessage}">Error</span></b>
+
+
         <br>
         <img th:src="@{/images/oh_no.png}" alt="OH NO" width="auto" height="300px"/>
         <br>

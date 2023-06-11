@@ -29,7 +29,7 @@ public class ReservationRepository implements ReservationDAO {
     @Override
     public List<ReservationDTO> findReservationByDoctorId(Integer doctorId) {
         return reservationJpaRepository.findAll().stream()
-                .filter(reservation -> reservation.getDoctor().getDoctorId().equals(doctorId))
+                .filter(reservation -> reservation.getDoctorId().equals(doctorId))
                 .map(reservationEntityMapper::mapFromEntity)
                 .toList();
     }

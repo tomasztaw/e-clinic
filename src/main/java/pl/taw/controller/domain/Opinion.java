@@ -1,6 +1,9 @@
 package pl.taw.controller.domain;
 
 import lombok.*;
+import pl.taw.infrastructure.database.entity.DoctorEntity;
+import pl.taw.infrastructure.database.entity.PatientEntity;
+import pl.taw.infrastructure.database.entity.VisitEntity;
 
 import java.time.LocalDateTime;
 
@@ -11,13 +14,17 @@ import java.time.LocalDateTime;
 @ToString(of = {"opinionId", "doctorId", "patientId", "comment"})
 public class Opinion {
 
-    // Możliwe, że w przyszłości będzie potrzebne zmienić pola doctorId i patientId na obiekty Encji lub DTO
     Integer opinionId;
-    Integer doctorId; // !!!
-    Integer patientId; // !!!
+    Integer doctorId;
+    Integer patientId;
     String comment;
     LocalDateTime createdAt;
 
-    Visit visit;
+    Integer visitId;
+
+    // relacje
+    DoctorEntity doctor;
+    PatientEntity patient;
+    VisitEntity visit;
 
 }
