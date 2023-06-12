@@ -82,10 +82,12 @@
 
     <div class="media-body">
       <h2>Opis</h2>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua.
-        Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur.
-        Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-        Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </p>
+      <p>Witamy na profilu lekarza Alojzego Kowalskiego, specjalisty laryngologa!
+        Dr Alojzy Kowalski jest doświadczonym lekarzem o szerokim zakresie wiedzy i umiejętności w dziedzinie laryngologii. Z oddaniem i empatią dba o zdrowie i dobro swoich pacjentów, oferując kompleksową opiekę medyczną.
+        Dr Kowalski posiada bogate doświadczenie w diagnostyce, leczeniu i zapobieganiu różnym schorzeniom układu oddechowego, gardła, nosa i uszu. Jego specjalizacją są m.in. choroby zatok, przewlekłe zapalenia gardła, zaburzenia słuchu, alergie oraz chirurgia nosa i gardła.
+        Pacjenci dr Kowalskiego cenią go za profesjonalizm, cierpliwość i indywidualne podejście do każdego przypadku. Jego priorytetem jest zapewnienie wysokiej jakości opieki medycznej, opartej na najnowszych osiągnięciach medycyny i najlepszych praktykach.
+        Dr Alojzy Kowalski jest również zaangażowany w edukację pacjentów, udzielając im szczegółowych informacji na temat ich schorzeń, dostępnych opcji leczenia i profilaktyki. Dzięki temu pacjenci są dobrze poinformowani i aktywnie uczestniczą w procesie decyzyjnym dotyczącym swojego zdrowia.
+        Jeśli szukasz kompetentnego laryngologa, który jest zawsze gotowy pomóc Ci w rozwiązaniu problemów zdrowotnych związanych z gardłem, nosem czy uszami, dr Alojzy Kowalski jest tutaj dla Ciebie. Skontaktuj się z nami, aby umówić się na wizytę i odkryć, jak dr Kowalski może pomóc Ci odzyskać zdrowie i komfort.</p>
 
       <h2>Godziny przyjęć</h2>
       <table class="table table-striped">
@@ -106,7 +108,7 @@
   <div class="actions">
     <button class="btn btn-primary">Umów wizytę</button>
     <a th:href="@{/opinions/doctor/{doctorId}(doctorId=${doctorId})}" class="btn btn-primary btn-lg">Opinie</a>
-
+    <button class="btn btn-primary" onclick="history.go(-1);">Powrót</button>
   </div>
 
   <a class="btn btn-light" th:href="@{/doctors}">Show all doctors</a>

@@ -16,8 +16,8 @@ import java.util.Optional;
 public class VisitDTO {
 
     private Integer visitId;
-    private Integer doctor_id;
-    private Integer patient_id;
+    private Integer doctorId;
+    private Integer patientId;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private String note;

@@ -31,6 +31,107 @@
   </table>
 
   <h2>Wizyty</h2>
+  <table class="table table-striped table-hover">
+    <thead>
+    <tr>
+      <th>Id wizyty</th>
+      <th>Id lekarza</th>
+      <th>Data wizyty</th>
+      <th>Notatka</th>
+      <th>Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="visit : ${visits}">
+      <td th:text="${visit.visitId}"></td>
+      <td th:text="${visit.doctorId}"></td>
+      <td th:text="${visit.startTime}"></td>
+      <td th:text="${visit.note}"></td>
+      <td th:text="${visit.status}"></td>
+      <td>
+<!--        <form action="#" th:action="@{/patients/show/{patientId}(patientId=${patient.patientId})}"-->
+        <form action="#" th:action="@{/}"
+              method="GET">
+          <button type="submit" class="btn btn-info">Przycisk dla opinii (dodaj/aktualizuj)</button>
+        </form>
+      </td>
+      <td>
+<!--        th:action="@{/patients/usun/{patientId}(patientId=${patient.patientId})}"-->
+        <form action="#" th:action="@{/}"
+              th:method="DELETE">
+          <button type="submit" class="btn btn-danger">Usuń opinię</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <h2>Opinie</h2>
+  <table class="table table-striped table-hover">
+    <thead>
+    <tr>
+      <th>Id opinii</th>
+      <th>Id lekarza</th>
+      <th>Treść</th>
+      <th>Data</th>
+      <th>Id wizyty</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="opinion : ${opinions}">
+      <td th:text="${opinion.opinionId}"></td>
+      <td th:text="${opinion.doctorId}"></td>
+      <td th:text="${opinion.comment}"></td>
+      <td th:text="${opinion.createdAt}"></td>
+      <td th:text="${opinion.visitId}"></td>
+      <td>
+        <!--        <form action="#" th:action="@{/patients/show/{patientId}(patientId=${patient.patientId})}"-->
+        <form action="#" th:action="@{/}"
+              method="GET">
+          <button type="submit" class="btn btn-info">Aktualizuj</button>
+        </form>
+      </td>
+      <td>
+        <!--        th:action="@{/patients/usun/{patientId}(patientId=${patient.patientId})}"-->
+        <form action="#" th:action="@{/}"
+              th:method="DELETE">
+          <button type="submit" class="btn btn-danger">Usuń opinię</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <h2>Recepty</h2>
+  <table class="table table-striped table-hover">
+    <thead>
+    <tr>
+      <th>Id recepty</th>
+      <th>Id lekarza</th>
+      <th>Nazwa leku</th>
+      <th>Dawkowanie</th>
+      <th>Instrukcja</th>
+      <th>Data</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="prescription : ${prescriptions}">
+      <td th:text="${prescription.prescriptionId}"></td>
+      <td th:text="${prescription.doctorId}"></td>
+      <td th:text="${prescription.medicationName}"></td>
+      <td th:text="${prescription.dosage}"></td>
+      <td th:text="${prescription.instructions}"></td>
+      <td th:text="${prescription.createdAt}"></td>
+      <td>
+        <!--        <form action="#" th:action="@{/patients/show/{patientId}(patientId=${patient.patientId})}"-->
+        <form action="#" th:action="@{/doctors/show/{doctorId}(doctorId=${prescription.doctorId})}"
+              method="GET">
+          <button type="submit" class="btn btn-info">Pokaż lekarza</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
 
 
 

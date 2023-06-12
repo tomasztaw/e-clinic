@@ -36,6 +36,7 @@
         .content .btn-container {
             display: flex;
             justify-content: center;
+            margin: 15px;
         }
 
         .content .btn-container .btn-primary {
@@ -93,13 +94,20 @@
             <a th:href="@{/doctors}" class="btn btn-primary btn-lg">Go to the doctors page</a>
             <a th:href="@{/patients/dashboard}" class="btn btn-primary btn-lg">Go to the patients page</a>
         </div>
+        <div class="btn-container">
+            <a th:href="@{/doctors/panel}" class="btn btn-primary btn-lg">Panel z lekarzami</a>
+            <a th:href="@{/patients/panel}" class="btn btn-primary btn-lg">Panel z pacjentami</a>
+        </div>
+        <div class="btn-container">
+            <a th:href="@{/visits/panel}" class="btn btn-primary btn-lg">Panel z wizytami</a>
+            <a th:href="@{/opinions/panel}" class="btn btn-primary btn-lg">Panel z opiniomi</a>
+        </div>
     </div>
 
     <a th:href="@{/opinions/dodaj}" class="btn btn-primary btn-lg">dodaj opinie!?#@!</a>
 
     <a th:href="@{/patients/proste-dodaj}" class="btn btn-primary btn-lg">!?#@! Dodaj Pacjenta !?#@!</a>
 
-    <a th:href="@{/patients/panel}" class="btn btn-primary btn-lg">Panel z pacjentami</a>
 
 
     <div class="footer">

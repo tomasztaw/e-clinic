@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface DoctorDAO {
 
-    DoctorEntity findById(int id);
+    DoctorEntity findEntityById(Integer doctorId);
 
     // dodanie find zwracające DTO
     DoctorDTO findById(Integer doctorId);

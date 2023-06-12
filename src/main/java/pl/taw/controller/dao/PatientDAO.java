@@ -1,6 +1,8 @@
 package pl.taw.controller.dao;
 
 import pl.taw.controller.dto.PatientDTO;
+import pl.taw.controller.dto.VisitDTO;
+import pl.taw.controller.dto.VisitsDTO;
 import pl.taw.infrastructure.database.entity.PatientEntity;
 
 import java.util.List;
@@ -24,5 +26,6 @@ public interface PatientDAO {
     List<PatientDTO> findAvailable();
 
     Optional<PatientDTO> findByPesel(String pesel);
+
 
 }

@@ -25,7 +25,7 @@ public class DoctorService {
 
 
     public DoctorEntity getDoctorById(int id) {
-        return doctorDAO.findById(id);
+        return doctorDAO.findEntityById(id);
     }
 
     public void saveDoctor(DoctorEntity doctor) {

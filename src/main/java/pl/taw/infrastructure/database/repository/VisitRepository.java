@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import pl.taw.controller.dao.VisitDAO;
 import pl.taw.controller.dto.VisitDTO;
+import pl.taw.controller.dto.VisitsDTO;
 import pl.taw.controller.exception.NotFoundException;
 import pl.taw.infrastructure.database.entity.VisitEntity;
 import pl.taw.infrastructure.database.repository.jpa.VisitJpaRepository;
@@ -44,10 +45,32 @@ public class VisitRepository implements VisitDAO {
     }
 
     @Override
+    public List<VisitDTO> findAll() {
+        return visitJpaRepository.findAll().stream()
+                .map(visitEntityMapper::mapFromEntity)
+                .toList();
+    }
+
+    @Override
+    public VisitsDTO findByDate(LocalDate date) {
+        return VisitsDTO.of(visitJpaRepository.findAll().stream()
+                .filter(visit -> visit.getStartTime().toLocalDate().equals(date))
+                .map(visitEntityMapper::mapFromEntity)
+                .toList());
+    }
+
+    @Override
     public VisitEntity findById(Integer visitId) {
         return visitJpaRepository.findById(visitId)
                 .orElseThrow(() -> new NotFoundException(
                         "Could not find VisitEntity with id: [%s]".formatted(visitId)));
+    }
+
+    @Override
+    public VisitDTO findDTOById(Integer visitId) {
+        return visitJpaRepository.findById(visitId)
+                .map(visitEntityMapper::mapFromEntity)
+                .orElseThrow(() -> new NotFoundException("Could not found VisitEntity with id: [%s]".formatted(visitId)));
     }
 
     List<VisitEntity> findAllByDate(LocalDate date) {

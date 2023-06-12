@@ -11,7 +11,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.taw.controller.business.DoctorService;
 import pl.taw.controller.business.WorkingHours;
+import pl.taw.controller.dao.DoctorDAO;
 import pl.taw.controller.dto.DoctorDTO;
+import pl.taw.controller.dto.DoctorsDTO;
 import pl.taw.controller.dto.mapper.DoctorMapper;
 import pl.taw.infrastructure.database.entity.DoctorEntity;
 import pl.taw.infrastructure.database.repository.jpa.DoctorJpaRepository;
@@ -43,7 +45,67 @@ public class DoctorController {
     // serwis do pobrania godzin pracy lekarza
     private DoctorService doctorService;
 
+    // warstwa dostępu
+    private DoctorDAO doctorDAO;
 
+    // dodajemy panel dla lekarzy
+    @GetMapping("/panel")
+    public String panelLekarzy(Model model) {
+        List<DoctorDTO> doctors = doctorDAO.findAll().stream().map(doctorMapper::map).toList();
+        model.addAttribute("doctors", doctors);
+        model.addAttribute("updateDoctor", new DoctorDTO());
+        return "doctor-panel";
+    }
+
+    @PostMapping("/add")
+    public String addDoctor(
+            @RequestParam(value = "name") String name,
+            @RequestParam(value = "surname") String surname,
+            @RequestParam(value = "title") String title,
+            @RequestParam(value = "phone") String phone,
+            @RequestParam(value = "email") String email
+    ) {
+        DoctorEntity newDoctor = DoctorEntity.builder()
+                .name(name)
+                .surname(surname)
+                .title(title)
+                .phone(phone)
+                .email(email)
+                .build();
+        doctorDAO.saveDoctor(newDoctor);
+        return "redirect:/doctors/doctor-panel";
+    }
+
+    @PutMapping("/update")
+    public String updateDoctor(
+            @ModelAttribute("updateDoctor") DoctorDTO updateDoctor
+    ) {
+        DoctorEntity doctorEntity = doctorDAO.findEntityById(updateDoctor.getDoctorId());
+        doctorEntity.setName(updateDoctor.getName());
+        doctorEntity.setSurname(updateDoctor.getSurname());
+        doctorEntity.setTitle(updateDoctor.getTitle());
+        doctorEntity.setPhone(updateDoctor.getPhone());
+        doctorEntity.setEmail(updateDoctor.getEmail());
+        doctorDAO.saveDoctor(doctorEntity);
+        return "redirect:/doctors/doctor-panel";
+    }
+
+    @DeleteMapping("/delete/{doctorId}")
+    public String deleteDoctorById(@PathVariable Integer doctorId) {
+        Optional<DoctorEntity> doctorForDelete = doctorJpaRepository.findById(doctorId);
+        if (doctorForDelete.isPresent()) {
+            doctorDAO.delete(doctorForDelete.get());
+        } else {
+            throw new EntityNotFoundException("Could not found doctor with id: [%s]".formatted(doctorId));
+        }
+        return "redirect:/doctors/panel";
+    }
+
+
+
+
+
+    // DZIAŁA !!!!
     @GetMapping(SPECIALIZATION)
     public String doctorsBySpecializationsView(@PathVariable String specialization, Model model) {
         model.addAttribute("doctors", doctorJpaRepository.findAll().stream()
@@ -54,6 +116,7 @@ public class DoctorController {
         return "doctors-specialization";
     }
 
+    // DZIAŁA !!!
     @GetMapping(value = SPECIALIZATIONS)
     public String specializations(Model model) {
         List<String> specializations = doctorJpaRepository.findAll().stream()
@@ -65,6 +128,7 @@ public class DoctorController {
         return "specializations";
     }
 
+    // DZIAŁA !!!
     @GetMapping("/show/{doctorId}")
     public String showDoctorDetails(
             @PathVariable Integer doctorId,

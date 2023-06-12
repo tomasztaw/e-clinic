@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import pl.taw.controller.dao.PatientDAO;
 import pl.taw.controller.dto.PatientDTO;
+import pl.taw.controller.dto.VisitDTO;
 import pl.taw.controller.exception.NotFoundException;
 import pl.taw.infrastructure.database.entity.PatientEntity;
 import pl.taw.infrastructure.database.repository.jpa.PatientJpaRepository;
@@ -78,4 +79,5 @@ public class PatientRepository implements PatientDAO {
         return patientJpaRepository.findByPesel(pesel)
                 .map(patientEntityMapper::mapFromEntity);
     }
+
 }

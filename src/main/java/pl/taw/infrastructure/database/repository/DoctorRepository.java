@@ -21,11 +21,11 @@ public class DoctorRepository implements DoctorDAO {
     private final DoctorEntityMapper doctorEntityMapper;
 
     @Override
-    public DoctorEntity findById(int id) {
-        return doctorJpaRepository.findById(id)
+    public DoctorEntity findEntityById(Integer doctorId) {
+        return doctorJpaRepository.findById(doctorId)
                 .orElseThrow(
                         () -> new NotFoundException("Could not found doctor with id: [%s]"
-                                .formatted(id)));
+                                .formatted(doctorId)));
     }
 
     // dodanie find zwracające DTO

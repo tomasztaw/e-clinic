@@ -11,12 +11,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import pl.taw.controller.dto.PatientDTO;
-import pl.taw.controller.dto.PatientsDTO;
-import pl.taw.controller.dto.VisitsDTO;
+import pl.taw.controller.dao.OpinionDAO;
+import pl.taw.controller.dao.PrescriptionDAO;
+import pl.taw.controller.dao.VisitDAO;
+import pl.taw.controller.dto.*;
 import pl.taw.controller.dto.mapper.PatientMapper;
 import pl.taw.controller.dto.mapper.VisitMapper;
 import pl.taw.infrastructure.database.entity.PatientEntity;
+import pl.taw.infrastructure.database.entity.VisitEntity;
 import pl.taw.infrastructure.database.repository.VisitRepository;
 import pl.taw.infrastructure.database.repository.jpa.PatientJpaRepository;
 import pl.taw.infrastructure.database.repository.jpa.VisitJpaRepository;
@@ -46,6 +48,9 @@ public class PatientController {
     private final VisitRepository visitRepository;
     private final VisitJpaRepository visitJpaRepository;
     private final VisitMapper visitMapper;
+    private final VisitDAO visitDAO;
+    private final OpinionDAO opinionDAO;
+    private final PrescriptionDAO prescriptionDAO;
 
     @GetMapping(LOGIN)
     public String showLoginForm() {
@@ -237,7 +242,7 @@ public class PatientController {
     public String panel(Model model) {
         List<PatientEntity> patients = patientJpaRepository.findAll();
         model.addAttribute("patients", patients);  // dodajemy model zawierający wszystkich pacjentów
-        model.addAttribute("updatePatientDTO", new UpdatePatientDTO()); // dodajemy model z pacjentem do aktualizacji
+        model.addAttribute("updatePatientDTO", new PatientDTO()); // dodajemy model z pacjentem do aktualizacji
         return "patient-add-update";
     }
 
@@ -270,7 +275,7 @@ public class PatientController {
     @PutMapping("/aktualizuj")
     public String aktualizujPacjenta(
             // parametrem jest wypełniony model z widoku patient-add-update
-            @ModelAttribute("updatePatientDTO") UpdatePatientDTO updatePatientDTO
+            @ModelAttribute("updatePatientDTO") PatientDTO updatePatientDTO
     ) {
         // pobieramy pacjenta z bazy na podstawie jego id
         PatientEntity patientEntity = patientJpaRepository.findById(updatePatientDTO.getPatientId())
@@ -288,17 +293,40 @@ public class PatientController {
         return "redirect:/patients/panel";
     }
 
-    // wyświetlanie pacjent
+    // wyświetlanie pacjent   !!!! DZIAŁA
     @GetMapping("/show/{patientId}")
     public String wyswietlPacjenta(
             // w ścieżce podajemy id pacjenta i model, w jakim będzie przekazany pacjent
             @PathVariable Integer patientId,
             Model model
     ) {
+        // dodajemy pacjenta  !!! Można pomyśleć nad mapą z widokami
         PatientEntity patientEntity = patientJpaRepository.findById(patientId)
                 .orElseThrow(() -> new EntityNotFoundException("Could not found patient with id: [%s]".formatted(patientId)));
+        // dodajemy jego wizyty
+        List<VisitDTO> visits = visitDAO.findByPatientId(patientId);
+
+        // dodajemy jego opinie
+        List<OpinionDTO> opinions = opinionDAO.findByPatientId(patientId);
+
+        // dodajemy recepty
+        List<PrescriptionDTO> prescriptions = prescriptionDAO.findByPatientId(patientId);
+
         model.addAttribute("patient", patientEntity);
+        model.addAttribute("visits", visits);
+        model.addAttribute("opinions", opinions);
+        model.addAttribute("prescriptions", prescriptions);
+
         return "wyswietl-pacjenta";
     }
 
+    // !!! DZIAŁA !!!!
+    @DeleteMapping("/usun/{patientId}")
+    public String usunPacjent(@PathVariable Integer patientId) {
+        patientJpaRepository.deleteById(patientId);
+        return "redirect:/patients/panel";
+    }
+
+    // można w przyszłości pomyśleć nad aktualizacją tylko części danych (telefon, email)
+    // w panelu aktualizacji wyświetlają się aktualne dane i poprawia się tylko potrzebne, reszta zostaje
 }

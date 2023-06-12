@@ -243,7 +243,7 @@ public class OpinionController {
     public ModelAndView dodaj() {
         // dodanie pacjenta i doktora na sztywno
         PatientEntity patient = patientDAO.findById(5);
-        DoctorEntity doctor = doctorDAO.findById(2);
+        DoctorEntity doctor = doctorDAO.findEntityById(2);
 
         ModelAndView modelAndView = new ModelAndView("dodaj");
         modelAndView.addObject("patient", patient);
