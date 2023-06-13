@@ -16,8 +16,6 @@ import java.util.List;
 public class OpinionService {
 
     private final OpinionDAO opinionDAO;
-//    private final OpinionMapper opinionMapper;
-//    private final OpinionEntityMapper opinionEntityMapper;
 
     // czyli serwis pobiera poprzez warstwę DAO obiekt Encji zamieniony na DTO, który jest pobierany poprzez
     // Repozytorium na bazie JPA i następnie przekazywany do kontrolera
@@ -33,11 +31,6 @@ public class OpinionService {
         return opinionDAO.findByPatientId(patientId);
     }
 
-
-//    public void updateOpinion(OpinionDTO opinionDTO) {
-//
-//    }
-
     public void updateOpinion(OpinionDTO opinionDTO) {
         OpinionEntity existingOpinion = opinionDAO.findById(opinionDTO.getOpinionId());
 
@@ -48,10 +41,6 @@ public class OpinionService {
             throw new IllegalArgumentException("Opinion with ID " + opinionDTO.getOpinionId() + " does not exist.");
         }
     }
-
-//    public void addOpinion(OpinionDTO opinionDTO) {
-//
-//    }
 
     public void addOpinion(OpinionDTO opinionDTO) {
         OpinionEntity newOpinion = new OpinionEntity();

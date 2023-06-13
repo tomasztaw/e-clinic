@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title>Historia lekarza</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <style>
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header-logo {
+            flex-grow: 1;
+        }
+
+        .header-logo img {
+            max-width: 30%;
+            height: auto;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .photo-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            overflow: hidden;
+            /* Dodana linia */
+        }
+
+        .photo-container img {
+            width: 200px;
+            height: 280px;
+            object-fit: cover;
+            object-position: top;
+            /* Dodana linia */
+            margin-right: 20px;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .actions button {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <div class="header">
+      <div class="header-logo">
+        <!-- Tutaj wstaw kod dla logo -->
+        <img th:src="@{/images/2135.jpg}" alt="Logo">
+      </div>
+      <!-- Możesz dodać dodatkowe elementy w nagłówku -->
+      <a th:href="@{/}" class="btn btn-info" role="button">Powrót do strony głównej</a>
+    </div>
+
+    <h2>Twoja Historia</h2>
+    <h3>Jesteś zalogowany jako <span th:text="${doctor.name + ' ' + doctor.surname}"></span> </h3>
+
+    <div class="media-body">
+
+      <h1>Odbyte wizyty</h1>
+      <ul th:if="${visits.isEmpty()}">
+        <li>Brak wizyt, coś słaby z ciebie lekarz:)</li>
+      </ul>
+      <ul th:if="${not visits.isEmpty()}">
+        <li th:each="visit : ${visits}">
+          <div class="visit-container">
+            <ul>
+              <li>Id: <span th:text="${visit.visitId}"></span></li>
+              <li>Pacjent: <span th:text="${visit.patient.name + ' ' + visit.patient.surname}"></span></li>
+              <li>Data: <span th:text="${#temporals.format(visit.startTime, 'dd MM yyyy HH:mm')}"></span></li>
+              <li>Notatka: <span th:text="${visit.note}"></span></li>
+              <li>Status: <span th:text="${visit.status}"></span></li>
+            </ul>
+            <div class="visit-buttons">
+              <a th:if="${visit.opinion != null}" th:href="@{/opinions/edit/{opinionId}(opinionId=${visit.opinion.opinionId})}">
+                <button class="btn btn-primary">Zmodyfikuj opinię</button>
+              </a>
+
+<!--              <a th:unless="${visit.opinion != null}" th:href="@{/opinions/add/{visitId}(visitId=${visit.visitId})}">-->
+              <a th:unless="${visit.opinion != null}" th:href="@{/opinions/add/}">
+                <button class="btn btn-primary">Dodaj opinię</button>
+              </a>
+
+              <button class="btn btn-danger">Sprawdź receptę</button>
+            </div>
+          </div>
+          <br>
+        </li>
+      </ul>
+
+      <div class="actions">
+        <button class="btn btn-primary">Umów wizytę</button>
+        <button class="btn btn-primary" onclick="history.go(-1);">Powrót</button>
+      </div>
+
+      <div class="footer">
+        <!-- Tutaj wstaw kod dla stopki -->
+        <p>© 2023 Twoja Stopka</p>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+
+</html>

@@ -22,4 +22,8 @@ public interface VisitDAO {
     List<VisitDTO> findAll();
 
     VisitsDTO findByDate(LocalDate date);
+
+    void saveVisit(VisitEntity newVisit);
+
+    void delete(VisitEntity visitForDelete);
 }

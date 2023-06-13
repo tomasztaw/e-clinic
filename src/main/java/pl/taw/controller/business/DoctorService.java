@@ -29,7 +29,6 @@ public class DoctorService {
     }
 
     public void saveDoctor(DoctorEntity doctor) {
-        // Walidacja, logika biznesowa, itp.
         doctorDAO.saveDoctor(doctor);
     }
 

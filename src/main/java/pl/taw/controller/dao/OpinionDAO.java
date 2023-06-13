@@ -18,4 +18,10 @@ public interface OpinionDAO {
 
     void save(OpinionEntity opinionEntity);
 
+    List<OpinionDTO> findAll();
+
+    OpinionDTO findDTOById(Integer opinionId);
+
+    void delete(OpinionEntity opinionForDelete);
+
 }

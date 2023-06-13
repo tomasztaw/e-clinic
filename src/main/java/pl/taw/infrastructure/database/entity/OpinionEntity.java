@@ -26,14 +26,14 @@ public class OpinionEntity {
     @Column(name = "patient_id")
     private Integer patientId;
 
+    @Column(name = "visit_id", insertable = false, updatable = false)
+    private Integer visitId;
+
     @Column(name = "comment")
     private String comment;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
-
-    @Column(name = "visit_id")
-    private Integer visitId;
 
     // relacje
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -45,9 +45,8 @@ public class OpinionEntity {
     private PatientEntity patient;
 
     // id wizyty na początku zawsze będzie null, dlatego nie ustawiłem jako klucz obcy
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "visit_id", referencedColumnName = "visit_id", insertable = false, updatable = false)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "visit_id", referencedColumnName = "visit_id")
     private VisitEntity visit;
-
 
 }

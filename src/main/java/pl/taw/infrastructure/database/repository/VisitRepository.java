@@ -60,6 +60,16 @@ public class VisitRepository implements VisitDAO {
     }
 
     @Override
+    public void saveVisit(VisitEntity newVisit) {
+        visitJpaRepository.save(newVisit);
+    }
+
+    @Override
+    public void delete(VisitEntity visitForDelete) {
+        visitJpaRepository.delete(visitForDelete);
+    }
+
+    @Override
     public VisitEntity findById(Integer visitId) {
         return visitJpaRepository.findById(visitId)
                 .orElseThrow(() -> new NotFoundException(
@@ -80,17 +90,4 @@ public class VisitRepository implements VisitDAO {
     }
 
 
-
-    // do usunięcia, takie metody są generowane z JpaRepo
-//    List<VisitEntity> findAllByDoctorId(Integer doctorId) {
-//        return visitJpaRepository.findAll().stream()
-//                .filter(entity -> entity.getDoctor().getDoctorId().equals(doctorId))
-//                .toList();
-//    }
-//
-//    List<VisitEntity> findAllByPatientId(Integer patientId) {
-//        return visitJpaRepository.findAll().stream()
-//                .filter(entity -> entity.getPatient().getPatientId().equals(patientId))
-//                .toList();
-//    }
 }

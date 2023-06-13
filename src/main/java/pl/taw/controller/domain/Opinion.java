@@ -20,8 +20,6 @@ public class Opinion {
     String comment;
     LocalDateTime createdAt;
 
-    Integer visitId;
-
     // relacje
     DoctorEntity doctor;
     PatientEntity patient;

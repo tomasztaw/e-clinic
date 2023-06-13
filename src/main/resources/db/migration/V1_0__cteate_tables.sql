@@ -30,15 +30,16 @@ CREATE TABLE opinions (
     opinion_id SERIAL    PRIMARY KEY,
     doctor_id  INT       REFERENCES doctors (doctor_id)   NOT NULL,
     patient_id INT       REFERENCES patients (patient_id) NOT NULL,
+    visit_id   INT       REFERENCES visits (visit_id),
     comment    TEXT                                       NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    visit_id   INT
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE prescriptions (
   prescription_id   SERIAL    PRIMARY KEY,
   doctor_id         INT       REFERENCES doctors (doctor_id)   NOT NULL,
   patient_id        INT       REFERENCES patients (patient_id) NOT NULL,
+  visit_id          INT       REFERENCES visits (visit_id),
   medication_name   VARCHAR(128)                               NOT NULL,
   dosage            VARCHAR(64),
   instructions      TEXT,

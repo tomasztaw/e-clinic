@@ -4,6 +4,7 @@ import lombok.*;
 import pl.taw.infrastructure.database.entity.DoctorEntity;
 import pl.taw.infrastructure.database.entity.OpinionEntity;
 import pl.taw.infrastructure.database.entity.PatientEntity;
+import pl.taw.infrastructure.database.entity.PrescriptionEntity;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -27,5 +28,6 @@ public class VisitDTO {
     private DoctorEntity doctor;
     private PatientEntity patient;
     private OpinionEntity opinion;
+    private PrescriptionEntity prescription;
 
 }

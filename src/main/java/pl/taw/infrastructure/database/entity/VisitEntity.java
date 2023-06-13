@@ -47,9 +47,11 @@ public class VisitEntity {
     @JoinColumn(name = "patient_id", referencedColumnName = "patient_id", insertable = false, updatable = false)
     private PatientEntity patient;
 
-
-    // Powiązanie wizyt z opiniami (wizyta może mieć jedną opinię dodaną po czasie, dlatego na początku zawsze jest pusta)
-    @OneToOne(mappedBy = "visit", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "visit")
     private OpinionEntity opinion;
 
+
+    // recepta powinna być do każdej wizyt (można pomyśleć nad @MapId, ale nie chcę komplikować)
+    @OneToOne(mappedBy = "visit", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private PrescriptionEntity prescription;
 }

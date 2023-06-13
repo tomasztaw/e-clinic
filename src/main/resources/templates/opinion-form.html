@@ -27,7 +27,8 @@
 
     <!-- Formularz do edycji opinii -->
     <input type="hidden" th:field="*{opinionId}">
-    <input type="hidden" th:field="*{visitId}">
+    <input type="hidden" th:field="*{visit}">
+<!--    <input type="hidden" th:field="*{visitId}">-->
     <!-- Pozostałe pola formularza -->
     ...
     <h2>Edytowanie opinii</h2>
@@ -46,25 +47,6 @@
     <button type="submit">Dodaj opinię</button>
   </form>
 
-
-  <!--  <form action="#" th:action="@{/opinions/save}" th:object="${opinionDTO}" method="post">-->
-<!--    <input type="hidden" th:if="${opinionId}" th:field="*{opinionId}">-->
-<!--    <input type="hidden" th:field="*{visitId}">-->
-
-<!--    <label for="rating">Ocena:</label>-->
-<!--    <select id="rating" th:field="*{rating}">-->
-<!--      <option value="1">1</option>-->
-<!--      <option value="2">2</option>-->
-<!--      <option value="3">3</option>-->
-<!--      <option value="4">4</option>-->
-<!--      <option value="5">5</option>-->
-<!--    </select>-->
-
-<!--    <label for="comment">Komentarz:</label>-->
-<!--    <textarea id="comment" th:field="*{comment}"></textarea>-->
-
-<!--    <button type="submit">Zapisz</button>-->
-<!--  </form>-->
 
 
 </body>

@@ -75,9 +75,9 @@
         </td>
         <td>
           <form action="#"
-                th:action="@{/doctors/usun/{doctorId}(doctorId=${doctor.doctorId})}"
-                th:method="DELETE">
-            <button type="submit" class="btn btn-danger">Delete</button>
+                th:action="@{/visits/doctor/{doctorId}(doctorId=${doctor.doctorId})}"
+                th:method="GET">
+            <button type="submit" class="btn btn-danger">Wizyty</button>
           </form>
         </td>
       </tr>

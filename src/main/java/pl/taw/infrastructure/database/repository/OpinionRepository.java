@@ -28,7 +28,6 @@ public class OpinionRepository implements OpinionDAO {
     @Override
     public List<OpinionDTO> findByPatientId(Integer patientId) {
         return opinionJpaRepository.findAll().stream()
-//                .filter(opinion -> opinion.getPatient().getPatientId().equals(patientId))
                 .filter(opinion -> opinion.getPatientId().equals(patientId))
                 .map(opinionEntityMapper::mapFromEntity)
                 .toList();
@@ -37,7 +36,6 @@ public class OpinionRepository implements OpinionDAO {
     @Override
     public List<OpinionDTO> findByDoctorId(Integer doctorId) {
         return opinionJpaRepository.findAll().stream()
-//                .filter(opinion -> opinion.getDoctor().getDoctorId().equals(doctorId))
                 .filter(opinion -> opinion.getDoctorId().equals(doctorId))
                 .map(opinionEntityMapper::mapFromEntity)
                 .toList();
@@ -47,7 +45,6 @@ public class OpinionRepository implements OpinionDAO {
     @Override
     public List<OpinionEntity> findAllOpinionByDoctorId(Integer doctorId) {
         return opinionJpaRepository.findAll().stream()
-//                .filter(opinion -> opinion.getDoctor().getDoctorId().equals(doctorId))
                 .filter(opinion -> opinion.getDoctorId().equals(doctorId))
                 .toList();
     }
@@ -56,5 +53,24 @@ public class OpinionRepository implements OpinionDAO {
     @Override
     public void save(OpinionEntity existingOpinion) {
         opinionJpaRepository.save(existingOpinion);
+    }
+
+    @Override
+    public List<OpinionDTO> findAll() {
+        return opinionJpaRepository.findAll().stream()
+                .map(opinionEntityMapper::mapFromEntity)
+                .toList();
+    }
+
+    @Override
+    public OpinionDTO findDTOById(Integer opinionId) {
+        return opinionJpaRepository.findById(opinionId)
+                .map(opinionEntityMapper::mapFromEntity)
+                .orElseThrow(() -> new NotFoundException("Could not found opinion with id: [%s]".formatted(opinionId)));
+    }
+
+    @Override
+    public void delete(OpinionEntity opinionForDelete) {
+        opinionJpaRepository.delete(opinionForDelete);
     }
 }

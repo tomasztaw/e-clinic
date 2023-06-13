@@ -46,4 +46,7 @@ public class PrescriptionEntity {
     @JoinColumn(name = "patient_id", referencedColumnName = "patient_id", insertable = false, updatable = false)
     private PatientEntity patient;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "visit_id")
+    private VisitEntity visit;
 }

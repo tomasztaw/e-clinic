@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+        rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
+        crossorigin="anonymous">
+  <title>Panel opinii</title>
+</head>
+<body>
+<div class="container">
+  <div class="page-header" id="banner">
+    <h2>Dodaj opinię</h2>
+    <form action="#" th:action="@{/opinions/add}" method="POST">
+      <div class="form-group">
+        Id lekarza: <input type="text" th:name="doctorId"/>
+        Id pacjenta: <input type="text" th:name="patientId"/>
+        Id wizyty: <input type="text" th:name="visitId"/>
+        Treść: <input type="text" th:name="comment"/>
+        <input type="hidden" th:name="createdAt" th:value="${T(java.time.LocalDateTime).now()}"/>
+<!--        Godzina: <input type="text" th:name="createdAt"/>-->
+      </div>
+      <br>
+      <div class="form-group">
+        <input type="submit" value="Dodaj opinię" name="button"/>
+      </div>
+    </form>
+  </div>
+  <br>
+  <h2>Aktualizuj opinię</h2>
+  <form action="#"
+        th:action="@{/opinions/update}"
+        th:method="PUT"
+        th:object="${updateOpinion}">
+    <div class="form-group">
+      ID opinii: <input type="text" th:field="*{opinionId}"/>
+      ID lekarza: <input type="text" th:field="*{doctorId}"/>
+      ID pacjent: <input type="text" th:field="*{patientId}"/>
+      ID wizyty: <input type="text" th:field="*{visitId}"/>
+      Opis: <input type="text" th:field="*{comment}"/>
+      <input type="hidden" th:field="*{createdAt}" th:value="${T(java.time.LocalDateTime).now()}"/>
+    </div>
+    <br>
+    <div class="form-group">
+      <input type="submit" value="Aktualizuj opinię" name="button"/>
+    </div>
+  </form>
+  <br>
+  <div>
+    <h2>Wszystkie opinie</h2>
+    <table class="table table-striped table-hover">
+      <thead>
+      <tr>
+        <th>Id opinii</th>
+        <th>Id lekarza</th>
+        <th>Lekarz</th>
+        <th>Id pacjenta</th>
+        <th>Pacjent</th>
+        <th>Id wizyty</th>
+        <th>Data dodania</th>
+        <th>Opis</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="opinion : ${opinions}">
+        <td th:text="${opinion.opinionId}"></td>
+        <td th:text="${opinion.doctorId}"></td>
+        <td th:text="${opinion.doctor.name + ' ' + opinion.doctor.surname}"></td>
+        <td th:text="${opinion.patientId}"></td>
+        <td th:text="${opinion.patient.name + ' ' + opinion.patient.surname}"></td>
+        <td th:text="${opinion.visitId}"></td>
+        <td th:text="${#temporals.format(opinion.createdAt, 'dd MM yyyy HH:mm')}"></td>
+        <td th:text="${opinion.comment}"></td>
+        <td>
+          <form action="#" th:action="@{/opinions/show/{opinionId}(opinionId=${opinion.opinionId})}"
+                method="GET">
+            <button type="submit" class="btn btn-info">Show</button>
+          </form>
+        </td>
+        <td>
+          <form action="#"
+                th:action="@{/opinions/delete/{opinionId}(opinionId=${opinion.opinionId})}"
+                th:method="DELETE">
+            <button type="submit" class="btn btn-danger">Delete</button>
+          </form>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <button class="btn btn-primary" onclick="history.go(-1);">Powrót</button>
+</div>
+</body>
+</html>

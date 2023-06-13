@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Visit</title>
+  <title>Opinion</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -57,7 +57,7 @@
       <a th:href="@{/}" class="btn btn-info" role="button">Powrót do strony głównej</a>
     </div>
 
-    <h2>Wizyta</h2>
+    <h2>Opinia</h2>
     <table class="table table-striped table-hover">
       <tr>
         <th>Id</th>
@@ -66,30 +66,28 @@
         <th>Data</th>
       </tr>
       <tr>
-        <td th:text="${visit.visitId}"></td>
-        <td th:text="${visit.doctor.name + ' ' + visit.doctor.surname + ' ' + visit.doctor.title}"></td>
-        <td th:text="${visit.patient.name + ' ' + visit.patient.surname}"></td>
-        <td th:text="${#temporals.format(visit.startTime, 'dd MM yyyy HH:mm')}"></td>
+        <td th:text="${opinion.opinionId}"></td>
+        <td th:text="${opinion.doctor.name + ' ' + opinion.doctor.surname + ' ' + opinion.doctor.title}"></td>
+        <td th:text="${opinion.patient.name + ' ' + opinion.patient.surname}"></td>
+        <td th:text="${#temporals.format(opinion.createdAt, 'dd MM yyyy HH:mm')}"></td>
       </tr>
     </table>
 
     <div class="media">
 
       <div class="media-body">
-        <h2>Opis wizyty</h2>
-        <h3 th:text="${visit.note}"></h3>
+        <h2>Opis</h2>
+        <h3 th:text="${opinion.comment}"></h3>
 
-        <h2>Recepta</h2>
+        <h2>Wizyta</h2>
         <table class="table table-striped">
           <tr>
-            <th>Nazwa leku/ów</th>
-            <th>Dozowanie</th>
-            <th>Instrukcja</th>
+            <th>Data</th>
+            <th>Notatka</th>
           </tr>
           <tr>
-            <td th:text="${prescription.medicationName}"></td>
-            <td th:text="${prescription.dosage}"></td>
-            <td th:text="${prescription.instructions}"></td>
+            <td th:text="${#temporals.format(visit.startTime, 'dd MM yyyy HH:mm')}"></td>
+            <td th:text="${visit.note}"></td>
           </tr>
         </table>
       </div>
@@ -97,11 +95,11 @@
 
     <div class="actions">
       <button class="btn btn-primary">Umów /wizytę/ kolejną wizytę</button>
-      <a th:href="@{/opinions/doctor/{doctorId}(doctorId=${visit.doctorId})}" class="btn btn-primary btn-lg">Opinie o tym lekarzy</a>
+      <a th:href="@{/opinions/doctor/{doctorId}(doctorId=${opinion.doctorId})}" class="btn btn-primary btn-lg">Opinie o tym lekarzy</a>
       <button class="btn btn-primary" onclick="history.go(-1);">Powrót</button>
     </div>
 
-    <a class="btn btn-light" th:href="@{/visits/panel}">Show all visits</a>
+    <a class="btn btn-light" th:href="@{/opinions/panel}">Pokaż wszystkie opinie</a>
 
     <div class="footer">
       <!-- Tutaj wstaw kod dla stopki -->

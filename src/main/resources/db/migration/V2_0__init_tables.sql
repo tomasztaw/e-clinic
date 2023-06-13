@@ -29,14 +29,14 @@ VALUES (1, 1, '2023-06-01 08:30:00', '2023-06-01 08:40:00', 'Pacjent bardzo chor
 (2, 5, '2023-06-08 08:00:00', '2023-06-08 08:10:00', 'Zapalenie wyrostka', 'odbyta');
 
 
-INSERT INTO opinions (doctor_id, patient_id, comment, created_at, visit_id)
-VALUES (1, 1, 'Bardzo dobry lekarz, polecam', '2023-06-01 12:45:00', 1),
-(1, 2, 'Wszystko super, polecam', '2023-06-05 13:45:00', 8),
-(6, 6, 'Słabo, lekarz chyba pijany', '2023-06-02 16:45:00', 6),
-(5, 5, 'Bardzo dobry lekarz, elegancko', '2023-06-02 12:45:00', 5),
-(7, 5, 'Chłop wystawia lewe L4', '2023-06-05 12:45:00', 7),
-(2, 4, 'Wszystko OK', '2023-06-05 13:45:00', 9),
-(4, 5, 'Olewatorskie podejście', '2023-06-06 18:45:00', 10);
+INSERT INTO opinions (doctor_id, patient_id, visit_id, comment, created_at)
+VALUES (1, 1, 1,'Bardzo dobry lekarz, polecam', '2023-06-01 12:45:00'),
+(1, 2, 8, 'Wszystko super, polecam', '2023-06-05 13:45:00'),
+(6, 6, 6, 'Słabo, lekarz chyba pijany', '2023-06-02 16:45:00'),
+(5, 5, 5, 'Bardzo dobry lekarz, elegancko', '2023-06-02 12:45:00'),
+(7, 5, 7, 'Chłop wystawia lewe L4', '2023-06-05 12:45:00'),
+(2, 4, 9, 'Wszystko OK', '2023-06-05 13:45:00'),
+(4, 5, 10, 'Olewatorskie podejście', '2023-06-06 18:45:00');
 
 INSERT INTO prescriptions (doctor_id, patient_id, medication_name, dosage, instructions, created_at)
 VALUES (1, 1, 'medicKA', 'dawka 3 x 3', 'rano i wieczorem', '2023-06-01 08:40:00'),
