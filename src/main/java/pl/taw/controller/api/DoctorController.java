@@ -37,6 +37,7 @@ public class DoctorController {
     public static final String SPECIALIZATION = "/specialization/{specialization}";
     public static final String SPECIALIZATIONS = "/specializations";
     public static final String OPINIONS = "/opinions";
+    public static final String SCHEDULE = "/schedule/{doctorId}";
 
 
     private DoctorJpaRepository doctorJpaRepository;
@@ -47,6 +48,17 @@ public class DoctorController {
 
     // warstwa dostępu
     private DoctorDAO doctorDAO;
+
+    // grafik lekarza
+    @GetMapping(SCHEDULE)
+    public String getDoctorSchedule(@PathVariable Integer doctorId, Model model) {
+        DoctorDTO doctor = doctorDAO.findById(doctorId);
+        List<WorkingHours> workingHoursList = doctorService.getWorkingHours(doctorId);
+        model.addAttribute("workingHoursList", workingHoursList);
+        model.addAttribute("doctor", doctor);
+//        return "doctor-schedule";
+        return "doctor-schedule-date";
+    }
 
     // dodajemy panel dla lekarzy
     @GetMapping("/panel")

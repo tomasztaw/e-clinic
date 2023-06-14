@@ -26,8 +26,8 @@ public class OpinionEntity {
     @Column(name = "patient_id")
     private Integer patientId;
 
-    @Column(name = "visit_id", insertable = false, updatable = false)
-    private Integer visitId;
+//    @Column(name = "visit_id_visit") //, insertable = false, updatable = false) - nie zapisywało tego pola do bazy
+//    private Integer visitIdVisit;
 
     @Column(name = "comment")
     private String comment;
@@ -48,5 +48,7 @@ public class OpinionEntity {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "visit_id", referencedColumnName = "visit_id")
     private VisitEntity visit;
+
+
 
 }

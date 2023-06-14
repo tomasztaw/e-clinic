@@ -3,6 +3,7 @@ package pl.taw.controller.business;
 import lombok.*;
 
 import java.time.LocalTime;
+import java.util.List;
 
 @Data
 @With
@@ -14,6 +15,12 @@ public class WorkingHours {
     private DayOfWeek dayOfWeek;
     private LocalTime startTime;
     private LocalTime endTime;
+
+    private List<String> appointmentTimes;
+    private final int intervalMinutes = 10;
+    private final int breakMinutes = 10;
+
+
 
     public enum DayOfWeek {
         MONDAY(1, "Poniedziałek"),
@@ -40,13 +47,13 @@ public class WorkingHours {
             return name;
         }
 
-        public static DayOfWeek fromInt(int numer) {
+        public static DayOfWeek fromInt(int number) {
             for (DayOfWeek day : DayOfWeek.values()) {
-                if (day.getNumber() == numer) {
+                if (day.getNumber() == number) {
                     return day;
                 }
             }
-            throw new IllegalArgumentException("Invalid day of the week number: " + numer);
+            throw new IllegalArgumentException("Invalid day of the week number: " + number);
         }
     }
 

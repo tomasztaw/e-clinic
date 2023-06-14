@@ -17,7 +17,8 @@ public class OpinionDTO {
     private Integer opinionId;
     private Integer doctorId;
     private Integer patientId;
-    private Integer visitId;
+//    private Integer visitIdVisit;
+//    private VisitEntity visit;
     private String comment;
     private LocalDateTime createdAt;
 

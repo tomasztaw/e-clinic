@@ -106,7 +106,8 @@
   </div>
 
   <div class="actions">
-    <button class="btn btn-primary">Umów wizytę</button>
+<!--    <button class="btn btn-primary">Umów wizytę</button>-->
+    <a th:href="@{/doctors/schedule/{doctorId}(doctorId=${doctorId})}" class="btn btn-primary btn-lg">Umów wizytę</a>
     <a th:href="@{/opinions/doctor/{doctorId}(doctorId=${doctorId})}" class="btn btn-primary btn-lg">Opinie</a>
     <button class="btn btn-primary" onclick="history.go(-1);">Powrót</button>
   </div>

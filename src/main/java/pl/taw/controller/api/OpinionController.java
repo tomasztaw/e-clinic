@@ -58,7 +58,7 @@ public class OpinionController {
         OpinionDTO opinion = opinionDAO.findDTOById(opinionId);
         model.addAttribute("opinion", opinion);
         // dodawanie modelu z wizytą
-        VisitDTO visit = visitDAO.findDTOById(opinion.getVisitId());
+        VisitDTO visit = visitDAO.findDTOById(opinion.getVisit().getVisitId());
         model.addAttribute("visit", visit);
         return "opinion-view";
     }
@@ -68,13 +68,14 @@ public class OpinionController {
             @RequestParam(value = "doctorId") Integer doctorId,
             @RequestParam(value = "patientId") Integer patientId,
             @RequestParam(value = "visitId") Integer visitId,
-            @RequestParam(value = "comment") String comment
-//            @RequestParam(value = "createdAt")LocalDateTime createdAt
+            @RequestParam(value = "comment") String comment,
+            @RequestParam(value = "createdAt")LocalDateTime createdAt
     ) {
+        VisitEntity visit = visitDAO.findById(visitId);
         OpinionEntity newOpinion = OpinionEntity.builder()
                 .doctorId(doctorId)
                 .patientId(patientId)
-                .visitId(visitId)
+                .visit(visit)
                 .comment(comment)
                 .createdAt(LocalDateTime.now())
                 .build();
@@ -92,6 +93,7 @@ public class OpinionController {
         opinionEntity.setOpinionId(updateOpinion.getOpinionId());
         opinionEntity.setDoctorId(updateOpinion.getDoctorId());
         opinionEntity.setPatientId(updateOpinion.getPatientId());
+        opinionEntity.setVisit(updateOpinion.getVisit());
         opinionEntity.setComment(updateOpinion.getComment());
         opinionEntity.setCreatedAt(updateOpinion.getCreatedAt());
 

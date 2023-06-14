@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import pl.taw.controller.business.WorkingHours;
 import pl.taw.infrastructure.database.entity.DoctorScheduleEntity;
 import pl.taw.infrastructure.database.entity.OpinionEntity;
 import pl.taw.infrastructure.database.entity.ReservationEntity;
@@ -33,5 +34,9 @@ public class DoctorDTO {
     private List<OpinionEntity> opinions;
     private List<DoctorScheduleEntity> schedules;
     private List<ReservationEntity> reservations;
+
+    // grafik
+    private WorkingHours workingHours;
+    private List<String> appointmentTimes;
 
 }
