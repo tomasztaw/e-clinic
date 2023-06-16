@@ -38,3 +38,7 @@ spring:
 
   security:
     enabled: false
+
+  resources:
+    static-locations: classpath:/static/
+

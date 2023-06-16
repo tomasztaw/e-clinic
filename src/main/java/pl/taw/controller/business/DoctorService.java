@@ -14,6 +14,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,7 +57,7 @@ public class DoctorService {
     }
 
     // pobieranie godzin pracy lekarza
-    public List<WorkingHours> getWorkingHours(int doctorId) {
+    public List<WorkingHours> getWorkingHours(Integer doctorId) {
         List<DoctorScheduleDTO> doctorSchedules = doctorScheduleDAO.findScheduleByDoctorId(doctorId);
         return convertToWorkingHoursList(doctorSchedules);
     }
@@ -77,98 +78,51 @@ public class DoctorService {
 //        return workingHoursList;
 //    }
 
-
-    // #################### wyświetlanie od obecnego czasu
     private List<WorkingHours> convertToWorkingHoursList(List<DoctorScheduleDTO> doctorSchedules) {
         List<WorkingHours> workingHoursList = new ArrayList<>();
-        DayOfWeek currentDayOfWeek = DayOfWeek.from(LocalDate.now());
+        LocalDate currentDate = LocalDate.now();
+        LocalTime currentTime = LocalTime.now();
+
+        int currentDayOfWeek = currentDate.getDayOfWeek().getValue();
+        int additionalWeeks = 0;
+
+        if (currentDayOfWeek >= DayOfWeek.THURSDAY.getValue()) {
+            additionalWeeks = 1;
+        }
+
+        LocalDate endDate = currentDate.plusWeeks(additionalWeeks).with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
 
         for (DoctorScheduleDTO doctorSchedule : doctorSchedules) {
             WorkingHours workingHours = new WorkingHours();
             workingHours.setDayOfWeek(WorkingHours.DayOfWeek.fromInt(doctorSchedule.getDayOfWeek()));
+            workingHours.setStartTime(doctorSchedule.getStartTimeDs());
+            workingHours.setEndTime(doctorSchedule.getEndTimeDs());
 
-            // Jeśli to jest dzisiejszy dzień, uwzględnij tylko godziny od chwili obecnej
-            if (currentDayOfWeek.getValue() == workingHours.getDayOfWeek().getNumber()) {
-                LocalTime currentTime = LocalTime.now();
-                if (currentTime.isBefore(doctorSchedule.getStartTimeDs())) {
-                    // Jeśli jeszcze nie rozpoczęto pracy, ustaw aktualny czas jako początek pracy
-                    workingHours.setStartTime(currentTime);
-                } else {
-                    workingHours.setStartTime(doctorSchedule.getStartTimeDs());
-                }
-                workingHours.setEndTime(doctorSchedule.getEndTimeDs());
-            } else {
-                workingHours.setStartTime(doctorSchedule.getStartTimeDs());
-                workingHours.setEndTime(doctorSchedule.getEndTimeDs());
+            // Jeśli dzisiejsza data odpowiada dniowi z harmonogramu, ustaw bieżący czas jako początek godzin pracy
+            if (currentDate.getDayOfWeek().getValue() == doctorSchedule.getDayOfWeek()) {
+                workingHours.setStartTime(currentTime);
             }
 
             workingHours.setAppointmentTimes(generateAppointmentTimes(
                     workingHours.getStartTime(),
                     workingHours.getEndTime(),
                     workingHours.getIntervalMinutes()));
+
             workingHoursList.add(workingHours);
+        }
+
+        // Filtrowanie harmonogramu do końca przyszłego tygodnia, jeśli dzisiaj jest czwartek
+        if (currentDayOfWeek == DayOfWeek.THURSDAY.getValue()) {
+            workingHoursList.removeIf(workingHours ->
+                    workingHours.getDayOfWeek().getNumber() > DayOfWeek.SUNDAY.getValue() ||
+                            workingHours.getDayOfWeek().getNumber() < currentDayOfWeek ||
+                            (workingHours.getDayOfWeek().getNumber() == currentDayOfWeek &&
+                                    workingHours.getStartTime().isBefore(currentTime))
+            );
         }
 
         return workingHoursList;
     }
-
-    // ########################### wyświetlanie kolejnego tygodnia !!!!! nie działa
-
-//    private List<WorkingHours> convertToWorkingHoursList(List<DoctorScheduleDTO> doctorSchedules) {
-//        List<WorkingHours> workingHoursList = new ArrayList<>();
-////        LocalDate currentDate = LocalDate.now();
-////        DayOfWeek currentDayOfWeek = DayOfWeek.from(currentDate);
-//
-//        DayOfWeek currentDayOfWeek = DayOfWeek.from(LocalDate.now());
-//
-//
-//        for (int i = 0; i < 7; i++) {
-//            WorkingHours workingHours = new WorkingHours();
-//            DayOfWeek dayOfWeek = currentDayOfWeek.plus(i);
-//            workingHours.setDayOfWeek(WorkingHours.DayOfWeek.fromInt(dayOfWeek.getValue()));
-//
-//            // Sprawdź, czy to jest dzisiejszy dzień
-//            if (i == 0) {
-//                LocalTime currentTime = LocalTime.now();  // Inicjalizacja currentTime dla dzisiejszego dnia
-//                boolean isToday = true;
-//
-//                // Jeśli jeszcze nie rozpoczęto pracy, ustaw aktualny czas jako początek pracy
-//                for (DoctorScheduleDTO doctorSchedule : doctorSchedules) {
-//                    if (doctorSchedule.getDayOfWeek() == dayOfWeek.getValue()
-//                            && currentTime.isBefore(doctorSchedule.getStartTimeDs())) {
-//                        workingHours.setStartTime(currentTime);
-//                        workingHours.setEndTime(doctorSchedule.getEndTimeDs());
-//                        isToday = false;
-//                        break;
-//                    }
-//                }
-//
-//                if (isToday) {
-//                    workingHours.setStartTime(doctorSchedules.get(0).getStartTimeDs());
-//                    workingHours.setEndTime(doctorSchedules.get(0).getEndTimeDs());
-//                }
-//            } else {
-//                // Sprawdź harmonogram lekarza dla danego dnia tygodnia
-//                for (DoctorScheduleDTO doctorSchedule : doctorSchedules) {
-//                    if (doctorSchedule.getDayOfWeek() == dayOfWeek.getValue()) {
-//                        workingHours.setStartTime(doctorSchedule.getStartTimeDs());
-//                        workingHours.setEndTime(doctorSchedule.getEndTimeDs());
-//                        break;
-//                    }
-//                }
-//            }
-//
-//            workingHours.setAppointmentTimes(generateAppointmentTimes(
-//                    workingHours.getStartTime(),
-//                    workingHours.getEndTime(),
-//                    workingHours.getIntervalMinutes()));
-//            workingHoursList.add(workingHours);
-//        }
-//
-//        return workingHoursList;
-//    }
-
-
 
 
     private List<String> generateAppointmentTimes(LocalTime startTime, LocalTime endTime, int intervalMinutes) {
@@ -178,6 +132,7 @@ public class DoctorService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         while (currentTime.isBefore(endTime)) {
             if (currentTime.getMinute() == 0 && currentTime != startTime) {
+                // przerwa 10 minut co pełną godzinę
                 currentTime = currentTime.plusMinutes(intervalMinutes);
             }
             appointmentTimes.add(currentTime.format(formatter));

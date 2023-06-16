@@ -49,6 +49,7 @@ CREATE TABLE prescriptions (
 CREATE TABLE reservations (
     id             SERIAL  PRIMARY KEY,
     doctor_id      INT     REFERENCES doctors (doctor_id)   NOT NULL,
+    patient_id     INT     REFERENCES patients (patient_id) NOT NULL,
     day            DATE                                     NOT NULL,
     start_time_r   TIME                                     NOT NULL,
     end_time_r     TIME                                     NOT NULL,

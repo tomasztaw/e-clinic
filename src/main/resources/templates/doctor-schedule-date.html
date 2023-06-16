@@ -13,16 +13,16 @@
 <!-- Pobranie obecnej daty -->
 <div th:with="currentDate=${T(java.time.LocalDate).now()}">
     <!-- Wyświetlenie obecnej daty i obliczenie następnego dnia tygodnia -->
-    <h2 th:text="'Today is ' + ${currentDate}"></h2>
-    <h2 th:text="'Next day is ' + ${currentDate.plusDays(1)}"></h2>
+    <h2 th:text="'Dzisiaj jest ' + ${currentDate}"></h2>
+    <h2 th:text="'Jutro będzie ' + ${currentDate.plusDays(1)}"></h2>
     <!-- Kolejne dni tygodnia... -->
 </div>
 
 <ul th:each="workingHours : ${workingHoursList}">
     <li>
         <h3 th:text="${workingHours.dayOfWeek.name}"></h3>
-        <p th:text="'Working hours: ' + ${workingHours.startTime} + ' - ' + ${workingHours.endTime}"></p>
-        <p>Appointment times:</p>
+        <p th:text="'Godziny pracy: ' + ${workingHours.startTime} + ' - ' + ${workingHours.endTime}"></p>
+        <p>Dostępne terminy:</p>
         <ul>
             <li th:each="time : ${workingHours.appointmentTimes}" th:text="${time}"></li>
         </ul>

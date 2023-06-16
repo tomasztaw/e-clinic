@@ -41,4 +41,7 @@ public class PatientEntity {
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OpinionEntity> createdOpinions;
 
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<ReservationEntity> reservations;
+
 }

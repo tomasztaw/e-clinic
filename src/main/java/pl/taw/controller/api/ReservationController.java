@@ -11,9 +11,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ReservationController {
 
     public static final String RESERVATIONS = "/reservations";
+    public static final String KALENDARZ = "/kalendarz";
+    public static final String INDEX = "/index";
 
     @GetMapping
     public String reservationPage() {
         return "reservations";
+    }
+
+    @GetMapping(KALENDARZ)
+    public String calendar() {
+        return "kalendarz";
+    }
+
+    @GetMapping(INDEX)
+    public String index() {
+        return "index";
     }
 }
