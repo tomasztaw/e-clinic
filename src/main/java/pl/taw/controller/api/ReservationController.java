@@ -12,6 +12,7 @@ public class ReservationController {
 
     public static final String RESERVATIONS = "/reservations";
     public static final String KALENDARZ = "/kalendarz";
+    public static final String CALENDAR = "/calendar";
     public static final String INDEX = "/index";
 
     @GetMapping
@@ -19,13 +20,13 @@ public class ReservationController {
         return "reservations";
     }
 
-    @GetMapping(KALENDARZ)
+    @GetMapping(INDEX)
     public String calendar() {
-        return "kalendarz";
+        return "index";
     }
 
-    @GetMapping(INDEX)
+    @GetMapping(CALENDAR)
     public String index() {
-        return "index";
+        return "calendar";
     }
 }

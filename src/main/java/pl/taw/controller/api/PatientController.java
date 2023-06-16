@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.taw.controller.dao.OpinionDAO;
 import pl.taw.controller.dao.PrescriptionDAO;
@@ -18,12 +17,10 @@ import pl.taw.controller.dto.*;
 import pl.taw.controller.dto.mapper.PatientMapper;
 import pl.taw.controller.dto.mapper.VisitMapper;
 import pl.taw.infrastructure.database.entity.PatientEntity;
-import pl.taw.infrastructure.database.entity.VisitEntity;
 import pl.taw.infrastructure.database.repository.VisitRepository;
 import pl.taw.infrastructure.database.repository.jpa.PatientJpaRepository;
 import pl.taw.infrastructure.database.repository.jpa.VisitJpaRepository;
 
-import java.math.BigDecimal;
 import java.net.URI;
 import java.util.List;
 
@@ -40,6 +37,11 @@ public class PatientController {
     public static final String PATIENT_UPDATE_PHONE_VIEW = "/phone-view";
     public static final String PATIENT_ID_RESULT = "/%s";
     public static final String HISTORY = "/history";
+    public static final String PANEL = "/panel";
+    public static final String ADD = "/add";
+    public static final String UPDATE = "/update";
+    public static final String SHOW = "/show/{patientId}";
+    public static final String DELETE = "/delete/{patientId}";
 
 
     private final PatientJpaRepository patientJpaRepository;
@@ -61,15 +63,14 @@ public class PatientController {
     @PostMapping(LOGIN)
     public String login(@RequestParam String username, @RequestParam String password, Model model) {
         if (username.equals("user") && password.equals("test")) {
-//            return "redirect:/clinic/patients/dashboard";
             return "redirect:/dashboard";
         } else {
             model.addAttribute("error", "Invalid username or password");
-//            return "redirect:/clinic/patients/login";
             return "redirect:/login";
         }
     }
 
+    // wyświetlanie na sztywno pacjenta o id: 5
     @GetMapping(DASHBOARD)
     public String showDashboard(Model model) {
         String pesel = "8506171837";
@@ -82,6 +83,7 @@ public class PatientController {
         return "patient-dashboard";
     }
 
+    // przepisane na sztywno do pacjenta o id: 5 - wyświetla atrapę
     @GetMapping(HISTORY)
     public String showHistory(Model model) {
         String pesel = "8506171837";
@@ -99,6 +101,7 @@ public class PatientController {
         return "history";
     }
 
+    // to chyba api
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public PatientsDTO patientsList() {
@@ -107,6 +110,7 @@ public class PatientController {
                 .toList());
     }
 
+    // nie wiem
     @GetMapping(value = PATIENT_ID,
             produces = {
                     MediaType.APPLICATION_JSON_VALUE,
@@ -119,6 +123,7 @@ public class PatientController {
                 ));
     }
 
+    // nie wiem, chyba api
     @PostMapping
     @Transactional
     public ResponseEntity<PatientDTO> addPatient(
@@ -137,6 +142,7 @@ public class PatientController {
                 .build();
     }
 
+    // api
     @PutMapping(PATIENT_ID)
     @Transactional
     public ResponseEntity<?> updatePatient(
@@ -155,6 +161,7 @@ public class PatientController {
         return ResponseEntity.ok().build();
     }
 
+    // api
     @DeleteMapping(PATIENT_ID)
     public ResponseEntity<?> deletePatient(
             @PathVariable Integer id
@@ -168,7 +175,7 @@ public class PatientController {
         }
     }
 
-    // dodanie dla widoku aktualizacji telefonu
+    // dodanie dla widoku aktualizacji telefonu - nie działa
     @GetMapping(PATIENT_UPDATE_PHONE_VIEW)
     public String showUpdatePhoneView(Model model) {
         String pesel = "8506171837";
@@ -182,6 +189,15 @@ public class PatientController {
         return "update-phone-view";
     }
 
+    @PatchMapping("/updatePhone/{patientId}")
+    public String updatePatientPhoneView(
+            @RequestParam("patientId") Integer patientId,
+            @RequestParam(required = true) String newPhone) {
+
+        return "patient-dashboard";
+    }
+
+    // może nie działać, bo to chyba api
     @PatchMapping(PATIENT_UPDATE_PHONE)
     public ResponseEntity<?> updatePatientPhone(
             @RequestParam Integer patientId,
@@ -195,7 +211,7 @@ public class PatientController {
         return ResponseEntity.ok().build();
     }
 
-
+    // api
     @GetMapping(value = "test-header")
     public ResponseEntity<?> testHeader(
             @RequestHeader(value = HttpHeaders.ACCEPT) MediaType accept,
@@ -207,38 +223,10 @@ public class PatientController {
                 .body("Accepted: " + accept);
     }
 
-    // proste dodawanie pacjenta
-    @GetMapping("/proste-dodaj")
-    public String showAddPatientForm(Model model) {
-        model.addAttribute("patientDTO", new PatientDTO());
-        return "xxx-dodaj-pacjenta";
-    }
-
-
-    @PostMapping("/proste-zapisz")
-    public String prosteZapisz(
-            @ModelAttribute("patientDTO") PatientDTO patientDTO,
-            BindingResult result
-    ) {
-        if (result.hasErrors()) {
-            return "error";
-        }
-        PatientEntity patient = PatientEntity.builder()
-                .name(patientDTO.getName())
-                .surname(patientDTO.getSurname())
-                .pesel(patientDTO.getPesel())
-                .phone(patientDTO.getPhone())
-                .email(patientDTO.getEmail())
-                .build();
-        patientJpaRepository.save(patient);
-
-        return "success";
-    }
-
     // NOWA PRÓBA DODANIE PANELU Z PACJENTAMI   !!!!!!!!!!!!!  Działa:)
 
     // wyświetlamy panel z pacjentami
-    @GetMapping("/panel")
+    @GetMapping(PANEL)
     public String panel(Model model) {
         List<PatientEntity> patients = patientJpaRepository.findAll();
         model.addAttribute("patients", patients);  // dodajemy model zawierający wszystkich pacjentów
@@ -248,8 +236,8 @@ public class PatientController {
 
     // DZIAŁA !!!!!
     // dodajemy pacjenta
-    @PostMapping("/nowy")
-    public String dodajPacjenta(
+    @PostMapping(ADD)
+    public String addPatient(
             // dodajemy parametry z zapytania jako argumenty metody
             @RequestParam(value = "name") String name,
             @RequestParam(value = "surname") String surname,
@@ -272,8 +260,8 @@ public class PatientController {
     }
 
     // DZIAŁA !!!!!
-    @PutMapping("/aktualizuj")
-    public String aktualizujPacjenta(
+    @PutMapping(UPDATE)
+    public String updatePatient(
             // parametrem jest wypełniony model z widoku patient-add-update
             @ModelAttribute("updatePatientDTO") PatientDTO updatePatientDTO
     ) {
@@ -294,8 +282,8 @@ public class PatientController {
     }
 
     // wyświetlanie pacjent   !!!! DZIAŁA
-    @GetMapping("/show/{patientId}")
-    public String wyswietlPacjenta(
+    @GetMapping(SHOW)
+    public String showPatient(
             // w ścieżce podajemy id pacjenta i model, w jakim będzie przekazany pacjent
             @PathVariable Integer patientId,
             Model model
@@ -305,10 +293,8 @@ public class PatientController {
                 .orElseThrow(() -> new EntityNotFoundException("Could not found patient with id: [%s]".formatted(patientId)));
         // dodajemy jego wizyty
         List<VisitDTO> visits = visitDAO.findByPatientId(patientId);
-
         // dodajemy jego opinie
         List<OpinionDTO> opinions = opinionDAO.findByPatientId(patientId);
-
         // dodajemy recepty
         List<PrescriptionDTO> prescriptions = prescriptionDAO.findByPatientId(patientId);
 
@@ -317,12 +303,12 @@ public class PatientController {
         model.addAttribute("opinions", opinions);
         model.addAttribute("prescriptions", prescriptions);
 
-        return "wyswietl-pacjenta";
+        return "patient-show";
     }
 
     // !!! DZIAŁA !!!!
-    @DeleteMapping("/usun/{patientId}")
-    public String usunPacjent(@PathVariable Integer patientId) {
+    @DeleteMapping(DELETE)
+    public String deletePatientById(@PathVariable Integer patientId) {
         patientJpaRepository.deleteById(patientId);
         return "redirect:/patients/panel";
     }

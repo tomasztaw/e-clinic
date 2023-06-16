@@ -30,9 +30,14 @@ public class OpinionController {
     public static final String OPINIONS = "/opinions";
     public static final String DOCTOR_ID = "/doctor/{doctorId}";
     public static final String PATIENT_ID = "/patient/{patientId}";
-    public static final String ADD = "/add/{visitId}";
+//    public static final String ADD = "/add/{visitId}";
     //    public static final String ADD = "/add";
     public static final String EDIT = "/edit/{opinionId}";
+    public static final String PANEL = "/panel";
+    public static final String ADD = "/add";
+    public static final String SHOW = "/show/{opinionId}";
+    public static final String UPDATE = "/update";
+    public static final String DELETE = "/delete/{opinionId}";
 
 
     private final OpinionService opinionService;
@@ -45,7 +50,7 @@ public class OpinionController {
 
 
     // panel
-    @GetMapping("/panel")
+    @GetMapping(PANEL)
     public String showOpinionPanel(Model model) {
         List<OpinionDTO> opinions = opinionDAO.findAll();
         model.addAttribute("opinions", opinions);
@@ -53,7 +58,7 @@ public class OpinionController {
         return "opinion-panel";
     }
 
-    @GetMapping("/show/{opinionId}")
+    @GetMapping(SHOW)
     public String showOpinion(@PathVariable("opinionId") Integer opinionId, Model model) {
         OpinionDTO opinion = opinionDAO.findDTOById(opinionId);
         model.addAttribute("opinion", opinion);
@@ -63,7 +68,7 @@ public class OpinionController {
         return "opinion-view";
     }
 
-    @PostMapping("/add")
+    @PostMapping(ADD)
     public String addOpinion(
             @RequestParam(value = "doctorId") Integer doctorId,
             @RequestParam(value = "patientId") Integer patientId,
@@ -85,7 +90,7 @@ public class OpinionController {
         return "redirect:/opinions/opinion-panel";
     }
 
-    @PutMapping("/update")
+    @PutMapping(UPDATE)
     public String updateOpinion(
             @ModelAttribute("updateOpinion") OpinionDTO updateOpinion
     ) {
@@ -102,7 +107,7 @@ public class OpinionController {
         return "redirect:/opinions/opinion-panel";
     }
 
-    @DeleteMapping("/delete/{opinionId}")
+    @DeleteMapping(UPDATE)
     public String deleteOpinionById(@PathVariable Integer opinionId) {
         OpinionEntity opinionForDelete = opinionDAO.findById(opinionId);
         opinionDAO.delete(opinionForDelete);
@@ -212,63 +217,6 @@ public class OpinionController {
         return "redirect:/opinions";
     }
 
-    @GetMapping("/dodaj-opinie")
-    public String showOpinionForm(Model model) {
-//        List<DoctorEntity> doctors = doctorService.getAllDoctors();
-//        List<PatientEntity> patients = patientService.getAllPatients();
-//        List<VisitEntity> visits = visitService.getAllVisits();
-//
-//        model.addAttribute("doctors", doctors);
-//        model.addAttribute("patients", patients);
-//        model.addAttribute("visits", visits);
-
-        model.addAttribute("opinionDTO", new OpinionDTO());
-
-        return "opinion-form";
-    }
-
-    @PostMapping("/dodaj-opinie")
-    public String addOpinion(@ModelAttribute OpinionDTO opinionDTO) {
-        // Logika dodawania opinii
-
-        return "redirect:/sukces";
-    }
-
-    @GetMapping("/dodaj")
-    public ModelAndView dodaj() {
-        // dodanie pacjenta i doktora na sztywno
-        PatientEntity patient = patientDAO.findById(5);
-        DoctorEntity doctor = doctorDAO.findEntityById(2);
-
-        ModelAndView modelAndView = new ModelAndView("dodaj");
-        modelAndView.addObject("patient", patient);
-        modelAndView.addObject("doctor", doctor);
-        modelAndView.addObject("opinion", new OpinionEntity());
-
-        return modelAndView;
-    }
-
-
-    @PostMapping("/zapiszXXX")
-    public String zapisz(@ModelAttribute OpinionEntity opinion) {
-        opinionRepository.save(opinion);
-        return "redirect:/dodaj";
-    }
-
-    @PostMapping("/zapisz")
-    public String zapiszOpinie(@RequestParam Integer patientId, @RequestParam Integer doctorId, @RequestParam String comment) {
-        // Tworzenie nowej opinii
-        OpinionEntity opinionEntity = OpinionEntity.builder()
-                .doctorId(doctorId)
-                .patientId(patientId)
-                .comment(comment)
-                .createdAt(LocalDateTime.now())
-                .build();
-
-        opinionRepository.save(opinionEntity);
-
-        return "success";
-    }
 
 
 }

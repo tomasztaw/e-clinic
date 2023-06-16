@@ -26,13 +26,3 @@ public class HomeController {
     }
 }
 
-//    @GetMapping
-//    public String homePage(Model model) {
-//        return "home!";
-
-//    }
-
-//    @GetMapping(HOME)
-//public String homePage() {
-//    return "home";
-//}

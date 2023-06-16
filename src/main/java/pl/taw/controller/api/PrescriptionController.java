@@ -24,6 +24,11 @@ public class PrescriptionController {
     public static final String PRESCRIPTIONS = "/prescriptions";
     public static final String DOCTOR_ID = "/doctor/{doctorId}";
     public static final String PATIENT_ID = "/patient/{patientId}";
+    public static final String PANEL = "/panel";
+    public static final String SHOW = "/show/{prescriptionId}";
+    public static final String ADD = "/add";
+    public static final String UPDATE = "/update";
+    public static final String DELETE = "/delete/{prescriptionId}";
 
     private final PrescriptionService prescriptionService;
     private final VisitService visitService;
@@ -60,7 +65,7 @@ public class PrescriptionController {
     }
 
     // panel z receptami
-    @GetMapping("/panel")
+    @GetMapping(PANEL)
     public String showPrescriptionPanel(Model model) {
         List<PrescriptionDTO> prescriptions = prescriptionDAO.findAll();
         model.addAttribute("prescriptions", prescriptions);
@@ -68,7 +73,7 @@ public class PrescriptionController {
         return "prescription-panel";
     }
 
-    @GetMapping("/show/{prescriptionId}")
+    @GetMapping(SHOW)
     public String showPrescription(@PathVariable("prescriptionId") Integer prescriptionId, Model model) {
         PrescriptionDTO prescription = prescriptionDAO.findDTOById(prescriptionId);
         model.addAttribute("prescription", prescription);
@@ -81,7 +86,7 @@ public class PrescriptionController {
         return "prescription-view";
     }
 
-    @PostMapping("/add")
+    @PostMapping(ADD)
     public String addPrescription(
             @RequestParam(value = "doctorId") Integer doctorId,
             @RequestParam(value = "patientId") Integer patientId,
@@ -103,7 +108,7 @@ public class PrescriptionController {
         return "redirect:/prescriptions/prescription-panel";
     }
 
-    @PutMapping("/update")
+    @PutMapping(UPDATE)
     public String updatePrescription(
             @ModelAttribute("updatePrescription") PrescriptionDTO updatePrescription
     ) {
@@ -119,7 +124,7 @@ public class PrescriptionController {
         return "redirect:/prescriptions/prescription-panel";
     }
 
-    @DeleteMapping("/delete/{prescriptionId}")
+    @DeleteMapping(DELETE)
     public String deletePrescriptionById(@PathVariable Integer prescriptionId) {
         PrescriptionEntity prescriptionForDelete = prescriptionDAO.findById(prescriptionId);
         prescriptionDAO.delete(prescriptionForDelete);

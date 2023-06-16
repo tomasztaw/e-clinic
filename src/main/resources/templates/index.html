@@ -2,147 +2,85 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
-    <title>Weekly Event Calendar in Spring Boot/Java (Open-Source)</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>daypilot-project</title>
 
-<!--    <link href="src/main/resources/static/css/main.css" rel="stylesheet" type="text/css">-->
-<!--    <link href="src/main/resources/static/icons/style.css" rel="stylesheet" type="text/css">-->
-    <link th:href="@{/css/main.css}" rel="stylesheet" type="text/css">
-    <link th:href="@{/icons/style.css}" rel="stylesheet" type="text/css">
+    <style type="text/css">
+    p, body, td, input, select, button { font-family: -apple-system,system-ui,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif; font-size: 14px; }
+    body { padding: 0px; margin: 0px; background-color: #ffffff; }
+    a { color: #1155a3; }
+    .space { margin: 10px 0px 10px 0px; }
+    .header { background: #003267; background: linear-gradient(to right, #011329 0%,#00639e 44%,#011329 100%); padding:20px 10px; color: white; box-shadow: 0px 0px 10px 5px rgba(0,0,0,0.75); }
+    .header a { color: white; }
+    .header h1 a { text-decoration: none; }
+    .header h1 { padding: 0px; margin: 0px; }
+    .main { padding: 10px; margin-top: 10px; }
+    .generated { color: #999; margin-top: 10px; }
+    .generated a { color: #999; }
+
+    </style>
+
+    <!-- DayPilot library -->
+    <!--  <script src="js/daypilot/daypilot-all.min.js"></script>-->
+    <script th:src="@{/js/daypilot/daypilot-all.min2.js}"></script>
+
 </head>
 <body>
 <div class="header">
-    <h1><a href='https://code.daypilot.org/41760/using-javascript-html5-event-calendar-in-spring-boot-java'>Weekly Event Calendar in Spring Boot/Java (Open-Source)</a></h1>
-    <div><a href="https://javascript.daypilot.org/">DayPilot for JavaScript</a> - HTML5 Calendar/Scheduling Components for JavaScript/Angular/React/Vue</div>
-</div>
-
-<div class="main" style="display: flex;">
-    <div style="margin-right: 10px;">
-        <div id="nav"></div>
-    </div>
-    <div style="flex-grow: 1">
-        <div id="dp"></div>
+    <h1>daypilot-project</h1>
+    <div><a href="https://javascript.daypilot.org/">DayPilot for JavaScript</a> - HTML5 Calendar/Scheduling Components
+        for JavaScript/Angular/React/Vue
     </div>
 </div>
 
-<!-- DayPilot library -->
-<!--<script src="src/main/resources/static/js/daypilot/daypilot-all.min.js"></script>-->
-<script th:src="@{/js/daypilot/daypilot-all.min.js}"></script>
-<!--<img th:src="@{'/images/d' + ${doctor.doctorId} + '.jpeg'}" alt="Opis zdjęcia">-->
+<div class="main">
+    <div id="dp"></div>
+    <div class="generated">Generated using <a href="https://builder.daypilot.org/">DayPilot UI Builder</a>.</div>
+</div>
 
 <script>
-
-  const datePicker = new DayPilot.Navigator("nav", {
-    showMonths: 3,
-    skipMonths: 3,
-    selectMode: "week",
-    onTimeRangeSelected: (args) => {
-      dp.startDate = args.day;
-      dp.update();
-      dp.events.load("/api/events");
-    }
-  });
-  datePicker.init();
-
   const dp = new DayPilot.Calendar("dp", {
-    viewType: "Week",
-    onTimeRangeSelected: async (args) => {
-
-
-      const modal = await DayPilot.Modal.prompt("Create a new event:", "Event");
-      dp.clearSelection();
-      if (modal.canceled) {
-        return;
-      }
-      const params = {
-        start: args.start,
-        end: args.end,
-        text: modal.result
-      };
-      const {data} = await DayPilot.Http.post("/api/events/create", params);
-      dp.events.add(data);
-      console.log("Event created");
-    },
-    onEventMove: async (args) => {
-      const params = {
-        id: args.e.id(),
-        start: args.newStart,
-        end: args.newEnd
-      };
-      const {data} = await DayPilot.Http.post("/api/events/move", params);
-      console.log("Event moved");
-    },
-    onEventResize: async (args) => {
-      const params = {
-        id: args.e.id(),
-        start: args.newStart,
-        end: args.newEnd
-      };
-      const {data} = await DayPilot.Http.post("/api/events/move", params);
-      console.log("Event resized");
-    },
-    onBeforeEventRender: (args) => {
-      args.data.barColor = args.data.color;
-      args.data.areas = [
-        {
-          top: 2,
-          right: 2,
-          icon: "icon-triangle-down",
-          visibility: "Visible",
-          action: "ContextMenu",
-          style: "font-size: 12px; background-color: #f9f9f9; border: 1px solid #ccc; padding: 2px 2px 0px 2px; cursor:pointer;"
-        }
-      ];
-    },
-    contextMenu: new DayPilot.Menu({
-      items: [
-        {
-          text: "Blue",
-          icon: "icon icon-blue",
-          color: "#1066a8",
-          onClick: (args) => app.updateColor(args.source, args.item.color)
-        },
-        {
-          text: "Green",
-          icon: "icon icon-green",
-          color: "#6aa84f",
-          onClick: (args) => app.updateColor(args.source, args.item.color)
-        },
-        {
-          text: "Yellow",
-          icon: "icon icon-yellow",
-          color: "#f1c232",
-          onClick: (args) => app.updateColor(args.source, args.item.color)
-        },
-        {
-          text: "Red",
-          icon: "icon icon-red",
-          color: "#cc0000",
-          onClick: (args) => app.updateColor(args.source, args.item.color)
-        },
-      ]
-    })
-  });
-  dp.init();
-
-
-  const app = {
-    init: () => {
-      dp.events.load("/api/events");
-    },
-    async updateColor(e, color) {
-      const params = {
-        id: e.id(),
-        color: color
-      };
-      const {data} = await DayPilot.Http.post("/api/events/setColor", params);
-      e.data.color = color;
-      dp.events.update(e);
-      console.log("Color updated");
+      locale: "pl-pl",
+      viewType: "WorkWeek",
+      headerDateFormat: "d MMMM yyyy",
+      businessBeginsHour: 8,
+      businessEndsHour: 17,
+      timeRangeSelectedHandling: "Enabled",
+      onTimeRangeSelected: async (args) => {
+        const modal = await DayPilot.Modal.prompt("Create a new event:", "Event 1");
+        const dp = args.control;
+        dp.clearSelection();
+        if (modal.canceled) { return; }
+        dp.events.add({
+          start: args.start,
+          end: args.end,
+          id: DayPilot.guid(),
+          text: modal.result
+        });
+      },
+      eventMoveHandling: "Update",
+      onEventMoved: (args) => {
+        console.log("Event moved: " + args.e.text());
+      },
+      eventResizeHandling: "Update",
+      onEventResized: (args) => {
+        console.log("Event resized: " + args.e.text());
+      },
+      eventClickHandling: "Disabled",
+      cellDuration: 10,
+      dayBeginsHour: 8,
+      dayEndsHour: 17,
+      eventHoverHandling: "Disabled",
+    });
+  dp.events.list = [
+    {
+      id: "1",
+      start: DayPilot.Date.today().addHours(10),
+      end: DayPilot.Date.today().addHours(12),
+      text: "Event 1"
     }
-  };
-  app.init();
-
+  ];
+  dp.init();
 
 </script>
 

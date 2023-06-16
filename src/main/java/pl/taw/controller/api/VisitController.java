@@ -29,6 +29,11 @@ public class VisitController {
     public static final String VISITS = "/visits";
     public static final String DOCTOR_ID = "/doctor/{doctorId}";
     public static final String PATIENT_ID = "/patient/{patientId}";
+    public static final String PANEL = "/panel";
+    public static final String SHOW = "/show/{visitId}";
+    public static final String ADD = "/add";
+    public static final String UPDATE = "/update";
+    public static final String DELETE = "/delete/{visitId}";
 
     private final VisitService visitService;
     private final PrescriptionService prescriptionService;
@@ -62,7 +67,7 @@ public class VisitController {
     }
 
     // panel
-    @GetMapping("/panel")
+    @GetMapping(PANEL)
     public String showVisitPanel(Model model) {
         List<VisitDTO> visits = visitDAO.findAll();
         model.addAttribute("visits", visits);
@@ -70,7 +75,7 @@ public class VisitController {
         return "visit-panel";
     }
 
-    @GetMapping("/show/{visitId}")
+    @GetMapping(SHOW)
     public String showVisit(@PathVariable("visitId") Integer visitId, Model model) {
         VisitDTO visit = visitDAO.findDTOById(visitId);
         model.addAttribute("visit", visit);
@@ -80,7 +85,7 @@ public class VisitController {
         return "visit-view";
     }
 
-    @PostMapping("/add")
+    @PostMapping(ADD)
     public String addVisit(
             @RequestParam(value = "doctorId") Integer doctorId,
             @RequestParam(value = "patientId") Integer patientId,
@@ -100,7 +105,7 @@ public class VisitController {
         return "redirect:/visits/visit-panel";
     }
 
-    @PutMapping("/update")
+    @PutMapping(UPDATE)
     public String updateVisit(
             @ModelAttribute("updateVisit") VisitDTO updateVisit
     ) {
@@ -119,7 +124,7 @@ public class VisitController {
         return "redirect:/visits/visit-panel";
     }
 
-    @DeleteMapping("/delete/{visitId}")
+    @DeleteMapping(DELETE)
     public String deleteVisitById(@PathVariable Integer visitId) {
         VisitEntity visitForDelete = visitDAO.findById(visitId);
         visitDAO.delete(visitForDelete);
